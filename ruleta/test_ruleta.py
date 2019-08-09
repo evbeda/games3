@@ -1,7 +1,7 @@
 import unittest
 
 
-class Test_Ruleta(unittest.TestCase):
+class TestRuleta(unittest.TestCase):
     def test_numeros(self):
         self.assertTrue(True)
 
