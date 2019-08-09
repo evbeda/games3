@@ -3,6 +3,7 @@ from uno.test_uno import TestUno
 from craps.test_craps import TestCraps
 from dungeon_raiders.test_dungeon import TestDungeon
 from ruleta.test_ruleta import Test_Ruleta
+from sudoku.test_sudoku import TestSudoku
 
 
 def suite():
@@ -11,6 +12,7 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestCraps))
     test_suite.addTest(unittest.makeSuite(TestDungeon))
     test_suite.addTest(unittest.makeSuite(Test_Ruleta))
+    test_suite.addTest(unittest.makeSuite(TestSudoku))
 
 
 if __name__ == '__main__':
