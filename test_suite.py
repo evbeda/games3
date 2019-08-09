@@ -1,9 +1,10 @@
 import unittest
+from uno.test_uno import TestUno
 
 
-class TestSuite(unittest.TestCase):
-    def test_dummy(self):
-        self.assertTrue(True)
+def suite():
+    test_suite = unittest.TestSuite()
+    test_suite.addTest(unittest.makeSuite(TestUno))
 
 
 if __name__ == '__main__':
