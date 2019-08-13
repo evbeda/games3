@@ -127,6 +127,16 @@ class TestUno(unittest.TestCase):
         selected_card = DrawTwoCard(YELLOW)
         self.assertTrue(top_card.same_type_validator(top_card, selected_card))
 
+    def test_draw_two_card_to_draw_two_card(self):
+        top_card = DrawTwoCard(RED)
+        selected_card = DrawTwoCard(YELLOW)
+        self.assertEqual(selected_card.action(top_card), 4)
+
+    def test_draw_two_cards_to_number_card_with_same_color(self):
+        top_card = NumberCard(RED, 2))
+        selected_card = DrawTwoCard(RED)
+        self.assertEqual(selected_card.action(top_card), 2)
+
 
 if __name__ == '__main__':
     unittest.main()

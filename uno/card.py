@@ -15,7 +15,7 @@ class Card():
     def same_type_validator(self, card1, card2):
         if type(card1) == type(card2):
             return True
-
+    
 
 class PostColoredCard(Card):
 
@@ -55,7 +55,7 @@ class NumberCard(ColoredCard):
                 return True
         else:
             return False
-        
+
 
 class ReverseCard(ColoredCard):
 
@@ -68,7 +68,17 @@ class SkipCard(ColoredCard):
 
 
 class DrawTwoCard(ColoredCard):
-    pass
+    def __init__(self, color):
+        self.color = color
+        self.cardsToDraw = 2
+
+    def action(self, previousCard):
+        if type(previousCard) == DrawTwoCard:
+            self.cardsToDraw += previousCard.cardsToDraw
+        return self.cardsToDraw
+        
+
+
 
 
 class DrawFourCard(PostColoredCard):
