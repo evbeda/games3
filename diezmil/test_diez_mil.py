@@ -34,11 +34,6 @@ class TestDiezMil(unittest.TestCase):
         dice=[1,3,3,3,3]
         score=self.play.check_combination(dice)
         self.assertEqual(score, 700)
-    
-    def test_check_combination_score_triple_1(self):
-        dice=[1,1,1,5,3]
-        score=self.play.check_combination(dice)
-        self.assertEqual(score, 1050)
 
     def test_check_combination_score_flush(self):
         dice=[4,1,2,5,3]
