@@ -3,7 +3,7 @@ import unittest
 
 class TestCraps(unittest.TestCase):
     def test_dummy(self):
-        self.assertEqual(True, True)
+        pass
 
 
 if __name__ == '__main__':
