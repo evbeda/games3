@@ -21,7 +21,7 @@ class Player:
         if self.dicrement_money(ammount):
             # Place bet if money is enough
             bet_factory = BetCreator()
-            bet = bet_factory(bet_type, numbers, ammount)
+            bet = bet_factory.create(bet_type, numbers, ammount)
         else:
             bet = "Not enough money for the bet"
 

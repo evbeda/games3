@@ -9,7 +9,6 @@ class Roulette:
     def generate_number(self):
         number = randint(0, 36)
         self.last_numbers.append(number)
-        print(self.last_numbers)
         return number
 
     def get_last_numbers(self):
