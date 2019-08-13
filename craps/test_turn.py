@@ -1,12 +1,16 @@
 import unittest
 from unittest.mock import patch
-from turn import Turn
-from constants import GAME_IN_PROGRESS, GAME_STARTED, PLAYER_LOST, PLAYER_WON
+from .turn import Turn
+from .constants import GAME_IN_PROGRESS, GAME_STARTED, PLAYER_LOST, PLAYER_WON
 
 
 class TestTurn(unittest.TestCase):
     def setUp(self):
         self.turn = Turn()
+
+    def test_first_state_game_started(self):
+        self.assertEqual(self.turn.state, GAME_STARTED)
+        self.assertEqual(self.turn.point, None)
 
     def test_shoots_two_dice(self):
         """Tests that only two dice are thrown."""
@@ -58,6 +62,21 @@ class TestTurn(unittest.TestCase):
         with patch('random.sample', return_value=(2, 5)):
             self.turn.shoot()
             self.assertEqual(self.turn.state, PLAYER_LOST)
+
+    def test_point_not_reached_and_won(self):
+        FIRST_DICE = (2, 3)
+        POINT = sum(FIRST_DICE)
+        with patch('random.sample', return_value=FIRST_DICE):
+            self.turn.shoot()
+            self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
+            self.assertEqual(self.turn.point, POINT)
+        with patch('random.sample', return_value=(2, 4)):
+            self.turn.shoot()
+            self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
+            self.assertEqual(self.turn.point, POINT)
+        with patch('random.sample', return_value=FIRST_DICE):
+            self.turn.shoot()
+            self.assertEqual(self.turn.state, PLAYER_WON)
 
 
 if __name__ == '__main__':
