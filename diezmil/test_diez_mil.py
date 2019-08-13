@@ -1,33 +1,59 @@
 import unittest
-from diez_mil import DiezMil
+from unittest.mock import patch
+from .diez_mil import DiezMil
+from .play import Play
 
 
 class TestDiezMil(unittest.TestCase):
     def setUp(self):
-        self.game=DiezMil()
-        self.game.playersQty = 2
+        self.game = DiezMil()
+        self.play = Play()
+        self.game.players_qty = 2
         self.game.baseScore = 450
 
     def test_check_players_qty(self):
-        checkPlayersQty=self.game.checkPlayersQty(0)
-        self.assertEquals(checkPlayersQty, False)    
+        check_players_qty = self.game.check_players_qty(0)
+        self.assertEquals(check_players_qty, False)    
 
     def test_check_combination_no_score(self):
         dice=[2,3,3,4,4]
-        score=self.game.checkCombination(dice)
+        score=self.game.check_combination(dice)
         self.assertEquals(score, 0)
     
     def test_check_combination_score(self):
+        dice=[1,3,2,5,3]
+        score=self.game.check_combination(dice)
+        self.assertEquals(score, 150)
+
+    def test_check_combination_score_triple(self):
         dice=[1,3,3,5,3]
-        score=self.game.checkCombination(dice)
+        score=self.game.check_combination(dice)
         self.assertEquals(score, 450)
+        
+    def test_check_combination_score_quadruple(self):
+        dice=[1,3,3,3,3]
+        score=self.game.check_combination(dice)
+        self.assertEquals(score, 700)
 
     def test_check_combination_score_flush(self):
         dice=[4,1,2,5,3]
-        score=self.game.checkCombination(dice)
+        score=self.game.check_combination(dice)
         self.assertEquals(score, 500)
 
+    #play testings
+    def test_roll_dices_error(self):
+        dice_qty=self.play.play_dices(7)
+        self.assertEquals(dice_qty, False)
 
-
+    @patch('diezmil.play.random.randint', return_value=1)
+    def test_roll_5_dices(self, mock_randint):
+        dice_qty=self.play.play_dices(5)
+        self.assertEquals(self.play.dices, [1, 1, 1, 1, 1])
+    
+    @patch('diezmil.play.random.randint', return_value=1)
+    def test_roll_3_dices(self, mock_randint):
+        dice_qty=self.play.play_dices(3)
+        self.assertEquals(self.play.dices, [1, 1, 1])
+    
 if __name__ == '__main__':
     unittest.main()

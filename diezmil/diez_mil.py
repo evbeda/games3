@@ -1,34 +1,20 @@
-class DiezMil(object):
-    
-    
+class DiezMil(object):  
     def __init__(self):
-        self.playersQty = None
-        self.baseScore = None
+        self.players_qty = None
+        self.base_score = None
+        self.is_playing = True
 
-    def setPlayersQty(self,playersQty):
-        self.playersQty = playersQty
-    
-    def checkPlayersQty(self, playersQty):
-        if playersQty == 0:
+    def next_turn(self):
+        if self.is_playing:
+            return 'Give me a number from 0 to 100'
+        else:
+            return 'Game Over'
+
+    def set_players_qty(self, players_qty):
+        self.players_qty = players_qty
+
+    def check_players_qty(self, players_qty):
+        if players_qty == 0:
             return False
         return True
-
-    def checkCombination(self, play):
-        totalScore=0
-        isRepeated = False
-        play.sort()
-        if play == [1,2,3,4,5]:
-            totalScore += 500
-            return totalScore
-        for i in play:
-            quantity = play.count(i)
-            if i == 1:
-                totalScore += 100
-            elif i == 5:
-                totalScore += 50 
-            if quantity == 3 and isRepeated == False:
-                totalScore += i*100
-                isRepeated = True
-
-        return totalScore
 
