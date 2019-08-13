@@ -33,6 +33,7 @@ class ColoredCard(Card):
             return True
         elif self.color == card.color:
             return True
+        return False
 
 
 class NumberCard(ColoredCard):
@@ -40,6 +41,19 @@ class NumberCard(ColoredCard):
     def __init__(self, color, number):
         super().__init__(color)
         self.number = number
+    
+    def same_to(self, card):
+
+        if super().same_to(card):
+            return True
+
+        if isinstance(card, NumberCard):
+            if card.number == self.number:
+                return True
+        else:
+            return False
+        
+
 
 
 class ReverseCard(ColoredCard):
