@@ -1,9 +1,9 @@
 import unittest
-from models.Player import Player
-from models.LevelHand import LevelHand
-from models.Game import Game
-from models.Monster import Monster
-from models.exceptions.UnplayableCardException import UnplayableCardException
+from .models.Player import Player
+from .models.LevelHand import LevelHand
+from .models.Game import Game
+from .models.Monster import Monster
+from .models.exceptions.UnplayableCardException import UnplayableCardException
 
 
 class TestDungeon(unittest.TestCase):
