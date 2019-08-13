@@ -31,12 +31,33 @@ class TestTurn(unittest.TestCase):
         for dice in winning_dice:
             self.assertEqual(self.turn.get_next_state(dice), PLAYER_WON)
 
-    @patch('random.sample')
-    def test_game_state_changes_when_throw(self, sample_mock):
+    @patch('random.sample', return_value=(2, 2))
+    def test_game_point_set(self, sample_mock):
         """Tests that Game state changes to GAME_IN_PROGRESS after first throw (if not winning or losing)."""
-        sample_mock.return_value = (2, 2)
         self.turn.shoot()
         self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
+        self.assertEqual(self.turn.point, 4)
+
+    @patch('random.sample', return_value=(2, 3))
+    def test_point_reached(self, sample_mock):
+        self.turn.shoot()
+        self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
+        self.assertEqual(self.turn.point, 5)
+        self.turn.shoot()
+        self.assertEqual(self.turn.state, PLAYER_WON)
+
+    def test_point_not_reached_and_lost(self):
+        with patch('random.sample', return_value=(2, 3)):
+            self.turn.shoot()
+            self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
+            self.assertEqual(self.turn.point, 5)
+        with patch('random.sample', return_value=(2, 4)):
+            self.turn.shoot()
+            self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
+            self.assertEqual(self.turn.point, 5)
+        with patch('random.sample', return_value=(2, 5)):
+            self.turn.shoot()
+            self.assertEqual(self.turn.state, PLAYER_LOST)
 
 
 if __name__ == '__main__':
