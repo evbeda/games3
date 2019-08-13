@@ -1,6 +1,6 @@
 import unittest
 from roulette import Roulette
-from bet import Bet
+from bet import BetCreator, StraightBet
 
 
 class TestRuleta(unittest.TestCase):
@@ -17,7 +17,21 @@ class TestRuleta(unittest.TestCase):
 
     def test_straight_bet(self):
         # a bet is created
-        bet = Bet(1, 17, 100)
+        bet_factory = BetCreator()
+        bet = bet_factory.create(1, 17, 100)
+        self.assertIsInstance(bet, StraightBet)
+
+    def test_validate_straight_bet(self):
+        for i in range(37):
+            test = True
+            if StraightBet.validate_straight(i):
+                continue
+            else:
+                test = False
+                break
+        self.assertTrue(test)
+        # self.assertFalse(StraightBet.validate_straight(40))
+
 
 if __name__ == '__main__':
     unittest.main()

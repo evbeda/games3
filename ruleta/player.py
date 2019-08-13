@@ -1,9 +1,17 @@
-from bet import Bet
+from bet import BetCreator
 
 
 class Player:
     def __init__(self, start_money):
         self.money = start_money
+
+    def dicrement_money(self, ammount):
+        success = True
+        if ammount >= self.money:
+            self.money -= ammount
+        else:
+            success = False
+        return success
 
     def place_bet(self):
         print("1. Straight")
@@ -14,11 +22,12 @@ class Player:
         numbers = input("Please enters the numbers for the bet")
         ammount = input("Enter the ammount of money of the bet")
 
-        if ammount >= self.money:
-            self.money -= ammount
+        if self.dicrement_money(ammount):
+            # Place bet if money is enough
+            bet_factory = BetCreator()
+            bet = bet_factory(bet_type, numbers, ammount)
         else:
-            return None
-        # TO DO
-        bet = Bet(bet_type, numbers, ammount)
+            bet = "Not enough money for the bet"
 
         return bet
+    
