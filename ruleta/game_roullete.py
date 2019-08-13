@@ -25,7 +25,7 @@ class GameRoulette:
                 are_bets_open = False
             else:
                 bets.append(bet)
-
+                
     def bet_type_input(self):
         valid_input = True
         while not valid_input:
@@ -43,7 +43,7 @@ class GameRoulette:
         try:
             self.player1.dicrement_money(ammount)
             bet_factory = BetCreator()
-            bet = bet_factory.create(bet_type, numbers, ammount)
+            bet = bet_factory.create(bet_type, numbers, ammount, self.player1)
             return bet
         except OutOfCashException:
             print('Error: Out of cash')
