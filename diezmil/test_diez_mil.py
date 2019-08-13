@@ -40,6 +40,31 @@ class TestDiezMil(unittest.TestCase):
         score=self.play.check_combination(dice)
         self.assertEqual(score, 500)
 
+    def test_check_combination_score_flush_2(self):
+        dice=[4,6,2,5,3]
+        score=self.play.check_combination(dice)
+        self.assertEqual(score, 500)
+
+    def test_check_combination_score_three_ones(self):
+        dice=[4,1,2,1,1]
+        score=self.play.check_combination(dice)
+        self.assertEqual(score, 1000)
+
+    def test_check_combination_score_four_ones(self):
+        dice=[4,1,1,1,1]
+        score=self.play.check_combination(dice)
+        self.assertEqual(score, 1100)
+
+    def test_check_combination_score_five_ones(self):
+        dice=[1,1,1,1,1]
+        score=self.play.check_combination(dice)
+        self.assertEqual(score, 1200)
+    
+    def test_check_combination_score_five_fives(self):
+        dice=[5,5,5,5,5]
+        score=self.play.check_combination(dice)
+        self.assertEqual(score, 1050)
+
     #play testings
     def test_roll_dices_error(self):
         dice_qty=self.play.play_dices(7)
