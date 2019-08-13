@@ -26,4 +26,3 @@ class Player:
             bet = "Not enough money for the bet"
 
         return bet
-
