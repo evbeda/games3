@@ -11,18 +11,13 @@
 
 
 class Card():
-<<<<<<< HEAD
-=======
 
     def same_type_validator(self, card1, card2):
         if type(card1) == type(card2):
             return True
->>>>>>> added same type dif color tests
-
-    def same_type_validator(self, card1, card2):
-        if type(card1) == type(card2):
-            return True
-    
+        else:
+            return False
+   
 
 class PostColoredCard(Card):
 
@@ -62,11 +57,7 @@ class NumberCard(ColoredCard):
                 return True
         else:
             return False
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> added same type dif color tests
 
 class ReverseCard(ColoredCard):
 
@@ -87,10 +78,7 @@ class DrawTwoCard(ColoredCard):
         if type(previousCard) == DrawTwoCard:
             self.cardsToDraw += previousCard.cardsToDraw
         return self.cardsToDraw
-        
-
-
-
+       
 
 class DrawFourCard(PostColoredCard):
     pass
