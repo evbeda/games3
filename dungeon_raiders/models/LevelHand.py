@@ -1,4 +1,4 @@
-from models.exceptions.UnplayableCardException import UnplayableCardException
+from .exceptions.UnplayableCardException import UnplayableCardException
 
 
 class LevelHand:
