@@ -5,6 +5,7 @@ from constants import GAME_STARTED, GAME_IN_PROGRESS, PLAYER_LOST, PLAYER_WON
 class Turn:
     def __init__(self):
         self.state = GAME_STARTED
+        self.point = None
 
     def get_next_state(self, dice):
         losing_scores = [2, 3, 12]
@@ -17,9 +18,19 @@ class Turn:
                 return PLAYER_WON
             else:
                 return GAME_IN_PROGRESS
+        elif self.state == GAME_IN_PROGRESS:
+            if score == self.point:
+                return PLAYER_WON
+            elif score == 7:
+                return PLAYER_LOST
+            else:
+                return GAME_IN_PROGRESS
 
     def shoot(self):
         """Throws the dice, returns their values and changes the state."""
         dice = random.sample(range(1, 7), k=2)
-        self.state = self.get_next_state(dice)
+        next_state = self.get_next_state(dice)
+        self.state = next_state
+        if not self.point and next_state == GAME_IN_PROGRESS:
+            self.point = sum(dice)
         return tuple(dice)
