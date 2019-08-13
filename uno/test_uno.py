@@ -57,48 +57,59 @@ class TestUno(unittest.TestCase):
         self.assertFalse(top_card.same_to(reverse_card))
         self.assertFalse(top_card.same_to(draw_two_card))
 
-    def test_number_card(self):
-
+    def test_number_same_to_number_same_color(self):
         top_card = NumberCard(RED, '0')
-
-        # TEST NUMBER - NUMBER
         selected_card_same_color = NumberCard(RED, '2')
+        self.assertTrue(top_card.same_to(selected_card_same_color))
+    
+    def test_number_same_to_number_same_number(self):
+        top_card = NumberCard(RED, '0')
         selected_card_same_number = NumberCard(YELLOW, '0')
-        selected_card_no_equal = NumberCard(YELLOW, '3')
-
-        self.assertTrue(top_card.same_to(selected_card_same_color))
         self.assertTrue(top_card.same_to(selected_card_same_number))
+    
+    def test_number_same_to_number_no_equal(self):
+        top_card = NumberCard(RED, '0')
+        selected_card_no_equal = NumberCard(YELLOW, '3')
         self.assertFalse(top_card.same_to(selected_card_no_equal))
 
-        # TEST NUMBER - SKIP
+    def test_number_same_to_skip_same_color(self):
+        top_card = NumberCard(RED, '0')
         selected_card_same_color = SkipCard(RED)
+        self.assertTrue(top_card.same_to(selected_card_same_color))
+
+    def test_number_same_to_skip_no_equal(self):
+        top_card = NumberCard(RED, '0')
         selected_card_no_equal = SkipCard(YELLOW)
-
-        self.assertTrue(top_card.same_to(selected_card_same_color))
         self.assertFalse(top_card.same_to(selected_card_no_equal))
 
-        # TEST NUMBER - REVERSE
+    def test_number_same_to_reverse_same_color(self):
+        top_card = NumberCard(RED, '0')
         selected_card_same_color = ReverseCard(RED)
-        selected_card_no_equal = ReverseCard(YELLOW)
-        
         self.assertTrue(top_card.same_to(selected_card_same_color))
+    
+    def test_number_same_to_reverse_same_color(self):
+        top_card = NumberCard(RED, '0')
+        selected_card_no_equal = ReverseCard(YELLOW)
         self.assertFalse(top_card.same_to(selected_card_no_equal))
 
-        # TEST NUMBER - DRAWFOUR
-        selected_card = DrawFourCard()
-                
+    def test_number_same_to_draw_four(self):
+        top_card = NumberCard(RED, '0')
+        selected_card = DrawFourCard()    
         self.assertTrue(top_card.same_to(selected_card))
 
-        # TEST NUMBER - DRAWTWO
+    def test_number_same_to_draw_two_same_color(self):
+        top_card = NumberCard(RED, '0')
         selected_card_same_color = DrawTwoCard(RED)
-        selected_card_no_equal = DrawTwoCard(YELLOW)
-                
         self.assertTrue(top_card.same_to(selected_card_same_color))
+
+    def test_number_same_to_draw_two_no_equal(self):
+        top_card = NumberCard(RED, '0')
+        selected_card_no_equal = DrawTwoCard(YELLOW)
         self.assertFalse(top_card.same_to(selected_card_no_equal))
 
-        # TEST NUMBER - WILDCARD
+    def test_number_same_to_wild_card(self):
+        top_card = NumberCard(RED, '0')
         selected_card = WildCard()
-                
         self.assertTrue(top_card.same_to(selected_card))
 
 
