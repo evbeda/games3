@@ -1,6 +1,8 @@
 import unittest
 from .roulette import Roulette
 from .bet import BetCreator, StraightBet
+# Exceptions
+from .exceptions.invalid_bet_exception import InvalidBetException
 
 
 class TestRuleta(unittest.TestCase):
@@ -21,16 +23,13 @@ class TestRuleta(unittest.TestCase):
         bet = bet_factory.create(1, 17, 100)
         self.assertIsInstance(bet, StraightBet)
 
-    def test_validate_straight_bet(self):
-        for i in range(37):
-            test = True
-            if StraightBet.validate_straight(i):
-                continue
-            else:
-                test = False
-                break
-        self.assertTrue(test)
-        # self.assertFalse(StraightBet.validate_straight(40))
+    def test_invalid_straight_bet(self):
+        with self.assertRaises(InvalidBetException):
+            StraightBet(40, 17)
+
+    def test_valid_straight_bet(self):
+        straight_bet = StraightBet(36, 18)
+        self.assertEqual(36, straight_bet.bet_value)
 
 
 if __name__ == '__main__':
