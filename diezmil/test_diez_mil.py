@@ -1,8 +1,8 @@
 import unittest
 
 
-class TestRuleta(unittest.TestCase):
-    def test_numeros(self):
+class TestDiezMil(unittest.TestCase):
+    def test_dummy(self):
         self.assertTrue(True)
 
 
