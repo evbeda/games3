@@ -1,8 +1,9 @@
 import unittest
-from models.Player import Player
-from models.LevelHand import LevelHand
-from models.Game import Game
-from models.exceptions.UnplayableCardException import UnplayableCardException
+from .models.Player import Player
+from .models.LevelHand import LevelHand
+from .models.Game import Game
+from .models.Monster import Monster
+from .models.exceptions.UnplayableCardException import UnplayableCardException
 
 
 class TestDungeon(unittest.TestCase):
@@ -42,7 +43,64 @@ class TestDungeon(unittest.TestCase):
         game = Game([playerA, playerB, playerC])
         self.assertEqual(playerA, game.get_winner())
 
-    # Room card
+    # Monster card
+    def _play_power_cards_against_room(self, room, play_a, play_b, play_c):
+        handA = LevelHand(Player('A'))
+        handB = LevelHand(Player('B'))
+        handC = LevelHand(Player('C'))
+        handA.play(play_a)
+        handB.play(play_b)
+        handC.play(play_c)
+        room.resolve_room([handA, handB, handC])
+        return handA, handB, handC
+
+    def test_jugadores_bajan_531_contra_dragon_y_A_no_recibe_danio(self):
+        handA, handB, handC = \
+            self._play_power_cards_against_room(Monster(14, 3), 5, 3, 1)
+        self.assertEqual(0, handA.player.wounds)
+        
+    def test_jugadores_bajan_531_contra_dragon_y_B_no_recibe_danio(self):
+        handA, handB, handC = \
+            self._play_power_cards_against_room(Monster(14, 3), 5, 3, 1)
+        self.assertEqual(0, handB.player.wounds)
+
+    def test_jugadores_bajan_531_contra_dragon_y_C_recibe_danio(self):
+        handA, handB, handC = \
+            self._play_power_cards_against_room(Monster(14, 3), 5, 3, 1)
+        self.assertEqual(3, handC.player.wounds)
+
+    def test_jugadores_bajan_554_contra_dragon_y_A_no_recibe_danio(self):
+        handA, handB, handC = \
+            self._play_power_cards_against_room(Monster(14, 3), 5, 5, 4)
+        self.assertEqual(0, handA.player.wounds)
+    
+    def test_jugadores_bajan_554_contra_dragon_y_B_no_recibe_danio(self):
+        handA, handB, handC = \
+            self._play_power_cards_against_room(Monster(14, 3), 5, 5, 4)
+        self.assertEqual(0, handB.player.wounds)
+
+    def test_jugadores_bajan_554_contra_dragon_y_C_no_recibe_danio(self):
+        handA, handB, handC = \
+            self._play_power_cards_against_room(Monster(14, 3), 5, 5, 4)
+        self.assertEqual(0, handC.player.wounds)
+
+    def test_jugadores_bajan_322_contra_dragon_y_A_no_recibe_danio(self):
+        handA, handB, handC = \
+            self._play_power_cards_against_room(Monster(14, 3), 3, 2, 2)
+        self.assertEqual(0, handA.player.wounds)
+
+    def test_jugadores_bajan_322_contra_dragon_y_B_recibe_danio(self):
+        handA, handB, handC = \
+            self._play_power_cards_against_room(Monster(14, 3), 3, 2, 2)
+        self.assertEqual(3, handB.player.wounds)
+
+    def test_jugadores_bajan_322_contra_dragon_y_C_recibe_danio(self):
+        handA, handB, handC = \
+            self._play_power_cards_against_room(Monster(14, 3), 3, 2, 2)
+        self.assertEqual(3, handB.player.wounds)
+
+    
+
 
 
 if __name__ == '__main__':
