@@ -1,6 +1,6 @@
 import unittest
 # from game import Game
-from board import Board
+from .board import Board
 
 class TestSudoku(unittest.TestCase):
     def setUp(self):
