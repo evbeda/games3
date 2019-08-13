@@ -14,9 +14,7 @@ class BetCreator:
 
     @staticmethod
     def list_bets():
-        # hard coded
-        print("0. Finish Round")
-        print("1. Straight bet")
+        pass
 
 
 class StraightBet:
@@ -30,4 +28,3 @@ class StraightBet:
             return True
         else:
             return False
-        

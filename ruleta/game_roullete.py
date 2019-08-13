@@ -8,13 +8,11 @@ class GameRoulette:
 
     def __init__(self):
         self.is_playing = True
-        print("Game started. \nHow much money do you have?")
         start_money = int(input())
         self.player1 = Player(start_money)
         self.roulette1 = Roulette()
 
     def next_turn(self):
-        print("Bet’s open \nMake a bet.")
         are_bets_open = True
         bets = []
         while(are_bets_open):
@@ -26,7 +24,6 @@ class GameRoulette:
             else:
                 bets.append(bet)
         return bets
-        print("Bets are closed")
 
     def play(self):
         self.next_turn()
