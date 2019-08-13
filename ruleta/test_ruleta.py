@@ -1,6 +1,6 @@
 import unittest
-from roulette import Roulette
-from bet import BetCreator, StraightBet
+from .roulette import Roulette
+from .bet import BetCreator, StraightBet
 
 
 class TestRuleta(unittest.TestCase):
