@@ -10,19 +10,54 @@
 # - wildCard: total 4
 
 class Card():
-    
+    pass
+
+
+class PostColoredCard(Card):
+
+    def __init__(self):
+        self.post_color = ''
+
     def same_to(self, card):
-        if self.color == card.color:
-            return True
+        return True
 
-class NumberCard(Card):
 
-    def __init__(self, color, number):
-        self.color = color
-        self.number = number
-
-class ReverseCard(Card):
+class ColoredCard(Card):
 
     def __init__(self, color):
         self.color = color
-        
+
+    def same_to(self, card):
+        if isinstance(card, PostColoredCard):
+            return True
+        elif self.color == card.color:
+            return True
+
+
+class NumberCard(ColoredCard):
+
+    def __init__(self, color, number):
+        super().__init__(color)
+        self.number = number
+
+
+class ReverseCard(ColoredCard):
+
+    def __init__(self, color):
+        super().__init__(color)
+
+
+class SkipCard(ColoredCard):
+    pass
+
+
+class DrawTwoCard(ColoredCard):
+    pass
+
+
+class DrawFourCard(PostColoredCard):
+    pass
+
+
+class WildCard(PostColoredCard):
+    pass
