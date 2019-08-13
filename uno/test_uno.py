@@ -87,7 +87,7 @@ class TestUno(unittest.TestCase):
         selected_card_same_color = ReverseCard(RED)
         self.assertTrue(top_card.same_to(selected_card_same_color))
     
-    def test_number_same_to_reverse_same_color(self):
+    def test_number_same_to_reverse_no_equal(self):
         top_card = NumberCard(RED, '0')
         selected_card_no_equal = ReverseCard(YELLOW)
         self.assertFalse(top_card.same_to(selected_card_no_equal))
@@ -112,7 +112,20 @@ class TestUno(unittest.TestCase):
         selected_card = WildCard()
         self.assertTrue(top_card.same_to(selected_card))
 
+    def test_same_type_skip_card_different_color(self):
+        top_card = SkipCard(RED)
+        selected_card = SkipCard(YELLOW)
+        self.assertTrue(top_card.same_type_validator(top_card, selected_card))
 
+    def test_same_type_reverse_card_different_color(self):
+        top_card = ReverseCard(RED)
+        selected_card = ReverseCard(YELLOW)
+        self.assertTrue(top_card.same_type_validator(top_card, selected_card))
+        
+    def test_same_type_draw_two_different_color(self):
+        top_card = DrawTwoCard(RED)
+        selected_card = DrawTwoCard(YELLOW)
+        self.assertTrue(top_card.same_type_validator(top_card, selected_card))
 
 
 if __name__ == '__main__':
