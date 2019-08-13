@@ -3,6 +3,7 @@ class DiezMil(object):
     
     def __init__(self):
         self.playersQty = None
+        self.baseScore = None
 
     def setPlayersQty(self,playersQty):
         self.playersQty = playersQty
@@ -11,9 +12,14 @@ class DiezMil(object):
         if playersQty == 0:
             return False
         return True
+
     def checkCombination(self, play):
         totalScore=0
         isRepeated = False
+        play.sort()
+        if play == [1,2,3,4,5]:
+            totalScore += 500
+            return totalScore
         for i in play:
             quantity = play.count(i)
             if i == 1:
