@@ -1,4 +1,4 @@
-from bet import BetCreator
+from .bet import BetCreator
 
 
 class Player:
@@ -14,10 +14,6 @@ class Player:
         return success
 
     def place_bet(self):
-        print("1. Straight")
-        print("2. Double")
-        print("3. Trio")
-
         bet_type = int(input("Enter a bet type"))
         numbers = input("Please enters the numbers for the bet")
         ammount = input("Enter the ammount of money of the bet")
@@ -30,4 +26,4 @@ class Player:
             bet = "Not enough money for the bet"
 
         return bet
-    
+
