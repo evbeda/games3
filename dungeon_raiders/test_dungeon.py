@@ -1,14 +1,14 @@
 import unittest
-from .models.Player import Player
-from .models.LevelHand import LevelHand
-from .models.Game import Game
-from .models.Monster import Monster
-from .models.exceptions.UnplayableCardException import UnplayableCardException
+from models.Player import Player
+from models.LevelHand import LevelHand
+from models.Game import Game
+from models.Monster import Monster
+from models.exceptions.UnplayableCardException import UnplayableCardException
 
 
 class TestDungeon(unittest.TestCase):
     # Test del jugador
-    def test_init_player(self):
+    def test_init_hand(self):
         hand = LevelHand(Player('A'))
         self.assertEqual(5, len(hand.cards_to_play))
 
@@ -30,6 +30,10 @@ class TestDungeon(unittest.TestCase):
         self.assertTrue(3 not in hand.cards_to_play)
 
     # Game
+    def test_el_juego_tiene_5_niveles(self):
+        game = Game([Player('A'), Player('B')])
+        self.assertEqual(5, len(game.levels))
+
     def test_gana_el_jugador_A(self):
         playerA = Player('A')
         playerB = Player('B')
@@ -58,7 +62,7 @@ class TestDungeon(unittest.TestCase):
         handA, handB, handC = \
             self._play_power_cards_against_room(Monster(14, 3), 5, 3, 1)
         self.assertEqual(0, handA.player.wounds)
-        
+
     def test_jugadores_bajan_531_contra_dragon_y_B_no_recibe_danio(self):
         handA, handB, handC = \
             self._play_power_cards_against_room(Monster(14, 3), 5, 3, 1)
@@ -73,7 +77,7 @@ class TestDungeon(unittest.TestCase):
         handA, handB, handC = \
             self._play_power_cards_against_room(Monster(14, 3), 5, 5, 4)
         self.assertEqual(0, handA.player.wounds)
-    
+
     def test_jugadores_bajan_554_contra_dragon_y_B_no_recibe_danio(self):
         handA, handB, handC = \
             self._play_power_cards_against_room(Monster(14, 3), 5, 5, 4)
@@ -98,9 +102,6 @@ class TestDungeon(unittest.TestCase):
         handA, handB, handC = \
             self._play_power_cards_against_room(Monster(14, 3), 3, 2, 2)
         self.assertEqual(3, handB.player.wounds)
-
-    
-
 
 
 if __name__ == '__main__':

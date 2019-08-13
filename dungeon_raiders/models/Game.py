@@ -1,6 +1,16 @@
+from .Level import Level
+
+
 class Game:
     def __init__(self, players):
         self.players = players
+        self.levels = [
+            Level(players),
+            Level(players),
+            Level(players),
+            Level(players),
+            Level(players)
+            ]
 
     def get_winner(self):
         self.players.sort(key=lambda elem: elem.wounds)
