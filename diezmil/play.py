@@ -16,27 +16,26 @@ class Play(object):
 
     def check_combination(self, dices):
         total_score = 0
-        is_repeated = False
         dices.sort()
-        if dices == [1, 2, 3, 4, 5]:
+        stair = (dices == [1, 2, 3, 4, 5] or dices == [2, 3, 4, 5, 6])
+        if stair:
             total_score += 500
             return total_score
-        for i in dices:
+        unique_dices = set(dices)
+        for i in unique_dices:
             quantity = dices.count(i)
-            if i == 1:
-                total_score += 100
-            elif i == 5:
-                total_score += 50
-            if quantity == 4 and is_repeated is False:
+            if i == 1 and quantity >= 3:
+                total_score += 1000
+                quantity -= 3
+            elif quantity >= 4:
                 total_score += i*100*2
-                is_repeated = True
-            #Missing: calculate score when rolling five 1 s  (should return: 1200) or five 5 s (should return: 1050) 
-            #
-            if quantity == 3 and is_repeated is False:
-                if i == 1:
-                    total_score += 1000
-                else:
-                    total_score += i*100
-                is_repeated = True
-                
+                quantity -= 4
+            elif quantity == 3:
+                total_score += i*100
+                quantity -= 3
+            if i == 1:
+                total_score += 100 * quantity
+            elif i == 5:
+                total_score += 50 * quantity
+
         return total_score
