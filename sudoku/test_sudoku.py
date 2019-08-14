@@ -52,6 +52,34 @@ class TestSudoku(unittest.TestCase):
         self.assertTrue(self.board.validate_row(row, value))
 
     @parameterized.expand([
+        (1, 1),
+        (2, 3),
+        (3, 2),
+        (4, 6),
+        (5, 9),
+        (6, 6),
+        (7, 8),
+        (8, 4),
+        (9, 7)
+    ])
+    def test_validate_insert_illegal_value_in_column(self, column, value):
+        self.assertFalse(self.board.validate_column(column, value))
+
+    @parameterized.expand([
+        (1, 9),
+        (2, 8),
+        (3, 5),
+        (4, 7),
+        (5, 4),
+        (6, 3),
+        (7, 6),
+        (8, 5),
+        (9, 1)
+    ])
+    def test_validate_insert_legal_value_in_column(self, column, value):
+        self.assertTrue(self.board.validate_column(column, value))
+
+    @parameterized.expand([
         (('a', 1), 9),
         (('b', 4), '1'),
         (('h', 1), 4),
@@ -60,9 +88,3 @@ class TestSudoku(unittest.TestCase):
         row, column = coordinates
         self.board.place(coordinates, value)
         self.assertEqual(self.board.board[row][column - 1]['val'], str(value))
-
-    # def test_change_unchangeable(self):
-    #     self.assertEqual(self.board.play('A', 2, 4), "You can't change boards default numbers")
-    
-if __name__ == '__main__':
-    unittest.main()
