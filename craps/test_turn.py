@@ -46,7 +46,10 @@ class TestTurn(unittest.TestCase):
 
     @patch('random.sample', return_value=(2, 2))
     def test_game_point_set(self, sample_mock):
-        """Tests that Game state changes to GAME_IN_PROGRESS after first throw (if not winning or losing)."""
+        """
+        Tests that Game state changes to GAME_IN_PROGRESS after first
+        throw (if not winning or losing).
+        """
         self.turn.shoot()
         self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
         self.assertEqual(self.turn.point, 4)
