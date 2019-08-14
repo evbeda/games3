@@ -11,7 +11,7 @@ from .models.exceptions.UnplayableCardException import UnplayableCardException
 
 class TestDungeon(unittest.TestCase):
 
-    # -------------------- Player tests -------------------- 
+    """ -------------------- Player tests -------------------- """
     def test_init_hand(self):
         hand = HandPlayerState(Player('A'))
         self.assertEqual(5, len(hand.cards_to_play))
@@ -33,7 +33,7 @@ class TestDungeon(unittest.TestCase):
         hand.play(3)
         self.assertTrue(3 not in hand.cards_to_play)
 
-    # -------------------- Game tests -------------------- 
+    """ -------------------- Game tests -------------------- """
     def test_check_if_game_has_5_levels(self):
         game = Game([Player('A'), Player('B')])
         self.assertEqual(5, len(game.levels))
@@ -54,30 +54,36 @@ class TestDungeon(unittest.TestCase):
     def _play(self, room, hands):
         room.resolve_room(hands)
         return hands
-    
-    # -------------------- MonsterRoom card -------------------- 
+
+    """ -------------------- MonsterRoom card --------------------"""
     def _get_hands_for_monster(self):
-        return HandPlayerState(Player('A')), HandPlayerState(Player('B')), HandPlayerState(Player('C'))
-    
+        return HandPlayerState(
+            Player('A')), HandPlayerState(
+                Player('B')), HandPlayerState(Player('C'))
+
     def _play_cards_against_monster_room(self, room, plays):
         hands = self._get_hands_for_monster()
-        
+
         for hand in hands:
             hand.play(plays[hands.index(hand)])
 
         return self._play(room, hands)
 
     @parameterized.expand([
-        ([0, 0, 3], MonsterRoom(14, 3), [5, 3, 1]), 
-        ([0, 0, 0], MonsterRoom(14, 3), [5, 5, 4]), 
+        ([0, 0, 3], MonsterRoom(14, 3), [5, 3, 1]),
+        ([0, 0, 0], MonsterRoom(14, 3), [5, 5, 4]),
         ([0, 3, 3], MonsterRoom(14, 3), [3, 2, 2])
     ])
-    def test_play_check_wounds_against_monster_room(self, players_wounds, monster, plays):
+    def test_play_check_wounds_against_monster_room(
+            self, players_wounds, monster, plays):
         handA, handB, handC = \
             self._play_cards_against_monster_room(monster, plays)
-        self.assertEqual(players_wounds, [handA.player.wounds, handB.player.wounds, handC.player.wounds])
+        self.assertEqual(players_wounds, [
+            handA.player.wounds,
+            handB.player.wounds,
+            handC.player.wounds])
 
-    # -------------------- GoldRoom card -------------------- 
+    """ -------------------- GoldRoom card --------------------"""
     def _get_hands_for_gold(self):
         player_a = Player('A')
         player_a.add_gold(5)
@@ -87,28 +93,31 @@ class TestDungeon(unittest.TestCase):
         player_c.add_gold(0)
         player_d = Player('D')
         player_d.add_gold(5)
-        
-        return HandPlayerState(player_a), HandPlayerState(player_b), HandPlayerState(player_c), HandPlayerState(player_d)
-    
+
+        return HandPlayerState(player_a), HandPlayerState(
+            player_b), HandPlayerState(player_c), HandPlayerState(player_d)
+
     def _play_cards_against_gold_room(self, room, plays):
         hands = self._get_hands_for_gold()
-        
+
         for hand in hands:
             hand.play(plays[hands.index(hand)])
 
         return self._play(room, hands)
 
     @parameterized.expand([
-        ([3, 3, 0, 3], GoldRoom([0, 0, 1, 2, 3]), [3, 2, 4, 4]), 
-        ([5, 3, 0, 5], GoldRoom([0, 0, 1, 2, 3]), [1, 1, 1, 1]), 
+        ([3, 3, 0, 3], GoldRoom([0, 0, 1, 2, 3]), [3, 2, 4, 4]),
+        ([5, 3, 0, 5], GoldRoom([0, 0, 1, 2, 3]), [1, 1, 1, 1]),
         ([2, 3, 0, 2], GoldRoom([0, 0, 1, 2, 3]), [5, 5, 5, 5])
     ])
     def test_play_cards_against_gold_room(self, gold_values, room, plays):
         handA, handB, handC, handD = \
             self._play_cards_against_gold_room(room, plays)
-        self.assertEqual(gold_values, [handA.player.gold, handB.player.gold, handC.player.gold, handD.player.gold])
+        self.assertEqual(gold_values, [
+                handA.player.gold, handB.player.gold, handC.player.gold,
+                handD.player.gold])
 
-    # -------------------- WoundRoom card -------------------- 
+    """ -------------------- WoundRoom card -------------------- """
     def _get_hands_for_wound(self):
         player_a = Player('A')
         player_a.add_wounds(5)
@@ -118,12 +127,13 @@ class TestDungeon(unittest.TestCase):
         player_c.add_wounds(0)
         player_d = Player('D')
         player_d.add_wounds(5)
-            
-        return HandPlayerState(player_a), HandPlayerState(player_b), HandPlayerState(player_c), HandPlayerState(player_d)
+
+        return HandPlayerState(player_a), HandPlayerState(
+            player_b), HandPlayerState(player_c), HandPlayerState(player_d)
 
     def _play_cards_against_room_for_wound(self, room, plays):
         hands = self._get_hands_for_wound()
-        
+
         for hand in hands:
             hand.play(plays[hands.index(hand)])
 
@@ -137,5 +147,6 @@ class TestDungeon(unittest.TestCase):
     def test_play_cards_against_wound_room(self, wound_values, room, plays):
         handA, handB, handC, handD = \
             self._play_cards_against_room_for_wound(room, plays)
-        self.assertEqual(wound_values, [handA.player.wounds, handB.player.wounds, handC.player.wounds, handD.player.wounds])
-        
+        self.assertEqual(wound_values, [
+            handA.player.wounds, handB.player.wounds, handC.player.wounds,
+            handD.player.wounds])
