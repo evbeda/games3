@@ -1,6 +1,6 @@
 import unittest
-from parameterized import parameterized    
 from unittest.mock import patch
+from parameterized import parameterized
 from .turn import Turn
 from .constants import GAME_IN_PROGRESS, GAME_STARTED, PLAYER_LOST, PLAYER_WON
 
