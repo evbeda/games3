@@ -19,8 +19,8 @@ class TestSudoku(unittest.TestCase):
     def test_sudoku(self):
         self.assertTrue(True)
     
-    def test_present_numbers_unchangeable(self):
-        self.assertFalse(self.board.unchangeable('A', 2))
+    def test_existing_numbers_are_not_modifiable(self):
+        self.assertFalse(self.board.is_modifiable('A', 2))
         
     # def test_change_unchangeable(self):
     #     self.assertEqual(self.board.play('A', 2, 4), "You can't change boards default numbers")
