@@ -1,6 +1,5 @@
 from .exceptions.UnplayableCardException import UnplayableCardException
 
-
 class HandPlayerState:
     def __init__(self, player):
         self.cards_to_play = [1, 2, 3, 4, 5]
