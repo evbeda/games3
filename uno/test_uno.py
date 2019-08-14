@@ -1,5 +1,6 @@
 import unittest
 from .card import NumberCard, ReverseCard, WildCard, SkipCard, DrawFourCard, DrawTwoCard
+from .stack import Stack
 from .const import RED, YELLOW, GREEN, BLUE
 from parameterized import parameterized
 
@@ -147,6 +148,10 @@ class TestUno(unittest.TestCase):
         ])
     def test_draw_four_card_to_any_card(self, top_card, selected_card):
         self.assertTrue(top_card.evaluate_next_card(top_card, selected_card))
+    
+    def test_stack_number_cards_quantity(self):
+        stack = Stack()
+        self.assertEqual(stack.count_number_cards(), 80)
 
 
 if __name__ == '__main__':
