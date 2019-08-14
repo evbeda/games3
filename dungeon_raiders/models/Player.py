@@ -7,5 +7,5 @@ class Player:
     def add_wounds(self, wounds):
         self.wounds += wounds
 
-    def add_gold(self,gold):
+    def add_gold(self, gold):
         self.gold += gold
