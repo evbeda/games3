@@ -1,4 +1,5 @@
 import unittest
+from parameterized import parameterized
 # from game import Game
 from .board import Board
 
@@ -22,6 +23,16 @@ class TestSudoku(unittest.TestCase):
     def test_existing_numbers_are_not_modifiable(self):
         self.assertFalse(self.board.is_modifiable('A', 2))
         
+    @parameterized.expand([
+        (('a', 1), 9),
+        (('b', 4), '1'),
+        (('h', 1), 4),
+    ])
+    def test_place_number_legally(self, coordinates, value):
+        row, column = coordinates
+        self.board.place(coordinates, value)
+        self.assertEqual(self.board.board[row][column - 1]['val'], str(value))
+
     # def test_change_unchangeable(self):
     #     self.assertEqual(self.board.play('A', 2, 4), "You can't change boards default numbers")
     

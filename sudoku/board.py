@@ -28,3 +28,8 @@ class Board():
         board_row = self.board[row.lower()]
         board_colum = int(column-1)
         return board_row[board_colum]['mod']
+
+    def place(self, coordinates, value):
+        value = str(value)
+        row, column = coordinates
+        self.board[row][column - 1]['val'] = value
