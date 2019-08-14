@@ -2,39 +2,43 @@ import unittest
 from .models.Player import Player
 from .models.LevelHand import LevelHand
 from .models.Game import Game
-from .models.Monster import Monster
+from .models.Monster import MonsterRoom
+from .models.GoldRoom import GoldRoom
+from .models.WoundRoom import WoundRoom
+from parameterized import parameterized
 from .models.exceptions.UnplayableCardException import UnplayableCardException
 
 
 class TestDungeon(unittest.TestCase):
-    # Test del jugador
+
+    # -------------------- Player tests -------------------- 
     def test_init_hand(self):
         hand = LevelHand(Player('A'))
         self.assertEqual(5, len(hand.cards_to_play))
 
-    def test_jugador_con_cartas_431_no_puede_jugar2(self):
+    def test_check_if_player_can_play_card_2(self):
         hand = LevelHand(Player('A'))
         hand.play(2)
         hand.play(5)
         with self.assertRaises(UnplayableCardException):
             hand.play(2)
 
-    def test_actual_card_es_2_si_se_jugo_un2(self):
+    def test_check_actual_card(self):
         hand = LevelHand(Player('A'))
         hand.play(2)
         self.assertEqual(2, hand.last_card_played)
 
-    def test_si_se_jugo_un3_no_hay_un_3_en_la_mano(self):
+    def test_check_if_3_is_in_hand(self):
         hand = LevelHand(Player('A'))
         hand.play(3)
         self.assertTrue(3 not in hand.cards_to_play)
 
-    # Game
-    def test_el_juego_tiene_5_niveles(self):
+    # -------------------- Game tests -------------------- 
+    def test_check_if_game_has_5_levels(self):
         game = Game([Player('A'), Player('B')])
         self.assertEqual(5, len(game.levels))
 
-    def test_gana_el_jugador_A(self):
+    def test_check_if_player_a_wins(self):
         playerA = Player('A')
         playerB = Player('B')
         playerC = Player('C')
@@ -47,62 +51,91 @@ class TestDungeon(unittest.TestCase):
         game = Game([playerA, playerB, playerC])
         self.assertEqual(playerA, game.get_winner())
 
-    # Monster card
-    def _play_power_cards_against_room(self, room, play_a, play_b, play_c):
-        handA = LevelHand(Player('A'))
-        handB = LevelHand(Player('B'))
-        handC = LevelHand(Player('C'))
-        handA.play(play_a)
-        handB.play(play_b)
-        handC.play(play_c)
-        room.resolve_room([handA, handB, handC])
-        return handA, handB, handC
+    def _play(self, room, hands):
+        room.resolve_room(hands)
+        return hands
+    
+    # -------------------- MonsterRoom card -------------------- 
+    def _get_hands_for_monster(self):
+        return LevelHand(Player('A')), LevelHand(Player('B')), LevelHand(Player('C'))
+    
+    def _play_cards_against_monster_room(self, room, plays):
+        hands = self._get_hands_for_monster()
+        
+        for hand in hands:
+            hand.play(plays[hands.index(hand)])
 
-    def test_jugadores_bajan_531_contra_dragon_y_A_no_recibe_danio(self):
+        return self._play(room, hands)
+
+    @parameterized.expand([
+        ([0, 0, 3], MonsterRoom(14, 3), [5, 3, 1]), 
+        ([0, 0, 0], MonsterRoom(14, 3), [5, 5, 4]), 
+        ([0, 3, 3], MonsterRoom(14, 3), [3, 2, 2])
+    ])
+    def test_play_check_wounds_against_monster_room(self, players_wounds, monster, plays):
         handA, handB, handC = \
-            self._play_power_cards_against_room(Monster(14, 3), 5, 3, 1)
-        self.assertEqual(0, handA.player.wounds)
+            self._play_cards_against_monster_room(monster, plays)
+        self.assertEqual(players_wounds, [handA.player.wounds, handB.player.wounds, handC.player.wounds])
 
-    def test_jugadores_bajan_531_contra_dragon_y_B_no_recibe_danio(self):
-        handA, handB, handC = \
-            self._play_power_cards_against_room(Monster(14, 3), 5, 3, 1)
-        self.assertEqual(0, handB.player.wounds)
+    # -------------------- GoldRoom card -------------------- 
+    def _get_hands_for_gold(self):
+        player_a = Player('A')
+        player_a.add_gold(5)
+        player_b = Player('B')
+        player_b.add_gold(3)
+        player_c = Player('C')
+        player_c.add_gold(0)
+        player_d = Player('D')
+        player_d.add_gold(5)
+        
+        return LevelHand(player_a), LevelHand(player_b), LevelHand(player_c), LevelHand(player_d)
+    
+    def _play_cards_against_gold_room(self, room, plays):
+        hands = self._get_hands_for_gold()
+        
+        for hand in hands:
+            hand.play(plays[hands.index(hand)])
 
-    def test_jugadores_bajan_531_contra_dragon_y_C_recibe_danio(self):
-        handA, handB, handC = \
-            self._play_power_cards_against_room(Monster(14, 3), 5, 3, 1)
-        self.assertEqual(3, handC.player.wounds)
+        return self._play(room, hands)
 
-    def test_jugadores_bajan_554_contra_dragon_y_A_no_recibe_danio(self):
-        handA, handB, handC = \
-            self._play_power_cards_against_room(Monster(14, 3), 5, 5, 4)
-        self.assertEqual(0, handA.player.wounds)
+    @parameterized.expand([
+        ([3, 3, 0, 3], GoldRoom([0, 0, 1, 2, 3]), [3, 2, 4, 4]), 
+        ([5, 3, 0, 5], GoldRoom([0, 0, 1, 2, 3]), [1, 1, 1, 1]), 
+        ([2, 3, 0, 2], GoldRoom([0, 0, 1, 2, 3]), [5, 5, 5, 5])
+    ])
+    def test_play_cards_against_gold_room(self, gold_values, room, plays):
+        handA, handB, handC, handD = \
+            self._play_cards_against_gold_room(room, plays)
+        self.assertEqual(gold_values, [handA.player.gold, handB.player.gold, handC.player.gold, handD.player.gold])
 
-    def test_jugadores_bajan_554_contra_dragon_y_B_no_recibe_danio(self):
-        handA, handB, handC = \
-            self._play_power_cards_against_room(Monster(14, 3), 5, 5, 4)
-        self.assertEqual(0, handB.player.wounds)
+    # -------------------- WoundRoom card -------------------- 
+    def _get_hands_for_wound(self):
+        player_a = Player('A')
+        player_a.add_wounds(5)
+        player_b = Player('B')
+        player_b.add_wounds(3)
+        player_c = Player('C')
+        player_c.add_wounds(0)
+        player_d = Player('D')
+        player_d.add_wounds(5)
+            
+        return LevelHand(player_a), LevelHand(player_b), LevelHand(player_c), LevelHand(player_d)
 
-    def test_jugadores_bajan_554_contra_dragon_y_C_no_recibe_danio(self):
-        handA, handB, handC = \
-            self._play_power_cards_against_room(Monster(14, 3), 5, 5, 4)
-        self.assertEqual(0, handC.player.wounds)
+    def _play_cards_against_room_for_wound(self, room, plays):
+        hands = self._get_hands_for_wound()
+        
+        for hand in hands:
+            hand.play(plays[hands.index(hand)])
 
-    def test_jugadores_bajan_322_contra_dragon_y_A_no_recibe_danio(self):
-        handA, handB, handC = \
-            self._play_power_cards_against_room(Monster(14, 3), 3, 2, 2)
-        self.assertEqual(0, handA.player.wounds)
+        return self._play(room, hands)
 
-    def test_jugadores_bajan_322_contra_dragon_y_B_recibe_danio(self):
-        handA, handB, handC = \
-            self._play_power_cards_against_room(Monster(14, 3), 3, 2, 2)
-        self.assertEqual(3, handB.player.wounds)
-
-    def test_jugadores_bajan_322_contra_dragon_y_C_recibe_danio(self):
-        handA, handB, handC = \
-            self._play_power_cards_against_room(Monster(14, 3), 3, 2, 2)
-        self.assertEqual(3, handB.player.wounds)
-
-
-if __name__ == '__main__':
-    unittest.main()
+    @parameterized.expand([
+        ([5, 3, 2, 5], WoundRoom([0, 0, 1, 2, 2]), [3, 2, 4, 4]),
+        ([5, 3, 0, 5], WoundRoom([0, 0, 1, 2, 2]), [1, 2, 2, 1]),
+        ([5, 3, 2, 5], WoundRoom([0, 0, 1, 2, 2]), [5, 4, 3, 2]),
+    ])
+    def test_play_cards_against_wound_room(self, wound_values, room, plays):
+        handA, handB, handC, handD = \
+            self._play_cards_against_room_for_wound(room, plays)
+        self.assertEqual(wound_values, [handA.player.wounds, handB.player.wounds, handC.player.wounds, handD.player.wounds])
+        
