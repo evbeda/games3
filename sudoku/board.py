@@ -5,26 +5,40 @@ class Board():
     def build_board(self, board):
         return {
             'a':
-            [{'val':i, 'mod':True} if i == ' ' else {'val':i, 'mod':False} for i in board[0:9]],
+            [{'val': i, 'mod': True} if i == ' '
+                else {'val': i, 'mod': False} for i in board[0:9]],
             'b':
-            [{'val':i, 'mod':True} if i == ' ' else {'val':i, 'mod':False} for i in board[9:18]],
+            [{'val': i, 'mod': True} if i == ' '
+                else {'val': i, 'mod': False} for i in board[9:18]],
             'c':
-            [{'val':i, 'mod':True} if i == ' ' else {'val':i, 'mod':False} for i in board[18:27]],
+            [{'val': i, 'mod': True} if i == ' '
+                else {'val': i, 'mod': False} for i in board[18:27]],
             'd':
-            [{'val':i, 'mod':True} if i == ' ' else {'val':i, 'mod':False} for i in board[27:36]],
+            [{'val': i, 'mod': True} if i == ' '
+                else {'val': i, 'mod': False} for i in board[27:36]],
             'e':
-            [{'val':i, 'mod':True} if i == ' ' else {'val':i, 'mod':False} for i in board[36:45]],
+            [{'val': i, 'mod': True} if i == ' '
+                else {'val': i, 'mod': False} for i in board[36:45]],
             'f':
-            [{'val':i, 'mod':True} if i == ' ' else {'val':i, 'mod':False} for i in board[45:54]],
+            [{'val': i, 'mod': True} if i == ' '
+                else {'val': i, 'mod': False} for i in board[45:54]],
             'g':
-            [{'val':i, 'mod':True} if i == ' ' else {'val':i, 'mod':False} for i in board[54:63]],
+            [{'val': i, 'mod': True} if i == ' '
+                else {'val': i, 'mod': False} for i in board[54:63]],
             'h':
-            [{'val':i, 'mod':True} if i == ' ' else {'val':i, 'mod':False} for i in board[63:72]],
+            [{'val': i, 'mod': True} if i == ' '
+                else {'val': i, 'mod': False} for i in board[63:72]],
             'i':
-            [{'val':i, 'mod':True} if i == ' ' else {'val':i, 'mod':False} for i in board[72:81]]
+            [{'val': i, 'mod': True} if i == ' '
+                else {'val': i, 'mod': False} for i in board[72:81]]
         }
 
     def is_modifiable(self, row, column):
         board_row = self.board[row.lower()]
         board_colum = int(column-1)
         return board_row[board_colum]['mod']
+
+    def validate_row(self, row, value):
+        board_row = self.board[row.lower()]
+        board_row_numbers = [cell['val'] for cell in board_row]
+        return str(value) not in board_row_numbers
