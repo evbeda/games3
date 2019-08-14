@@ -36,7 +36,14 @@ class TestTurn(unittest.TestCase):
         for dice in winning_dice:
             self.assertEqual(self.turn.get_next_state(dice), PLAYER_WON)
 
-    @parameterized.expand([((2, 2), 4), ((2, 3), 5), ((4, 2), 6), ((4, 4), 8), ((5, 4), 9), ((5, 5), 10)])
+    @parameterized.expand([
+        ((2, 2), 4), 
+        ((2, 3), 5), 
+        ((4, 2), 6), 
+        ((4, 4), 8), 
+        ((5, 4), 9), 
+        ((5, 5), 10),
+    ])
     def test_keep_playing_game(self, dice, new_point):
         turn = Turn()
         with patch('random.sample', return_value=dice):
