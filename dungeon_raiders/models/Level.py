@@ -1,4 +1,4 @@
-from .LevelHand import LevelHand
+from .HandPlayerState import HandPlayerState
 
 
 class Level:
@@ -6,4 +6,4 @@ class Level:
         self.room = []
         self.hands = []
         for player in players:
-            self.hands.append(LevelHand(player))
+            self.hands.append(HandPlayerState(player))

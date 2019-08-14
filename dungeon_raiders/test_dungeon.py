@@ -1,10 +1,10 @@
 import unittest
 from .models.Player import Player
-from .models.LevelHand import LevelHand
+from .models.HandPlayerState import HandPlayerState
 from .models.Game import Game
-from .models.Monster import MonsterRoom
-from .models.GoldRoom import GoldRoom
-from .models.WoundRoom import WoundRoom
+from .models.Rooms.MonsterRoom import MonsterRoom
+from .models.Rooms.GoldRoom import GoldRoom
+from .models.Rooms.WoundRoom import WoundRoom
 from parameterized import parameterized
 from .models.exceptions.UnplayableCardException import UnplayableCardException
 
@@ -13,23 +13,23 @@ class TestDungeon(unittest.TestCase):
 
     # -------------------- Player tests -------------------- 
     def test_init_hand(self):
-        hand = LevelHand(Player('A'))
+        hand = HandPlayerState(Player('A'))
         self.assertEqual(5, len(hand.cards_to_play))
 
     def test_check_if_player_can_play_card_2(self):
-        hand = LevelHand(Player('A'))
+        hand = HandPlayerState(Player('A'))
         hand.play(2)
         hand.play(5)
         with self.assertRaises(UnplayableCardException):
             hand.play(2)
 
     def test_check_actual_card(self):
-        hand = LevelHand(Player('A'))
+        hand = HandPlayerState(Player('A'))
         hand.play(2)
         self.assertEqual(2, hand.last_card_played)
 
     def test_check_if_3_is_in_hand(self):
-        hand = LevelHand(Player('A'))
+        hand = HandPlayerState(Player('A'))
         hand.play(3)
         self.assertTrue(3 not in hand.cards_to_play)
 
@@ -57,7 +57,7 @@ class TestDungeon(unittest.TestCase):
     
     # -------------------- MonsterRoom card -------------------- 
     def _get_hands_for_monster(self):
-        return LevelHand(Player('A')), LevelHand(Player('B')), LevelHand(Player('C'))
+        return HandPlayerState(Player('A')), HandPlayerState(Player('B')), HandPlayerState(Player('C'))
     
     def _play_cards_against_monster_room(self, room, plays):
         hands = self._get_hands_for_monster()
@@ -88,7 +88,7 @@ class TestDungeon(unittest.TestCase):
         player_d = Player('D')
         player_d.add_gold(5)
         
-        return LevelHand(player_a), LevelHand(player_b), LevelHand(player_c), LevelHand(player_d)
+        return HandPlayerState(player_a), HandPlayerState(player_b), HandPlayerState(player_c), HandPlayerState(player_d)
     
     def _play_cards_against_gold_room(self, room, plays):
         hands = self._get_hands_for_gold()
@@ -119,7 +119,7 @@ class TestDungeon(unittest.TestCase):
         player_d = Player('D')
         player_d.add_wounds(5)
             
-        return LevelHand(player_a), LevelHand(player_b), LevelHand(player_c), LevelHand(player_d)
+        return HandPlayerState(player_a), HandPlayerState(player_b), HandPlayerState(player_c), HandPlayerState(player_d)
 
     def _play_cards_against_room_for_wound(self, room, plays):
         hands = self._get_hands_for_wound()
