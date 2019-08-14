@@ -43,6 +43,11 @@ class Board():
         board_row_numbers = [cell['val'] for cell in board_row]
         return str(value) not in board_row_numbers
 
+    def validate_column(self, column, value):
+        board_column_numbers = \
+            [row[column-1]['val'] for row in self.board.values()]
+        return str(value) not in board_column_numbers
+
     def place(self, coordinates, value):
         value = str(value)
         row, column = coordinates
