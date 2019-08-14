@@ -24,7 +24,7 @@ class Board():
             [{'val':i, 'mod':True} if i == ' ' else {'val':i, 'mod':False} for i in board[72:81]]
         }
 
-    def unchangeable(self, row, column):
+    def is_modifiable(self, row, column):
         board_row = self.board[row.lower()]
         board_colum = int(column-1)
         return board_row[board_colum]['mod']
