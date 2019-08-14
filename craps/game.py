@@ -1,5 +1,11 @@
 from .turn import Turn
-from .constants import PLAYER_LOST, PLAYER_WON, GAME_STARTED, GAME_IN_PROGRESS
+from .constants import (
+    PLAYER_LOST,
+    PLAYER_WON,
+    WON_MESSAGE,
+    LOST_MESSAGE,
+    BET_MESSAGE,
+)
 
 
 class CrapsGame:
@@ -12,10 +18,11 @@ class CrapsGame:
         self.is_playing = True
 
     def next_turn(self):
-        if self.turn.state == GAME_STARTED or self.turn.state == GAME_IN_PROGRESS:
-            return 'Bets'
-        elif self.turn.state == PLAYER_LOST or self.turn.state == PLAYER_WON:
-            return 'Keep playing'
+        if self.turn.state == PLAYER_LOST:
+            return LOST_MESSAGE
+        elif self.turn.state == PLAYER_WON:
+            return WON_MESSAGE
+        return BET_MESSAGE
 
     def play(self, user_input):
         if user_input == 'No':
@@ -25,6 +32,6 @@ class CrapsGame:
         turn_score = self.turn.shoot()
         return turn_score
 
-    @property
-    def board(self):
-        return self.turn.point
+    # @property
+    # def board(self):
+    #     return self.turn.point

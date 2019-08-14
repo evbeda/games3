@@ -36,13 +36,20 @@ class TestTurn(unittest.TestCase):
         for dice in winning_dice:
             self.assertEqual(self.turn.get_next_state(dice), PLAYER_WON)
 
-    @parameterized.expand([((2, 2), 4), ((2, 3), 5), ((4, 2), 6), ((4, 4), 8), ((5, 4), 9), ((5, 5), 10)])
+    @parameterized.expand([
+        ((2, 2), 4),
+        ((2, 3), 5),
+        ((4, 2), 6),
+        ((4, 4), 8),
+        ((5, 4), 9),
+        ((5, 5), 10)
+    ])
     def test_keep_playing_game(self, dice, new_point):
         turn = Turn()
         with patch('random.sample', return_value=dice):
             turn.shoot()
             self.assertEqual(turn.state, GAME_IN_PROGRESS)
-            self.assertEqual(turn.point, new_point) 
+            self.assertEqual(turn.point, new_point)
 
     @patch('random.sample', return_value=(2, 2))
     def test_game_point_set(self, sample_mock):
@@ -89,7 +96,3 @@ class TestTurn(unittest.TestCase):
         with patch('random.sample', return_value=FIRST_DICE):
             self.turn.shoot()
             self.assertEqual(self.turn.state, PLAYER_WON)
-
-
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
