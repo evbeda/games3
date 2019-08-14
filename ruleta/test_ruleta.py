@@ -1,6 +1,7 @@
 import unittest
+from parameterized import parameterized
 from .roulette import Roulette
-from .bet import BetCreator, StraightBet
+from .bet import BetCreator, StraightBet, ColorBet, EvenOddBet
 from .player import Player
 from .game_roullete import GameRoulette
 from .board import get_color_from_number
@@ -10,6 +11,15 @@ from parameterized import parameterized
 from .exceptions.invalid_bet_exception import InvalidBetException
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 from .exceptions.out_of_cash_exception import OutOfCashException
+
+bet_scenario = [
+    (StraightBet, [36], 25, 875, 36, True),
+    (ColorBet, ['Red'], 300, 1100, 36, True),
+    # (EvenOddBet, ['ODD'], 30, 560, 36, False),
+    (StraightBet, [36], 25, 875, 35, False),
+    (ColorBet, ['Red'], 300, 1100, 35, False),
+    # (EvenOddBet, ['ODD'], 30, 560, 35, True),
+]
 
 
 class TestRuleta(unittest.TestCase):
@@ -65,7 +75,7 @@ class TestRuleta(unittest.TestCase):
     # Tests for the bet creator
     def test_straight_bet(self):
         bet_factory = BetCreator()
-        bet = bet_factory.create('STRAIGHT_BET', [17], 100, Player(500))
+        bet = bet_factory.create('STRAIGHT_BET', [17], 100)
         self.assertIsInstance(bet, StraightBet)
 
     def test_invalid_type_bet(self):
@@ -73,18 +83,44 @@ class TestRuleta(unittest.TestCase):
             BetCreator.validate_bet_type('INVALID_BET')
 
     # Test for the bets
-    def test_invalid_straight_bet(self):
+    @parameterized.expand([
+        (StraightBet, [40], 17),
+        (ColorBet, ['Reds'], 300),
+        # (EvenOddBet, ['ODDs'], 30)
+    ])
+    def test_invalid_bets(self, bet, bet_value, ammount):
         with self.assertRaises(InvalidBetException):
-            StraightBet([40], 17, Player(500))
+            bet(bet_value, ammount)
 
-    def test_valid_straight_bet(self):
-        straight_bet = StraightBet([36], 18, Player(500))
-        self.assertEqual(36, straight_bet.bet_value)
-
-    def test_player_win_straight_bet(self):
-        straight_bet = StraightBet([36], 10, Player(500))
-        straight_bet.win_bet(36)
-        self.assertEqual(850, straight_bet.player.money)
+    @parameterized.expand(bet_scenario)
+    def test_valid_bets(self,
+                        bet,
+                        bet_value,
+                        ammount,
+                        award,
+                        chosen_number,
+                        expect_winner):
+        bet_type = bet(bet_value, ammount)
+        if expect_winner:
+            self.assertTrue(chosen_number in bet_type.target_numbers)
+        else:
+            self.assertFalse(chosen_number in bet_type.target_numbers)
+    # @parameterized.expand(bet_scenario)
+    # def test_win_bet(
+    #     self,
+    #     bet,
+    #     bet_value,
+    #     ammount,
+    #     player,
+    #     expected_player_money,
+    #     choosen_numer,
+    #     expected_winner,
+    # ):
+    #     bet_type = bet(bet_value, ammount, player)
+    #     self.assertEqual(
+    #         bet_type.is_winner(choosen_numer),
+    #         expected_winner,
+    #     )
 
     # Test for the game roullete
     def test_resolve_command_method(self):
