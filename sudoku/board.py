@@ -1,54 +1,104 @@
-class Board():
+import math
+
+
+class Board:
     def __init__(self, board):
         self.board = self.build_board(board)
 
     def build_board(self, board):
         return {
-            'a':
-            [{'val': i, 'mod': True} if i == ' '
-                else {'val': i, 'mod': False} for i in board[0:9]],
-            'b':
-            [{'val': i, 'mod': True} if i == ' '
-                else {'val': i, 'mod': False} for i in board[9:18]],
-            'c':
-            [{'val': i, 'mod': True} if i == ' '
-                else {'val': i, 'mod': False} for i in board[18:27]],
-            'd':
-            [{'val': i, 'mod': True} if i == ' '
-                else {'val': i, 'mod': False} for i in board[27:36]],
-            'e':
-            [{'val': i, 'mod': True} if i == ' '
-                else {'val': i, 'mod': False} for i in board[36:45]],
-            'f':
-            [{'val': i, 'mod': True} if i == ' '
-                else {'val': i, 'mod': False} for i in board[45:54]],
-            'g':
-            [{'val': i, 'mod': True} if i == ' '
-                else {'val': i, 'mod': False} for i in board[54:63]],
-            'h':
-            [{'val': i, 'mod': True} if i == ' '
-                else {'val': i, 'mod': False} for i in board[63:72]],
-            'i':
-            [{'val': i, 'mod': True} if i == ' '
-                else {'val': i, 'mod': False} for i in board[72:81]]
+            "a": [
+                {"val": i, "mod": True} if i == " "
+                else {"val": i, "mod": False}
+                for i in board[0:9]
+            ],
+            "b": [
+                {"val": i, "mod": True} if i == " "
+                else {"val": i, "mod": False}
+                for i in board[9:18]
+            ],
+            "c": [
+                {"val": i, "mod": True} if i == " "
+                else {"val": i, "mod": False}
+                for i in board[18:27]
+            ],
+            "d": [
+                {"val": i, "mod": True} if i == " "
+                else {"val": i, "mod": False}
+                for i in board[27:36]
+            ],
+            "e": [
+                {"val": i, "mod": True} if i == " "
+                else {"val": i, "mod": False}
+                for i in board[36:45]
+            ],
+            "f": [
+                {"val": i, "mod": True} if i == " "
+                else {"val": i, "mod": False}
+                for i in board[45:54]
+            ],
+            "g": [
+                {"val": i, "mod": True} if i == " "
+                else {"val": i, "mod": False}
+                for i in board[54:63]
+            ],
+            "h": [
+                {"val": i, "mod": True} if i == " "
+                else {"val": i, "mod": False}
+                for i in board[63:72]
+            ],
+            "i": [
+                {"val": i, "mod": True} if i == " "
+                else {"val": i, "mod": False}
+                for i in board[72:81]
+            ],
         }
 
     def is_modifiable(self, row, column):
         board_row = self.board[row.lower()]
-        board_colum = int(column-1)
-        return board_row[board_colum]['mod']
+        board_colum = int(column - 1)
+        return board_row[board_colum]["mod"]
 
     def validate_row(self, row, value):
         board_row = self.board[row.lower()]
-        board_row_numbers = [cell['val'] for cell in board_row]
+        board_row_numbers = [cell["val"] for cell in board_row]
         return str(value) not in board_row_numbers
 
     def validate_column(self, column, value):
-        board_column_numbers = \
-            [row[column-1]['val'] for row in self.board.values()]
+        board_column_numbers = [
+            row[column - 1]["val"]
+            for row in self.board.values()]
         return str(value) not in board_column_numbers
+
+    def get_region(self, row, column):
+        # column_region is like 1, 2, 3
+        column_region = math.ceil(column / 3)
+        # column_keys is like [1,2,3], [4,5,6], [7,8,9]
+        column_keys = [
+            key for key in range(1, 10) if math.ceil(key / 3) == column_region
+        ]
+
+        # row_region is like 1, 2, 3
+        row_region = math.ceil(self.letter_to_number(row) / 3)
+        # row_keys is like ['a','b','c'], ['d','e','f'], ['g','h','i']
+        row_keys = [
+            self.number_to_letter(key)
+            for key in range(1, 10)
+            if math.ceil(key / 3) == row_region
+        ]
+
+        region_numbers = [
+            self.board[r][c - 1]["val"] for r in row_keys for c in column_keys
+        ]
+        return region_numbers
+
+    def letter_to_number(self, letter):
+        return ord(letter.lower()) - 96
+
+    def number_to_letter(self, number):
+        return chr(number + 96)
 
     def place(self, coordinates, value):
         value = str(value)
         row, column = coordinates
-        self.board[row][column - 1]['val'] = value
+        self.board[row][column - 1]["val"] = value
