@@ -18,9 +18,6 @@ class TestSudoku(unittest.TestCase):
             "1 2  9 8 "
         )
 
-    def test_sudoku(self):
-        self.assertTrue(True)
-
     def test_existing_numbers_are_not_modifiable(self):
         self.assertFalse(self.board.is_modifiable('A', 2))
 
@@ -88,3 +85,17 @@ class TestSudoku(unittest.TestCase):
         row, column = coordinates
         self.board.place(coordinates, value)
         self.assertEqual(self.board.board[row][column - 1]['val'], str(value))
+
+    @parameterized.expand([
+        ('a', 1, [" ", "6", " ", "5", "3", "7", " ", "4", " "]),
+        ('b', 5, ["3", " ", " ", " ", "9", " ", " ", " ", "6"]),
+        ('c', 8, ["8", " ", "4", " ", " ", " ", "3", " ", "7"]),
+        ('d', 2, [" ", "9", " ", " ", " ", " ", "7", "1", "3"]),
+        ('e', 4, [" ", "5", "1", " ", " ", " ", "6", "2", " "]),
+        ('f', 9, ["2", "3", "8", " ", " ", " ", " ", "4", " "]),
+        ('g', 3, ["3", " ", "6", " ", " ", " ", "1", " ", "2"]),
+        ('h', 6, ["4", " ", " ", " ", "6", " ", " ", " ", "9"]),
+        ('i', 7, [" ", "1", " ", "5", "2", "3", " ", "8", " "])
+    ])
+    def test_get_region(self, row, column, region):
+        self.assertEqual(self.board.get_region(row, column), region)
