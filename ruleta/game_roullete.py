@@ -4,6 +4,7 @@ from .roulette import Roulette
 # Exceptions
 from .exceptions.out_of_cash_exception import OutOfCashException
 from .exceptions.invalid_bet_exception import InvalidBetException
+from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 
 
 class GameRoulette:
@@ -11,49 +12,56 @@ class GameRoulette:
 
     def __init__(self):
         self.is_playing = True
-        start_money = int(input())
-        self.player1 = Player(start_money)
+        self.player1 = Player(100)
         self.roulette1 = Roulette()
+        self.round_bets = []
 
     def next_turn(self):
-        are_bets_open = True
-        bets = []
-        while(are_bets_open):
-            BetCreator.list_bets()  # show the available bets
-            bet = self.bet_type_input()
-            if (bet == "END"):
-                are_bets_open = False
-            else:
-                bets.append(bet)
-                
-    def bet_type_input(self):
-        valid_input = True
-        while not valid_input:
-            bet_type = int(input("Enter a bet type"))
-            if bet_type == 0:
-                return 'END'
-            elif not 1 <= bet_type <= 10:
-                print('Your input is invalid')
-            else:
-                return self.enter_a_bet(bet_type)
+        message = ''
+        if self.is_playing:
+            message = BetCreator.list_bets()
+        else:
+            message = 'Game over'
+        return message
 
-    def enter_a_bet(self, bet_type):
-        numbers = input("Please enters the numbers for the bet")
-        ammount = input("Enter the ammount of money of the bet")
-        try:
-            self.player1.dicrement_money(ammount)
-            bet_factory = BetCreator()
-            bet = bet_factory.create(bet_type, numbers, ammount, self.player1)
-            return bet
-        except OutOfCashException:
-            print('Error: Out of cash')
-        except InvalidBetException:
-            print('Your chosen numbers are invalid')
+    def play(self, command):
+        '''
+        command is like:
+        BET_SIMPLE 36 100
+        BET...
+        GO
+        QUIT
+        '''
+        if command == 'END_GAME':
+            self.is_playing = False
+            return 'Bye'
+        elif command == 'GO':
+            pass
+            # correr ruleta
+            # ver si el jugador gano
+            # reset round_bets
+        else:
+            try:
+                bet_type, bet_values, ammount = self.resolve_command(command)
+                self.player1.dicrement_money(ammount)
+                bet_creator = BetCreator()
+                self.round_bets.append(
+                    bet_creator.create(bet_type, bet_values, ammount))
+                return 'Your bet was saved succesfully'
+            except OutOfCashException:
+                return f'Not enough cash! you have {self.player1.money}'
+            except InvalidBetException:
+                return 'Your bet is invalid'
+            except InvalidBetTypeException:
+                return 'Your bet type is invalid'
 
-    def play(self):
-        self.board
-        self.next_turn()
-        # winner_number = self.roulette1.generate_number()
+    def resolve_command(self, command):
+        list_string = command.split()
+        bet_type = list_string[0]
+        BetCreator.validate_bet_type(bet_type)
+        bet_values = [int(number) for number in list_string[1:-1]]
+        ammount = int(list_string[-1])
+        return (bet_type, bet_values, ammount)
 
     @property
     def board(self):
