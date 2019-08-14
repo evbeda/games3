@@ -42,3 +42,8 @@ class Board():
         board_row = self.board[row.lower()]
         board_row_numbers = [cell['val'] for cell in board_row]
         return str(value) not in board_row_numbers
+
+    def place(self, coordinates, value):
+        value = str(value)
+        row, column = coordinates
+        self.board[row][column - 1]['val'] = value
