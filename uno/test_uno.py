@@ -1,6 +1,7 @@
 import unittest
 from .card import NumberCard, ReverseCard, WildCard, SkipCard, DrawFourCard, DrawTwoCard
-from .const import RED, YELLOW
+from .const import RED, YELLOW, GREEN, BLUE
+from parameterized import parameterized
 
 
 class TestUno(unittest.TestCase):
@@ -133,9 +134,19 @@ class TestUno(unittest.TestCase):
         self.assertEqual(selected_card.action(top_card), 4)
 
     def test_draw_two_cards_to_number_card_with_same_color(self):
-        top_card = NumberCard(RED, 2))
+        top_card = NumberCard(RED, 2)
         selected_card = DrawTwoCard(RED)
         self.assertEqual(selected_card.action(top_card), 2)
+
+    @parameterized.expand([
+            (DrawFourCard, DrawFourCard),
+            (DrawFourCard, DrawTwoCard(YELLOW)),
+            (DrawFourCard, ReverseCard(RED)),
+            (DrawFourCard, SkipCard(GREEN)),
+            (DrawFourCard, NumberCard(BLUE, '5'))
+        ])
+    def test_draw_four_card_to_any_card(self, top_card, selected_card):
+        self.assertTrue(top_card.evaluate_next_card(top_card, selected_card))
 
 
 if __name__ == '__main__':
