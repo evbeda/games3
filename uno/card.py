@@ -78,10 +78,12 @@ class DrawTwoCard(ColoredCard):
         if type(previousCard) == DrawTwoCard:
             self.cardsToDraw += previousCard.cardsToDraw
         return self.cardsToDraw
-       
+        
 
 class DrawFourCard(PostColoredCard):
-    pass
+
+    def evaluate_next_card(top_card, selected_card):
+        return True
 
 
 class WildCard(PostColoredCard):
