@@ -37,9 +37,12 @@ class Stack():
             WildCard()
             for num in range(0, 4)
         ]
-        generated_cards = generated_number_cards + generated_reverse_cards
-        generated_cards = generated_cards + generated_skip_cards + generated_draw_two_cards
-        generated_cards = generated_cards + generated_draw_four_cards + generated_wild_cards
+        generated_cards = generated_number_cards + \
+                          generated_reverse_cards + \
+                          generated_skip_cards + \
+                          generated_draw_two_cards + \
+                          generated_draw_four_cards + \
+                          generated_wild_cards
         return generated_cards
 
     def count_type_cards(self, card_type):
