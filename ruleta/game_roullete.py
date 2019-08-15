@@ -17,12 +17,8 @@ class GameRoulette:
         self.round_bets = []
 
     def next_turn(self):
-        message = ''
-        if self.is_playing:
-            message = BetCreator.list_bets()
-        else:
-            message = 'Game over'
-        return message
+        
+        return BetCreator.list_bets() if self.is_playing else 'Game over'
 
     def play(self, command):
         '''
