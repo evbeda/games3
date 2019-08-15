@@ -29,7 +29,6 @@ class StraightBet(Bet):
 
     def validate(self, bet_value):
         ''' expect bet_value like "1" '''
-        import ipdb; ipdb.set_trace()
         if not (0 <= bet_value <= 36):
             raise InvalidBetException()
 
