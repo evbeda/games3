@@ -115,3 +115,9 @@ class Board:
             self.board[row][column - 1]["val"] = value
             return 'Number added.'
         return 'Invalid number.'
+
+    def is_finished(self):
+        return all(
+            column['val'] != ' '
+            for row in self.board.keys()
+            for column in self.board[row])
