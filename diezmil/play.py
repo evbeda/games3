@@ -20,3 +20,9 @@ class Play(object):
         total_score += dices.count(1) * 100
         return total_score
 
+    def is_a_stair(self, dices):
+        dices.sort()
+        return (dices == [1, 2, 3, 4, 5] or dices == [2, 3, 4, 5, 6])
+
+    def is_repeated(self, dices):
+        return any(dices.count(x) >= 3 for x in dices)
