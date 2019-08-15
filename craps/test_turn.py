@@ -14,13 +14,13 @@ class TestTurn(unittest.TestCase):
         self.assertEqual(self.turn.point, None)
 
     def test_shoots_two_dice(self):
-        """Tests that only two dice are thrown."""
+        # Tests that only two dice are thrown.
         dice = self.turn.shoot()
         dice_count = len(dice)
         self.assertEqual(dice_count, 2)
 
     def test_dice_shot_numbers(self):
-        """Tests that dice numbers are between 1 and 6."""
+        # Tests that dice numbers are between 1 and 6.
         dice = self.turn.shoot()
         for die in dice:
             self.assertGreaterEqual(die, 1)
@@ -53,10 +53,8 @@ class TestTurn(unittest.TestCase):
 
     @patch('random.sample', return_value=(2, 2))
     def test_game_point_set(self, sample_mock):
-        """
-        Tests that Game state changes to GAME_IN_PROGRESS after first
-        throw (if not winning or losing).
-        """
+        # Tests that Game state changes to GAME_IN_PROGRESS after first
+        # throw (if not winning or losing).
         self.turn.shoot()
         self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
         self.assertEqual(self.turn.point, 4)
