@@ -14,8 +14,11 @@ class Bet:
     def is_winner(self, chosen_number):
         return chosen_number in self.target_numbers
 
-    def calculate_total_award(self):
-        return self.reward * self.ammount
+    def calculate_total_award(self, chosen_number):
+        if self.is_winner(chosen_number):
+            return self.reward * self.ammount
+        else:
+            return 0
 
 
 class StraightBet(Bet):
@@ -69,11 +72,23 @@ class EvenOddBet(Bet):
     name = 'EVEN_ODD_BET\n'
     reward = 2
     # to do same as in ColorBet
+    def __init__(self, bet_value, ammount):
+        self.validate(bet_value[0])
+        self.ammount = ammount
+        self.target_numbers = self.transform_bet_value_to_target_values(bet_value)
 
-    def validate(self):
+
+    def validate(self, bet_value):
         ''' expect bet_value like "Even" or "Odd" '''
-        if self.bet_value.lower() not in ['even', 'odd']:
+        if bet_value[0].lower() not in ['even', 'odd']:
             raise InvalidBetException()
+
+    def transform_bet_value_to_target_values(self, bet_value):
+        odd = [n for n in all_values if n % 2 == 1]
+        if bet_value[0].lower() == 'odd':
+            return odd
+        else:
+            return list(set(all_values) - set(odd))
 
 
 bet_types = {
