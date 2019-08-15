@@ -16,23 +16,6 @@ class TestDiezMil(unittest.TestCase):
         check_players_qty = self.game.check_players_qty(0)
         self.assertEqual(check_players_qty, False)
 
-    @parameterized.expand([
-        ([2, 3, 3, 4, 4], 0),  # no score
-        ([1, 3, 2, 5, 3], 150),  # simple
-        ([1, 3, 3, 5, 3], 450),  # triple
-        ([1, 3, 3, 3, 3], 700),  # quadruple
-        ([4, 1, 2, 5, 3], 500),  # flush
-        ([4, 6, 2, 5, 3], 500),  # flush
-        ([4, 1, 2, 1, 1], 1000),  # three_ones
-        ([4, 1, 1, 1, 1], 2000),  # four_ones
-        ([1, 1, 1, 1, 1], 10000),  # five_ones
-        ([5, 5, 5, 5, 5], 2000),  # five_fives
-    ])
-    def test_check_combination_score(self, dice, expected_score):
-        score = self.play.check_combination(dice)
-        self.assertEqual(score, expected_score)
-
-    #play testings
     def test_roll_dices_error(self):
         dice_qty=self.play.play_dices(7)
         self.assertEqual(dice_qty, False)
@@ -46,6 +29,18 @@ class TestDiezMil(unittest.TestCase):
     def test_roll_3_dices(self, mock_randint):
         dice_qty=self.play.play_dices(3)
         self.assertEqual(self.play.dices, [1, 1, 1])
+
+    @parameterized.expand([
+        ([1, 5, 5], 200),
+        ([1, 5], 150),
+        ([1, 5, 1, 2, 3], 250),
+        ([2, 3, 2], 0),
+        ([5], 50),
+    ])
+    def test_individual_values(self, dices, expected_score):
+        score = self.play.calculate_individual_values(dices)
+        self.assertEqual(score, expected_score)
+
 
 if __name__ == '__main__':
     unittest.main()
