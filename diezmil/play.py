@@ -1,4 +1,4 @@
-import random 
+import random
 
 
 class Play(object):
@@ -14,35 +14,9 @@ class Play(object):
             self.dices.append(random.randint(1, 6))
         return self.dices
 
-    def check_combination(self, dices):
+    def calculate_individual_values(self, dices):
         total_score = 0
-        # dices.sort()
-        # stair = (dices == [1, 2, 3, 4, 5] or dices == [2, 3, 4, 5, 6])
-        # if stair:
-            # total_score += 500
-            # return total_score
-        # unique_dices = set(dices)
-        # for i in unique_dices:
-            # quantity = dices.count(i)
-            # if i == 1 and quantity >= 3:
-                # total_score += 1000
-                # quantity -= 3
-            # elif quantity >= 4:
-                # total_score += i*100*2
-                # quantity -= 4
-            # elif quantity == 3:
-                # total_score += i*100
-                # quantity -= 3
-            # if i == 1:
-                # total_score += 100 * quantity
-            # elif i == 5:
-                # total_score += 50 * quantity
-
+        total_score += dices.count(5) * 50
+        total_score += dices.count(1) * 100
         return total_score
-
-    def calculate_score(self, dices):
-        if self.has_combination(dices):
-            return calculate_combination(dices)
-        return calculate_individual_values(dices)
-
 
