@@ -151,7 +151,12 @@ class TestUno(unittest.TestCase):
     
     def test_stack_number_cards_quantity(self):
         stack = Stack()
-        self.assertEqual(stack.count_number_cards(), 80)
+        self.assertEqual(stack.count_type_cards('number'), 80)
+        self.assertEqual(stack.count_type_cards('skip'), 8)
+        self.assertEqual(stack.count_type_cards('reverse'), 8)
+        self.assertEqual(stack.count_type_cards('draw_two_cards'), 8)
+        self.assertEqual(stack.count_type_cards('draw_four_cards'), 4)
+        self.assertEqual(stack.count_type_cards('wild'), 4)
 
 
 if __name__ == '__main__':
