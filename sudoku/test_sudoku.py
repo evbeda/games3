@@ -16,6 +16,17 @@ class TestSudokuBoard(unittest.TestCase):
             "    6 523"
             "1 2  9 8 "
         )
+        self.finished_board = Board(
+            "261375894"
+            "537894162"
+            "948216357"
+            "694751238"
+            "825943671"
+            "713628945"
+            "356482719"
+            "489167523"
+            "172539486"
+        )
 
     def test_existing_numbers_are_not_modifiable(self):
         self.assertFalse(self.board.is_modifiable('A', 2))
@@ -176,3 +187,9 @@ class TestSudokuBoard(unittest.TestCase):
         self.assertEqual(
             self.board.board[row][column - 1]['val'],
             original_value)
+
+    def test_is_finished_for_an_unfinished_board(self):
+        self.assertFalse(self.board.is_finished())
+
+    def test_is_finished_for_a_finished_board(self):
+        self.assertTrue(self.finished_board.is_finished())
