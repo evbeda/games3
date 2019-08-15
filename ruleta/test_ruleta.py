@@ -26,8 +26,8 @@ class TestRuleta(unittest.TestCase):
         self.assertTrue(last_numbers[-1] == number)
     
     @parameterized.expand([
-        (36,),(1,),(3,),(5,),(7,),(9,),(12,),(14,),(16,),(18,),
-        (19,),(21,),(23,),(25,),(27,),(30,),(32,),(34,),(36,),
+        (36,), (1,), (3,), (5,), (7,), (9,), (12,), (14,), (16,), (18,),
+        (19,), (21,), (23,), (25,), (27,), (30,), (32,), (34,), (36,),
     ])
     def test_get_color_red_from_last_number(self, number):
         roulette = Roulette()
@@ -35,8 +35,8 @@ class TestRuleta(unittest.TestCase):
         self.assertEqual('red', roulette.get_color_from_last_number())
 
     @parameterized.expand([
-        (2,),(4,),(6,),(8,),(10,),(11,),(13,),(15,),(17,),(20,),
-        (22,),(24,),(26,),(28,),(29,),(31,),(33,),(35,),
+        (2,), (4,), (6,), (8,), (10,), (11,), (13,), (15,), (17,), (20,),
+        (22,), (24,), (26,), (28,), (29,), (31,), (33,), (35,),
     ])
     def test_get_color_black_from_last_number(self, number):
         roulette = Roulette()
