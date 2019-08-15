@@ -27,7 +27,7 @@ class Turn:
                 return GAME_IN_PROGRESS
 
     def shoot(self):
-        """Throws the dice, returns their values and changes the state."""
+        # Throws two dice, returns their values and changes the state.
         dice = random.sample(range(1, 7), k=2)
         next_state = self.get_next_state(dice)
         self.state = next_state

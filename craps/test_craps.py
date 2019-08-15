@@ -51,4 +51,4 @@ class TestCraps(unittest.TestCase):
     ])
     def test_craps_play_returns_score(self, dice):
         with patch('random.sample', return_value=dice):
-            self.assertEqual(self.game.play('harcoded bet'), dice)
+            self.assertEqual(self.game.play('Go'), dice)

@@ -1,8 +1,8 @@
 import unittest
-from unittest.mock import patch
 from parameterized import parameterized
+from .bet import BetCreator, PassBet, DoNotPassBet
 from .game import CrapsGame
-from .turn import Turn
+from .exceptions.invalid_bet_exception import InvalidBetTypeException
 from .constants import (
     PLAYER_LOST,
     PLAYER_WON,
@@ -17,3 +17,16 @@ from .constants import (
 class TestBets(unittest.TestCase):
     def setUp(self):
         self.game = CrapsGame()
+        self.bet_creator = BetCreator()
+
+    @parameterized.expand([
+        ("PASS_BET", PassBet),
+        ("DO_NOT_PASS_BET", DoNotPassBet)
+    ])
+    def test_bet_creator_returns_correct_type(self, type_string, result):
+        bet = self.bet_creator.create(type_string, 2)
+        self.assertIsInstance(bet, result)
+
+    def test_bet_creator_raises_invalid_type_exception(self):
+        with self.assertRaises(InvalidBetTypeException):
+            self.bet_creator.create("sadkjagskjdg", 2)
