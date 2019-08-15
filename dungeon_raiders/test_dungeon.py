@@ -1,14 +1,14 @@
 import unittest
-from .models.Player import Player
-from .models.HandPlayerState import HandPlayerState
-from .models.Game import Game
-from .models.Level import Level
-from .models.Rooms.MonsterRoom import MonsterRoom
-from .models.Rooms.GoldRoom import GoldRoom
-from .models.Rooms.WoundRoom import WoundRoom
-from .models.Rooms.treasure import Treasure
 from parameterized import parameterized
-from .models.exceptions.UnplayableCardException import UnplayableCardException
+from .model.player import Player
+from .model.hand_player_state import HandPlayerState
+from .model.game import Game
+from .model.level import Level
+from .model.rooms.monster_room import MonsterRoom
+from .model.rooms.gold_room import GoldRoom
+from .model.rooms.wound_room import WoundRoom
+from .model.rooms.treasure import Treasure
+from .model.exceptions.UnplayableCardException import UnplayableCardException
 
 
 class TestDungeon(unittest.TestCase):
@@ -144,9 +144,9 @@ class TestTreasure(RoomHelper):
         Player D has 5 gold
         '''
     @parameterized.expand([
-        ([9, 5, 0, 5], Treasure(2, [4, 2]), [5, 3, 1, 1]),
-        ([7, 5, 1, 5], Treasure(2, [4, 1]), [5, 5, 4, 1]),
-        ([8, 3, 0, 5], Treasure(1, [3]), [3, 2, 2, 1])
+        ([9, 5, 0, 5], Treasure([4, 2]), [5, 3, 1, 1]),
+        ([7, 5, 1, 5], Treasure([4, 1]), [5, 5, 4, 1]),
+        ([8, 3, 0, 5], Treasure([3, 0]), [3, 2, 2, 1])
     ])
     def test_play_check_who_win_treasure(
             self, players_gold_win, treasure, plays):

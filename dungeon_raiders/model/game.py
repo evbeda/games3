@@ -1,4 +1,4 @@
-from .Level import Level
+from .level import Level
 
 
 class Game:
