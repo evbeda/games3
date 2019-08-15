@@ -1,6 +1,6 @@
 import unittest
 from parameterized import parameterized
-from .bet import BetCreator, PassBet, DoNotPassBet
+from .bet import Bet, BetCreator, PassBet, DoNotPassBet
 from .game import CrapsGame
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 from .constants import (
@@ -10,7 +10,7 @@ from .constants import (
     GAME_STARTED
 )
 
-bet_scenario = [
+BET_SCENARIO = [
         (PassBet(10), PLAYER_WON, (1, 1), True, 20),
         (PassBet(20), PLAYER_LOST, (1, 1), False, 40),
         (PassBet(30), GAME_IN_PROGRESS, (1, 1), False, 60),
@@ -26,6 +26,14 @@ class TestBets(unittest.TestCase):
     def setUp(self):
         self.game = CrapsGame()
 
+    def test_not_possible_to_check_in_parent_bet(self):
+        with self.assertRaises(NotImplementedError):
+            Bet(10).check(self.game.turn, (1, 1))
+
+    def test_not_possible_to_pay_in_parent_bet(self):
+        with self.assertRaises(NotImplementedError):
+            Bet(10).pay()
+
     @parameterized.expand([
         ("PASS_BET", PassBet),
         ("DO_NOT_PASS_BET", DoNotPassBet)
@@ -38,11 +46,11 @@ class TestBets(unittest.TestCase):
         with self.assertRaises(InvalidBetTypeException):
             BetCreator.create("sadkjagskjdg", 2)
 
-    @parameterized.expand(bet_scenario)
-    def test_bet_check_true(self, bet, state, dice, result, expected_payment):
+    @parameterized.expand(BET_SCENARIO)
+    def test_bet_check_true(self, bet, state, dice, result, *args):
         self.game.turn.state = state
         self.assertEqual(bet.check(self.game.turn, dice), result)
 
-    @parameterized.expand(bet_scenario)
-    def test_bet_check_pay(self, bet, state, dice, result, expected_payment):
+    @parameterized.expand(BET_SCENARIO)
+    def test_bet_payment(self, bet, _state, _dice, _result, expected_payment):
         self.assertEqual(bet.pay(), expected_payment)
