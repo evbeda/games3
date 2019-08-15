@@ -11,6 +11,8 @@ from .constants import (
     WON_MESSAGE,
     LOST_MESSAGE,
     BET_MESSAGE,
+    BET_PLACED,
+    INVALID_BET_TYPE
 )
 
 
@@ -52,3 +54,25 @@ class TestCraps(unittest.TestCase):
     def test_craps_play_returns_score(self, dice):
         with patch('random.sample', return_value=dice):
             self.assertEqual(self.game.play('Go'), dice)
+
+    @parameterized.expand([
+        ("PASS_BET 10", ("PASS_BET", 10, [])),
+        ("PASS_BET 100 5", ("PASS_BET", 100, [5])),
+        ("DO_NOT_PASS_BET 10 2 4", ("DO_NOT_PASS_BET", 10, [2, 4])),
+        ("PASS_BET 10 3 4 1 5", ("PASS_BET", 10, [3, 4]))
+    ])
+    def test_craps_game_input_commands(self, input, result):
+        self.assertEqual(self.game.resolve_command(input), result)
+
+    def test_craps_game_input_bet_placed_message(self):
+        returned_play = self.game.play("PASS_BET 10")
+        self.assertEqual(returned_play, BET_PLACED + "PASS_BET")
+
+    def test_craps_game_bet_added_to_bets_list(self):
+        self.game.play("PASS_BET 10")
+        self.game.play("DO_NOT_PASS_BET 20")
+        self.assertEqual(len(self.game.bets), 2)
+
+    def test_craps_game_invalid_bet_type(self):
+        returned_play = self.game.play("INVALIDBET 5678")
+        self.assertEqual(returned_play, INVALID_BET_TYPE)
