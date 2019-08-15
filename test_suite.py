@@ -6,7 +6,7 @@ from craps.test_bets import TestBets
 from dungeon_raiders.test_dungeon import TestDungeon
 from guess_number_game.test_guess_number_game import TestGuessNumberGame
 from ruleta.test_ruleta import TestRuleta
-from sudoku.test_sudoku import TestSudoku
+from sudoku.test_sudoku import TestSudokuBoard
 from diezmil.test_diez_mil import TestDiezMil
 
 
@@ -23,7 +23,7 @@ def suite():
     # ROULETTE
     test_suite.addTest(unittest.makeSuite(TestRuleta))
     # SUDOKU
-    test_suite.addTest(unittest.makeSuite(TestSudoku))
+    test_suite.addTest(unittest.makeSuite(TestSudokuBoard))
     # DIEZ MIL
     test_suite.addTest(unittest.makeSuite(TestDiezMil))
     # GUESS NUMBER GAME
