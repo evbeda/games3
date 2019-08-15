@@ -7,77 +7,75 @@ from parameterized import parameterized
 
 class TestUno(unittest.TestCase):
 
-    def test_same_to_skip_card_valid_color(self):
-        top_card = SkipCard(RED)
-        number_card = NumberCard(RED, '1')
-        skip_card = SkipCard(RED)
-        reverse_card = ReverseCard(RED)
-        draw_two_card = DrawTwoCard(RED)
-        wild_card = WildCard()
-        draw_four_card = DrawFourCard()
-        self.assertTrue(top_card.same_to(number_card))
-        self.assertTrue(top_card.same_to(skip_card))
-        self.assertTrue(top_card.same_to(reverse_card))
-        self.assertTrue(top_card.same_to(draw_two_card))
-        self.assertTrue(top_card.same_to(wild_card))
-        self.assertTrue(top_card.same_to(draw_four_card))
+    # Falta dividir los test cases
+    @parameterized.expand([
+        (SkipCard(RED), NumberCard(RED, '1')),
+        (SkipCard(RED), SkipCard(RED)),
+        (SkipCard(RED), ReverseCard(RED)),
+        (SkipCard(RED), DrawTwoCard(RED)),
+        (SkipCard(RED), WildCard()),
+        (SkipCard(RED), DrawFourCard())
+    ])
+    def test_same_to_skip_card_valid_color(self, top_card, selected_card):
+        self.assertTrue(top_card.same_to(selected_card))
 
-    def test_same_to_skip_card_invalid_color(self):
-        top_card = SkipCard(RED)
-        number_card = NumberCard(YELLOW, '1')
-        skip_card = SkipCard(YELLOW)
-        reverse_card = ReverseCard(YELLOW)
-        draw_two_card = DrawTwoCard(YELLOW)
-        self.assertFalse(top_card.same_to(number_card))
-        self.assertFalse(top_card.same_to(skip_card))
-        self.assertFalse(top_card.same_to(reverse_card))
-        self.assertFalse(top_card.same_to(draw_two_card))
+    @parameterized.expand([
+        (SkipCard(RED), NumberCard(YELLOW, '1')),
+        (SkipCard(RED), SkipCard(YELLOW)),
+        (SkipCard(RED), ReverseCard(YELLOW)),
+        (SkipCard(RED), DrawTwoCard(YELLOW)),
+    ])
+    def test_same_to_skip_card_invalid_color(self, top_card, selected_card):
+        self.assertFalse(top_card.same_to(selected_card))
 
-    def test_same_to_reverse_card_valid_color(self):
-        top_card = ReverseCard(RED)
-        number_card = NumberCard(RED, '1')
-        skip_card = SkipCard(RED)
-        reverse_card = ReverseCard(RED)
-        draw_two_card = DrawTwoCard(RED)
-        wild_card = WildCard()
-        draw_four_card = DrawFourCard()
-        self.assertTrue(top_card.same_to(number_card))
-        self.assertTrue(top_card.same_to(skip_card))
-        self.assertTrue(top_card.same_to(reverse_card))
-        self.assertTrue(top_card.same_to(draw_two_card))
-        self.assertTrue(top_card.same_to(wild_card))
-        self.assertTrue(top_card.same_to(draw_four_card))
+    @parameterized.expand([
+        (ReverseCard(RED), NumberCard(RED, '1')),
+        (ReverseCard(RED), SkipCard(RED)),
+        (ReverseCard(RED), ReverseCard(RED)),
+        (ReverseCard(RED), DrawTwoCard(RED)),
+        (ReverseCard(RED), WildCard()),
+        (ReverseCard(RED), DrawFourCard())
+    ])
+    def test_same_to_reverse_card_valid_color(self, top_card, selected_card):
+        self.assertTrue(top_card.same_to(selected_card))
 
-    def test_same_to_reverse_card_invalid_color(self):
-        top_card = ReverseCard(RED)
-        number_card = NumberCard(YELLOW, '1')
-        skip_card = SkipCard(YELLOW)
-        reverse_card = ReverseCard(YELLOW)
-        draw_two_card = DrawTwoCard(YELLOW)
-        self.assertFalse(top_card.same_to(number_card))
-        self.assertFalse(top_card.same_to(skip_card))
-        self.assertFalse(top_card.same_to(reverse_card))
-        self.assertFalse(top_card.same_to(draw_two_card))
+    @parameterized.expand([
+        (SkipCard(RED), NumberCard(YELLOW, '1')),
+        (SkipCard(RED), SkipCard(YELLOW)),
+        (SkipCard(RED), ReverseCard(YELLOW)),
+        (SkipCard(RED), DrawTwoCard(YELLOW)),
+    ])
+    def test_same_to_reverse_card_invalid_color(self, top_card, selected_card):
+        self.assertFalse(top_card.same_to(selected_card))
 
+# Refactorizar un solo test, que pruebe con los 9 numeros y el mismo color.
     def test_number_same_to_number_same_color(self):
         top_card = NumberCard(RED, '0')
         selected_card_same_color = NumberCard(RED, '2')
         self.assertTrue(top_card.same_to(selected_card_same_color))
-    
+
+# Refactorizar un solo test que pruebe los 4 0 de distinto color.
     def test_number_same_to_number_same_number(self):
         top_card = NumberCard(RED, '0')
         selected_card_same_number = NumberCard(YELLOW, '0')
         self.assertTrue(top_card.same_to(selected_card_same_number))
-    
+
+# Refactorizar un solo test, que pruebe con los numeros erroneos y distinto color.
     def test_number_same_to_number_no_equal(self):
         top_card = NumberCard(RED, '0')
         selected_card_no_equal = NumberCard(YELLOW, '3')
         self.assertFalse(top_card.same_to(selected_card_no_equal))
 
-    def test_number_same_to_skip_same_color(self):
-        top_card = NumberCard(RED, '0')
-        selected_card_same_color = SkipCard(RED)
-        self.assertTrue(top_card.same_to(selected_card_same_color))
+# Refactorizar un solo test, que pruebe un numero con el color de las especiales (skip, reverse y +2)
+    @parameterized.expand([
+        (NumberCard(RED, '1'), SkipCard(RED)),
+        (NumberCard(RED, '1'), ReverseCard(RED)),
+        (NumberCard(RED, '1'), DrawTwoCard(RED)),
+        (NumberCard(RED, '1'), WildCard()),
+        (NumberCard(RED, '1'), DrawFourCard())
+    ])
+    def test_number_same_to_skip_same_color(self, top_card, selected_card):
+        self.assertTrue(top_card.same_to(selected_card))
 
     def test_number_same_to_skip_no_equal(self):
         top_card = NumberCard(RED, '0')
@@ -88,7 +86,7 @@ class TestUno(unittest.TestCase):
         top_card = NumberCard(RED, '0')
         selected_card_same_color = ReverseCard(RED)
         self.assertTrue(top_card.same_to(selected_card_same_color))
-    
+
     def test_number_same_to_reverse_no_equal(self):
         top_card = NumberCard(RED, '0')
         selected_card_no_equal = ReverseCard(YELLOW)
@@ -96,7 +94,7 @@ class TestUno(unittest.TestCase):
 
     def test_number_same_to_draw_four(self):
         top_card = NumberCard(RED, '0')
-        selected_card = DrawFourCard()    
+        selected_card = DrawFourCard()
         self.assertTrue(top_card.same_to(selected_card))
 
     def test_number_same_to_draw_two_same_color(self):
@@ -114,19 +112,12 @@ class TestUno(unittest.TestCase):
         selected_card = WildCard()
         self.assertTrue(top_card.same_to(selected_card))
 
-    def test_same_type_skip_card_different_color(self):
-        top_card = SkipCard(RED)
-        selected_card = SkipCard(YELLOW)
-        self.assertTrue(top_card.same_type_validator(top_card, selected_card))
-
-    def test_same_type_reverse_card_different_color(self):
-        top_card = ReverseCard(RED)
-        selected_card = ReverseCard(YELLOW)
-        self.assertTrue(top_card.same_type_validator(top_card, selected_card))
-        
-    def test_same_type_draw_two_different_color(self):
-        top_card = DrawTwoCard(RED)
-        selected_card = DrawTwoCard(YELLOW)
+    @parameterized.expand([
+        (SkipCard(RED), SkipCard(YELLOW)),
+        (ReverseCard(RED), ReverseCard(RED)),
+        (DrawTwoCard(RED), DrawTwoCard(YELLOW))
+    ])
+    def test_same_type_skip_card_different_color(self, top_card, selected_card):
         self.assertTrue(top_card.same_type_validator(top_card, selected_card))
 
     def test_draw_two_card_to_draw_two_card(self):
@@ -148,15 +139,18 @@ class TestUno(unittest.TestCase):
         ])
     def test_draw_four_card_to_any_card(self, top_card, selected_card):
         self.assertTrue(top_card.evaluate_next_card(top_card, selected_card))
-    
-    def test_stack_number_cards_quantity(self):
+
+    @parameterized.expand([
+        ('number', 80),
+        ('skip', 8),
+        ('reverse', 8),
+        ('draw_two_cards', 8),
+        ('draw_four_cards', 4),
+        ('wild', 4)
+    ])
+    def test_stack_number_cards_quantity(self, card_type, quantity):
         stack = Stack()
-        self.assertEqual(stack.count_type_cards('number'), 80)
-        self.assertEqual(stack.count_type_cards('skip'), 8)
-        self.assertEqual(stack.count_type_cards('reverse'), 8)
-        self.assertEqual(stack.count_type_cards('draw_two_cards'), 8)
-        self.assertEqual(stack.count_type_cards('draw_four_cards'), 4)
-        self.assertEqual(stack.count_type_cards('wild'), 4)
+        self.assertEqual(stack.count_type_cards(card_type), quantity)
 
 
 if __name__ == '__main__':
