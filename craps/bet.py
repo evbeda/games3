@@ -28,14 +28,17 @@ bet_types = {
 
 
 class BetCreator:
-    def create(self, bet_type, amount, *bet_values):
-        self.validate_bet_type(bet_type)
+
+    @staticmethod
+    def create(bet_type, amount, *bet_values):
+        BetCreator.validate_bet_type(bet_type)
         bet = None
         bet_class = bet_types[bet_type]  # obtain bet Class from dictionary
         bet = bet_class(amount)
         return bet
 
-    def validate_bet_type(self, bet_type):
+    @staticmethod
+    def validate_bet_type(bet_type):
         if bet_type not in bet_types:
             raise InvalidBetTypeException()
 
