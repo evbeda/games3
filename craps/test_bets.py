@@ -2,7 +2,7 @@ import unittest
 from parameterized import parameterized
 from .bet import BetCreator, PassBet, DoNotPassBet
 from .game import CrapsGame
-from .exceptions.invalid_bet_exception import InvalidBetTypeException
+from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 # from .constants import (
 #     PLAYER_LOST,
 #     PLAYER_WON,

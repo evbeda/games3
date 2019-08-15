@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 from parameterized import parameterized
+from .exceptions.out_of_cash_exception import OutOfCashException
 from .game import CrapsGame
 from .turn import Turn
 from .constants import (
@@ -12,7 +13,8 @@ from .constants import (
     LOST_MESSAGE,
     BET_MESSAGE,
     BET_PLACED,
-    INVALID_BET_TYPE
+    INVALID_BET_TYPE,
+    OUT_OF_CASH
 )
 
 
@@ -76,3 +78,19 @@ class TestCraps(unittest.TestCase):
     def test_craps_game_invalid_bet_type(self):
         returned_play = self.game.play("INVALIDBET 5678")
         self.assertEqual(returned_play, INVALID_BET_TYPE)
+
+    def test_craps_not_enough_cash(self):
+        returned_play = self.game.play("PASS_BET 9999999")
+        self.assertEqual(returned_play, OUT_OF_CASH)
+
+    def test_craps_play_decrase_money(self):
+        self.game.play("DO_NOT_PASS_BET 300")
+        self.assertEqual(self.game.money, 700)
+
+    def test_craps_decrease_money(self):
+        self.game.decrease_money(200)
+        self.assertEqual(self.game.money, 800)
+
+    def test_craps_decrease_money_exception(self):
+        with self.assertRaises(OutOfCashException):
+            self.game.decrease_money(1200)

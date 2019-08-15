@@ -1,6 +1,7 @@
 from .turn import Turn
 from .bet import BetCreator
-from .exceptions.invalid_bet_exception import InvalidBetTypeException
+from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
+from .exceptions.out_of_cash_exception import OutOfCashException
 from .constants import (
     PLAYER_LOST,
     PLAYER_WON,
@@ -8,7 +9,8 @@ from .constants import (
     LOST_MESSAGE,
     BET_MESSAGE,
     BET_PLACED,
-    INVALID_BET_TYPE
+    INVALID_BET_TYPE,
+    OUT_OF_CASH
 )
 
 
@@ -21,6 +23,7 @@ class CrapsGame:
         self.turn = Turn()
         self.is_playing = True
         self.bets = []
+        self.money = 1000
 
     def next_turn(self):
         if self.turn.state == PLAYER_LOST:
@@ -40,10 +43,13 @@ class CrapsGame:
             try:
                 bet_type, amount, bet_values = self.resolve_command(user_input)
                 bet = BetCreator.create(bet_type, amount, bet_values)
+                self.decrease_money(amount)
                 self.bets.append(bet)
                 return BET_PLACED + bet_type
             except InvalidBetTypeException:
                 return INVALID_BET_TYPE
+            except OutOfCashException:
+                return OUT_OF_CASH
 
     # command like
     # BETNAME amount dice_options
@@ -55,6 +61,11 @@ class CrapsGame:
         if len(bet_values) > 2:
             bet_values = bet_values[0:2]
         return (bet_type, amount, bet_values)
+
+    def decrease_money(self, amount):
+        if amount >= self.money:
+            raise OutOfCashException()
+        self.money -= amount
 
     # @property
     # def board(self):

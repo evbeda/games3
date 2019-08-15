@@ -1,4 +1,4 @@
-from .exceptions.invalid_bet_exception import InvalidBetTypeException
+from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 
 
 class Bet:
