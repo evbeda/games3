@@ -1,10 +1,9 @@
 import unittest
 from parameterized import parameterized
-# from game import Game
 from .board import Board
 
 
-class TestSudoku(unittest.TestCase):
+class TestSudokuBoard(unittest.TestCase):
     def setUp(self):
         self.board = Board(
             " 6 3  8 4"
@@ -105,16 +104,6 @@ class TestSudoku(unittest.TestCase):
         self.assertTrue(self.board.validate_region(row, column, value))
 
     @parameterized.expand([
-        (('a', 1), 9),
-        (('b', 4), '1'),
-        (('h', 1), 4),
-    ])
-    def test_place_number_legally(self, coordinates, value):
-        row, column = coordinates
-        self.board.place(coordinates, value)
-        self.assertEqual(self.board.board[row][column - 1]['val'], str(value))
-
-    @parameterized.expand([
         ('a', 1, [" ", "6", " ", "5", "3", "7", " ", "4", " "]),
         ('b', 5, ["3", " ", " ", " ", "9", " ", " ", " ", "6"]),
         ('c', 8, ["8", " ", "4", " ", " ", " ", "3", " ", "7"]),
@@ -127,3 +116,63 @@ class TestSudoku(unittest.TestCase):
     ])
     def test_get_region(self, row, column, region):
         self.assertEqual(self.board.get_region(row, column), region)
+
+    @parameterized.expand([
+        (('a', 1), 2),
+        (('b', 8), 6),
+        (('c', 3), 8),
+        (('d', 4), 7),
+        (('e', 5), 4),
+        (('f', 6), 8),
+        (('g', 7), 7),
+        (('h', 2), 8),
+        (('i', 9), 6),
+        (('e', 1), 8),
+        (('g', 2), 5),
+        (('e', 9), 1),
+        (('a', 5), 7),
+    ])
+    def test_place_number_legally(self, coordinates, value):
+        row, column = coordinates
+        self.assertEqual(self.board.place(coordinates, value), 'Number added.')
+        self.assertEqual(self.board.board[row][column - 1]['val'], str(value))
+
+    @parameterized.expand([
+        (('a', 1), 6),
+        (('b', 8), 2),
+        (('c', 3), 4),
+        (('d', 4), 1),
+        (('e', 5), 5),
+        (('f', 6), 7),
+        (('g', 7), 6),
+        (('h', 2), 5),
+        (('i', 9), 4),
+        (('e', 1), 7),
+        (('g', 2), 3),
+        (('e', 9), 2),
+        (('a', 5), 5),
+    ])
+    def test_place_number_illegally(self, coordinates, value):
+        row, column = coordinates
+        self.assertEqual(
+            self.board.place(coordinates, value),
+            'Invalid number.')
+        self.assertEqual(self.board.board[row][column - 1]['val'], ' ')
+
+    @parameterized.expand([
+        (('a', 2), 6),
+        (('b', 5), 9),
+        (('c', 9), 7),
+        (('d', 2), 9),
+        (('f', 3), 3),
+        (('g', 8), 1),
+        (('h', 7), 5),
+    ])
+    def test_place_number_already_set(self, coordinates, value):
+        row, column = coordinates
+        original_value = self.board.board[row][column - 1]['val']
+        with self.assertRaises(Exception):
+            self.board.place(coordinates, value)
+        self.assertEqual(
+            self.board.board[row][column - 1]['val'],
+            original_value)

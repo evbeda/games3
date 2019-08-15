@@ -105,4 +105,13 @@ class Board:
     def place(self, coordinates, value):
         value = str(value)
         row, column = coordinates
-        self.board[row][column - 1]["val"] = value
+        if not self.is_modifiable(row, column):
+            raise Exception('You can not modify the initial values.')
+        if (
+            self.validate_row(row, value) and
+            self.validate_column(column, value) and
+            self.validate_region(row, column, value)
+        ):
+            self.board[row][column - 1]["val"] = value
+            return 'Number added.'
+        return 'Invalid number.'
