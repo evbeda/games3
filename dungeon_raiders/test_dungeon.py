@@ -1,11 +1,11 @@
 import unittest
-from .models.Player import Player
-from .models.HandPlayerState import HandPlayerState
-from .models.Game import Game
-from .models.Rooms.MonsterRoom import MonsterRoom
-from .models.Rooms.GoldRoom import GoldRoom
-from .models.Rooms.WoundRoom import WoundRoom
-from .models.Rooms.treasure import Treasure
+from .models.player import Player
+from .models.handplayerstate import HandPlayerState
+from .models.game import Game
+from .models.rooms.monsterroom import MonsterRoom
+from .models.rooms.goldroom import GoldRoom
+from .models.rooms.woundroom import WoundRoom
+from .models.rooms.treasure import Treasure
 from parameterized import parameterized
 from .models.exceptions.UnplayableCardException import UnplayableCardException
 
@@ -142,10 +142,13 @@ class TestTreasure(RoomHelper):
         Player C has 0 gold
         Player D has 5 gold
         '''
+    # If you have 2 treasures, evaluates 2 rewards.
+    # If you only have 1 treasure, the second value is 0
+
     @parameterized.expand([
-        ([9, 5, 0, 5], Treasure(2, [4, 2]), [5, 3, 1, 1]),
-        ([7, 5, 1, 5], Treasure(2, [4, 1]), [5, 5, 4, 1]),
-        ([8, 3, 0, 5], Treasure(1, [3]), [3, 2, 2, 1])
+        ([9, 5, 0, 5], Treasure([4, 2]), [5, 3, 1, 1]),
+        ([7, 5, 1, 5], Treasure([4, 1]), [5, 5, 4, 1]),
+        ([8, 3, 0, 5], Treasure([3, 0]), [3, 2, 2, 1])
     ])
     def test_play_check_who_win_treasure(
             self, players_gold_win, treasure, plays):

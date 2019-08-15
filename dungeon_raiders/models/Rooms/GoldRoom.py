@@ -1,4 +1,4 @@
-from .Trap import Trap
+from .trap import Trap
 
 
 class GoldRoom(Trap):
