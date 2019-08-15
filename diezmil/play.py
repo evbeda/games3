@@ -26,3 +26,28 @@ class Play(object):
 
     def is_repeated(self, dices):
         return any(dices.count(x) >= 3 for x in dices)
+
+    def check_combination(self, dices):
+        if self.is_a_stair(dices):
+            return (dices, 500)
+        elif self.is_repeated(dices):
+            return self.calculate_repeated(dices)
+        else:
+            return ([], 0)
+
+    def calculate_repeated(self, dices):
+        for dice in set(dices):
+            if dices.count(dice) >= 3:
+                qty = dices.count(dice)
+                score = dice
+                if (dice == 1):
+                    if qty == 5:
+                        return ([1]*qty, 10000)
+                    else:
+                        score *= 1000
+                else:
+                    score *= 100
+                score *= 2 ** (qty-3)
+                return ([dice]*qty, score)
+        else:
+            return ([], 0)
