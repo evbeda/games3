@@ -1,4 +1,4 @@
-from .HandPlayerState import HandPlayerState
+from .handplayerstate import HandPlayerState
 
 
 class Level:
