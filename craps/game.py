@@ -16,6 +16,7 @@ class CrapsGame:
     def __init__(self):
         self.turn = Turn()
         self.is_playing = True
+        self.bets = []
 
     def next_turn(self):
         if self.turn.state == PLAYER_LOST:
@@ -28,9 +29,12 @@ class CrapsGame:
         if user_input == 'No':
             self.is_playing = False
             return 'Game Over'
-        # user_input Bet
-        turn_score = self.turn.shoot()
-        return turn_score
+        elif user_input == 'Go':
+            turn_score = self.turn.shoot()
+            return turn_score
+        else:
+            pass
+            # input bet
 
     # @property
     # def board(self):
