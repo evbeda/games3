@@ -24,9 +24,9 @@ class TestDiezMil(unittest.TestCase):
         ([4, 1, 2, 5, 3], 500),  # flush
         ([4, 6, 2, 5, 3], 500),  # flush
         ([4, 1, 2, 1, 1], 1000),  # three_ones
-        ([4, 1, 1, 1, 1], 1100),  # four_ones
-        ([1, 1, 1, 1, 1], 1200),  # five_ones
-        ([5, 5, 5, 5, 5], 1050),  # five_fives
+        ([4, 1, 1, 1, 1], 2000),  # four_ones
+        ([1, 1, 1, 1, 1], 10000),  # five_ones
+        ([5, 5, 5, 5, 5], 2000),  # five_fives
     ])
     def test_check_combination_score(self, dice, expected_score):
         score = self.play.check_combination(dice)
