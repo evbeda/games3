@@ -6,6 +6,7 @@ class Turn:
     def __init__(self):
         self.state = GAME_STARTED
         self.point = None
+        self.bets = []
 
     def get_next_state(self, dice):
         losing_scores = [2, 3, 12]
@@ -35,10 +36,20 @@ class Turn:
             self.point = sum(dice)
         return tuple(dice)
 
-    # not tested
-    def check_bets(self, bets, dice):
+    def check_bets(self, dice):
         activated_bets = []
-        for bet in bets:
+        for bet in self.bets:
             if bet.check(self, dice):
                 activated_bets.append(bet)
+        self.bets = [
+            bet
+            for bet in self.bets
+            if bet not in activated_bets]
         return activated_bets
+
+    def pay_bets(self, dice):
+        activated_bets = self.check_bets(dice)
+        amount = 0
+        for bet in activated_bets:
+            amount += bet.pay()
+        return amount
