@@ -13,11 +13,12 @@ from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 from .exceptions.out_of_cash_exception import OutOfCashException
 
 bet_scenario = [
+    #tipo de apuesta, tipo_input, amount, prize, number chosen, won/lose
     (StraightBet, [36], 25, 875, 36, True),
-    (ColorBet, ['Red'], 300, 1100, 36, True),
+    (ColorBet, ['Red'], 300, 600, 36, True),
     # (EvenOddBet, ['ODD'], 30, 560, 36, False),
-    (StraightBet, [36], 25, 875, 35, False),
-    (ColorBet, ['Red'], 300, 1100, 35, False),
+    (StraightBet, [36], 25, 0, 35, False),
+    (ColorBet, ['Red'], 300, 0, 35, False),
     # (EvenOddBet, ['ODD'], 30, 560, 35, True),
 ]
 
@@ -36,6 +37,7 @@ class TestRuleta(unittest.TestCase):
         last_numbers = roulette.get_last_numbers()
         self.assertTrue(last_numbers[-1] == number)
 
+    #Test for the Board
     @parameterized.expand([
         (36,), (1,), (3,), (5,), (7,), (9,), (12,), (14,), (16,), (18,),
         (19,), (21,), (23,), (25,), (27,), (30,), (32,), (34,), (36,),
@@ -86,7 +88,7 @@ class TestRuleta(unittest.TestCase):
     @parameterized.expand([
         (StraightBet, [40], 17),
         (ColorBet, ['Reds'], 300),
-        # (EvenOddBet, ['ODDs'], 30)
+        (EvenOddBet, ['ODDs'], 30)
     ])
     def test_invalid_bets(self, bet, bet_value, ammount):
         with self.assertRaises(InvalidBetException):
@@ -101,26 +103,23 @@ class TestRuleta(unittest.TestCase):
                         chosen_number,
                         expect_winner):
         bet_type = bet(bet_value, ammount)
-        if expect_winner:
-            self.assertTrue(chosen_number in bet_type.target_numbers)
-        else:
-            self.assertFalse(chosen_number in bet_type.target_numbers)
-    # @parameterized.expand(bet_scenario)
-    # def test_win_bet(
-    #     self,
-    #     bet,
-    #     bet_value,
-    #     ammount,
-    #     player,
-    #     expected_player_money,
-    #     choosen_numer,
-    #     expected_winner,
-    # ):
-    #     bet_type = bet(bet_value, ammount, player)
-    #     self.assertEqual(
-    #         bet_type.is_winner(choosen_numer),
-    #         expected_winner,
-    #     )
+        self.assertEqual(bet_type.is_winner(chosen_number), expect_winner)
+
+    @parameterized.expand(bet_scenario)
+    def test_win_bet(
+        self,
+        bet,
+        bet_value,
+        ammount,
+        award,
+        chosen_number,
+        expected_winner,
+    ):
+        bet_type = bet(bet_value, ammount)
+        self.assertEqual(
+            bet_type.calculate_total_award(chosen_number),
+            award,
+        )
 
     # Test for the game roullete
     def test_resolve_command_method(self):
