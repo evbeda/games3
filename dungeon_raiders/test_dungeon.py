@@ -2,6 +2,7 @@ import unittest
 from .models.Player import Player
 from .models.HandPlayerState import HandPlayerState
 from .models.Game import Game
+from .models.Level import Level
 from .models.Rooms.MonsterRoom import MonsterRoom
 from .models.Rooms.GoldRoom import GoldRoom
 from .models.Rooms.WoundRoom import WoundRoom
@@ -36,7 +37,7 @@ class TestDungeon(unittest.TestCase):
 
     """ -------------------- Game tests -------------------- """
     def test_check_if_game_has_5_levels(self):
-        game = Game([Player('A'), Player('B')])
+        game = Game([Player('A'), Player('B'), Player('C'), Player('D')])
         self.assertEqual(5, len(game.levels))
 
     def test_check_if_player_a_wins(self):
@@ -98,7 +99,7 @@ class TestMonsterRoom(RoomHelper):
     ])
     def test_play_check_wounds_against_monster_room(self, players_wounds, monster, plays):
         handA, handB, handC, handD = \
-            super()._play_cards_against_room(monster, plays)
+            self._play_cards_against_room(monster, plays)
         self.assertEqual(players_wounds, [
             handA.player.wounds,
             handB.player.wounds,
@@ -156,3 +157,10 @@ class TestTreasure(RoomHelper):
             handB.player.gold,
             handC.player.gold,
             handD.player.gold])
+
+
+class TestLevel(unittest.TestCase):
+
+    def test_check_if_each_levels_has_five_rooms(self):
+        level = Level([Player('A'), Player('B'), Player('C'), Player('D')])
+        self.assertEqual(5, len(level.rooms))
