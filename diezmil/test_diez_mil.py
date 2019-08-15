@@ -13,8 +13,7 @@ class TestDiezMil(unittest.TestCase):
         self.game.baseScore = 450
 
     def test_check_players_qty(self):
-        check_players_qty = self.game.check_players_qty(0)
-        self.assertEqual(check_players_qty, False)
+        self.assertEqual(self.game.check_players_qty(0), False)
 
     #play testings
     def test_roll_dices_error(self):
