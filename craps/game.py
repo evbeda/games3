@@ -22,13 +22,12 @@ class CrapsGame:
     def __init__(self):
         self.turn = Turn()
         self.is_playing = True
-        self.bets = []
         self.money = 1000
 
     def next_turn(self):
         if self.turn.state == PLAYER_LOST:
-            # not tested
-            self.bets = []
+            # testear
+            self.turn = Turn()
             return LOST_MESSAGE
         if self.turn.state == PLAYER_WON:
             # testear
@@ -43,13 +42,7 @@ class CrapsGame:
         if user_input == 'Go':
             turn_dice = self.turn.shoot()
             # not tested ...
-            activated_bets = self.turn.check_bets(self.bets, turn_dice)
-            for bet in activated_bets:
-                self.money += bet.pay()
-            self.bets = [
-                bet
-                for bet in self.bets
-                if bet not in activated_bets]
+            self.money += self.turn.pay_bets(turn_dice)
             # ... not tested
             return turn_dice
         else:
@@ -58,7 +51,7 @@ class CrapsGame:
                     CrapsGame.resolve_command(user_input)
                 bet = BetCreator.create(bet_type, amount, bet_values)
                 self.decrease_money(amount)
-                self.bets.append(bet)
+                self.turn.bets.append(bet)
                 return BET_PLACED + bet_type
             except InvalidBetTypeException:
                 return INVALID_BET_TYPE
