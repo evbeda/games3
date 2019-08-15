@@ -17,7 +17,7 @@ class Card():
             return True
         else:
             return False
-   
+
 
 class PostColoredCard(Card):
 
@@ -46,7 +46,7 @@ class NumberCard(ColoredCard):
     def __init__(self, color, number):
         super().__init__(color)
         self.number = number
-    
+
     def same_to(self, card):
 
         if super().same_to(card):
@@ -66,7 +66,9 @@ class ReverseCard(ColoredCard):
 
 
 class SkipCard(ColoredCard):
-    pass
+
+    def __init__(self, color):
+        super().__init__(color)
 
 
 class DrawTwoCard(ColoredCard):
@@ -78,10 +80,10 @@ class DrawTwoCard(ColoredCard):
         if type(previousCard) == DrawTwoCard:
             self.cardsToDraw += previousCard.cardsToDraw
         return self.cardsToDraw
-        
+
 
 class DrawFourCard(PostColoredCard):
-
+    # Chequear por que necesita self, y cuando se agrega, explota en el test.
     def evaluate_next_card(top_card, selected_card):
         return True
 

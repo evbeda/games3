@@ -7,7 +7,6 @@
 #     def __init__(self):
 #         self.stack = self.createStack()
 #         self.discard = []
-    
 #     # setter/getter
 
 #     # createStack (with or without discard)
@@ -28,4 +27,3 @@ class Uno():
     def __init__(self):
         self.stack = Stack()
         self.discard = []
-    
