@@ -27,8 +27,12 @@ class CrapsGame:
 
     def next_turn(self):
         if self.turn.state == PLAYER_LOST:
+            # not tested
+            self.bets = []
             return LOST_MESSAGE
         elif self.turn.state == PLAYER_WON:
+            # not tested
+            self.bets = []
             return WON_MESSAGE
         return BET_MESSAGE
 
@@ -37,8 +41,17 @@ class CrapsGame:
             self.is_playing = False
             return 'Game Over'
         elif user_input == 'Go':
-            turn_score = self.turn.shoot()
-            return turn_score
+            turn_dice = self.turn.shoot()
+            # not tested ...
+            activated_bets = self.turn.check_bets(self.bets, turn_dice)
+            for bet in activated_bets:
+                self.money += bet.pay()
+            self.bets = [
+                bet
+                for bet in self.bets
+                if bet not in activated_bets]
+            # ... not tested
+            return turn_dice
         else:
             try:
                 bet_type, amount, bet_values = self.resolve_command(user_input)

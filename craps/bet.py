@@ -1,19 +1,40 @@
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
+from .constants import PLAYER_WON, PLAYER_LOST
 
 
 class Bet:
     def __init__(self, amount):
         self.amount = amount
 
+    def check(self, turn, dice):
+        raise NotImplementedError
+
+    def pay(self):
+        raise NotImplementedError
+
 
 class PassBet(Bet):
     def __init__(self, amount):
         super().__init__(amount)
 
+    def check(self, turn, dice):
+        return turn.state == PLAYER_WON
+
+    # not tested
+    def pay(self):
+        return 2 * self.amount
+
 
 class DoNotPassBet(Bet):
     def __init__(self, amount):
         super().__init__(amount)
+
+    def check(self, turn, dice):
+        return turn.state == PLAYER_LOST
+
+    # not tested
+    def pay(self):
+        return 2 * self.amount
 
 
 # class ConcrentDiceBet(Bet):

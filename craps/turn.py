@@ -34,3 +34,11 @@ class Turn:
         if not self.point and next_state == GAME_IN_PROGRESS:
             self.point = sum(dice)
         return tuple(dice)
+
+    # not tested
+    def check_bets(self, bets, dice):
+        activated_bets = []
+        for bet in bets:
+            if bet.check(self, dice):
+                activated_bets.append(bet)
+        return activated_bets
