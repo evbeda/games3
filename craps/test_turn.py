@@ -53,7 +53,7 @@ class TestTurn(unittest.TestCase):
             self.assertEqual(turn.point, new_point)
 
     @patch('random.sample', return_value=(2, 2))
-    def test_game_point_set(self, sample_mock):
+    def test_game_point_set(self, _sample_mock):
         # Tests that Game state changes to GAME_IN_PROGRESS after first
         # throw (if not winning or losing).
         self.turn.shoot()
@@ -61,7 +61,7 @@ class TestTurn(unittest.TestCase):
         self.assertEqual(self.turn.point, 4)
 
     @patch('random.sample', return_value=(2, 3))
-    def test_point_reached(self, sample_mock):
+    def test_point_reached(self, _sample_mock):
         self.turn.shoot()
         self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
         self.assertEqual(self.turn.point, 5)
@@ -82,17 +82,17 @@ class TestTurn(unittest.TestCase):
             self.assertEqual(self.turn.state, PLAYER_LOST)
 
     def test_point_not_reached_and_won(self):
-        FIRST_DICE = (2, 3)
-        POINT = sum(FIRST_DICE)
-        with patch('random.sample', return_value=FIRST_DICE):
+        first_dice = (2, 3)
+        point = sum(first_dice)
+        with patch('random.sample', return_value=first_dice):
             self.turn.shoot()
             self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
-            self.assertEqual(self.turn.point, POINT)
+            self.assertEqual(self.turn.point, point)
         with patch('random.sample', return_value=(2, 4)):
             self.turn.shoot()
             self.assertEqual(self.turn.state, GAME_IN_PROGRESS)
-            self.assertEqual(self.turn.point, POINT)
-        with patch('random.sample', return_value=FIRST_DICE):
+            self.assertEqual(self.turn.point, point)
+        with patch('random.sample', return_value=first_dice):
             self.turn.shoot()
             self.assertEqual(self.turn.state, PLAYER_WON)
 
