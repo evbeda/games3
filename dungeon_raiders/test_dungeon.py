@@ -137,6 +137,11 @@ class TestTrapRoom(RoomHelper):
 
 class TestTreasure(RoomHelper):
     """ -------------------- Treasure card --------------------"""
+    ''' Player A has 5 gold
+        Player B has 3 gold
+        Player C has 0 gold
+        Player D has 5 gold
+        '''
     @parameterized.expand([
         ([9, 5, 0, 5], Treasure(2, [4, 2]), [5, 3, 1, 1]),
         ([7, 5, 1, 5], Treasure(2, [4, 1]), [5, 5, 4, 1]),
