@@ -73,7 +73,7 @@ class TestCraps(unittest.TestCase):
     def test_craps_game_bet_added_to_bets_list(self):
         self.game.play("PASS_BET 10")
         self.game.play("DO_NOT_PASS_BET 20")
-        self.assertEqual(len(self.game.bets), 2)
+        self.assertEqual(len(self.game.turn.bets), 2)
 
     def test_craps_game_invalid_bet_type(self):
         returned_play = self.game.play("INVALIDBET 5678")

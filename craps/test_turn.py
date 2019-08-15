@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 from parameterized import parameterized
+from .bet import PassBet, DoNotPassBet
 from .turn import Turn
 from .constants import GAME_IN_PROGRESS, GAME_STARTED, PLAYER_LOST, PLAYER_WON
 
@@ -94,3 +95,54 @@ class TestTurn(unittest.TestCase):
         with patch('random.sample', return_value=FIRST_DICE):
             self.turn.shoot()
             self.assertEqual(self.turn.state, PLAYER_WON)
+
+    def _set_bets(self):
+        bet1 = PassBet(5)
+        bet2 = DoNotPassBet(8)
+        bet3 = DoNotPassBet(15)
+        bet4 = PassBet(2)
+        self.turn.bets = [bet1, bet2, bet3, bet4]
+
+    # REFACTOR
+    def test_check_bets_get_activated_pass_bets(self):
+        self._set_bets()
+        self.turn.state = PLAYER_WON
+        expected_activated_bets = [self.turn.bets[0], self.turn.bets[3]]
+        actual_activated_bets = self.turn.check_bets((5, 5))
+        self.assertEqual(actual_activated_bets, expected_activated_bets)
+
+    def test_check_bets_get_activated_do_not_pass_bets(self):
+        self._set_bets()
+        self.turn.state = PLAYER_LOST
+        expected_activated_bets = [self.turn.bets[1], self.turn.bets[2]]
+        actual_activated_bets = self.turn.check_bets((5, 5))
+        self.assertEqual(actual_activated_bets, expected_activated_bets)
+
+    def test_check_bets_deleted_pass_bets(self):
+        self._set_bets()
+        self.turn.state = PLAYER_WON
+        expected_remaining_bets = [self.turn.bets[1], self.turn.bets[2]]
+        self.turn.check_bets((5, 5))
+        actual_remaining_bets = self.turn.bets
+        self.assertEqual(actual_remaining_bets, expected_remaining_bets)
+
+    def test_check_bets_deleted_do_not_pass_bets(self):
+        self._set_bets()
+        self.turn.state = PLAYER_LOST
+        expected_remaining_bets = [self.turn.bets[0], self.turn.bets[3]]
+        self.turn.check_bets((5, 5))
+        actual_remaining_bets = self.turn.bets
+        self.assertEqual(actual_remaining_bets, expected_remaining_bets)
+
+    def test_pay_bets_pass_bets(self):
+        self._set_bets()
+        self.turn.state = PLAYER_WON
+        payment = self.turn.pay_bets((5, 5))
+        self.assertEqual(payment, 7*2)
+
+    def test_pay_bets_do_not_pass_bets(self):
+        self._set_bets()
+        self.turn.state = PLAYER_LOST
+        payment = self.turn.pay_bets((5, 5))
+        self.assertEqual(payment, 23*2)
+    # END REFACTOR
