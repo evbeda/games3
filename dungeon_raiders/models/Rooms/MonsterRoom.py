@@ -10,7 +10,7 @@ class MonsterRoom(Room):
     def resolve_room(self, hands):
         # Determine played cards
         played_cards = [hand.last_card_played for hand in hands]
-        
+
         # Determine damage
         total_damage = sum(played_cards)
 

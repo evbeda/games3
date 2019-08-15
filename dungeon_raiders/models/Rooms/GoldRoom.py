@@ -1,5 +1,6 @@
 from .Trap import Trap
 
+
 class GoldRoom(Trap):
 
     def __init__(self, effects):
@@ -14,14 +15,14 @@ class GoldRoom(Trap):
         for player in players:
             if player.gold == max_gold:
                 affected_players.append(player)
-        
+
         return affected_players
-    
+
     def resolve_room(self, hands):
-        
+
         # Determine affected players
         affected_players = self.determine_affected_players(hands)
-        
+
         # Determine damage
         played_cards = [hand.last_card_played for hand in hands]
         max_card = max(played_cards)
@@ -30,5 +31,3 @@ class GoldRoom(Trap):
         # Apply effect
         for player in affected_players:
             player.gold -= trap_effect
-        
-        
