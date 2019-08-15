@@ -106,7 +106,7 @@ class Board:
         value = str(value)
         row, column = coordinates
         if not self.is_modifiable(row, column):
-            raise Exception('You can not modify the initial values.')
+            raise Exception()
         if (
             self.validate_row(row, value) and
             self.validate_column(column, value) and
@@ -119,5 +119,5 @@ class Board:
     def is_finished(self):
         return all(
             column['val'] != ' '
-            for row in self.board.keys()
+            for row in self.board
             for column in self.board[row])
