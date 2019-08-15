@@ -3,6 +3,8 @@ from .roulette import Roulette
 from .bet import BetCreator, StraightBet
 from .player import Player
 from .game_roullete import GameRoulette
+from parameterized import parameterized
+
 # Exceptions
 from .exceptions.invalid_bet_exception import InvalidBetException
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
@@ -13,15 +15,38 @@ class TestRuleta(unittest.TestCase):
 
     # Test for the roullete
     def test_numbers(self):
-        ruleta = Roulette()
-        number = ruleta.generate_number()
+        roulette = Roulette()
+        number = roulette.generate_number()
         self.assertTrue(number >= 0 and number <= 36)
 
     def test_history(self):
-        ruleta = Roulette()
-        number = ruleta.generate_number()
-        last_numbers = ruleta.get_last_numbers()
+        roulette = Roulette()
+        number = roulette.generate_number()
+        last_numbers = roulette.get_last_numbers()
         self.assertTrue(last_numbers[-1] == number)
+    
+    @parameterized.expand([
+        (36,),(1,),(3,),(5,),(7,),(9,),(12,),(14,),(16,),(18,),
+        (19,),(21,),(23,),(25,),(27,),(30,),(32,),(34,),(36,),
+    ])
+    def test_get_color_red_from_last_number(self, number):
+        roulette = Roulette()
+        roulette.last_numbers.append(number)
+        self.assertEqual('red', roulette.get_color_from_last_number())
+
+    @parameterized.expand([
+        (2,),(4,),(6,),(8,),(10,),(11,),(13,),(15,),(17,),(20,),
+        (22,),(24,),(26,),(28,),(29,),(31,),(33,),(35,),
+    ])
+    def test_get_color_black_from_last_number(self, number):
+        roulette = Roulette()
+        roulette.last_numbers.append(number)
+        self.assertEqual('black', roulette.get_color_from_last_number())
+
+    def test_get_color_green_from_last_number(self):
+        roulette = Roulette()
+        roulette.last_numbers.append(0)
+        self.assertEqual('green', roulette.get_color_from_last_number())
 
     # Test for the player
     def test_player_bets_100_but_have_50_should_fail(self):
