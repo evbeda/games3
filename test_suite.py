@@ -4,6 +4,9 @@ from craps.test_craps import TestCraps
 from craps.test_turn import TestTurn
 from craps.test_bets import TestBets
 from dungeon_raiders.test_dungeon import TestDungeon
+from dungeon_raiders.test_dungeon import TestMonsterRoom
+from dungeon_raiders.test_dungeon import TestTrapRoom
+from dungeon_raiders.test_dungeon import TestTreasure
 from guess_number_game.test_guess_number_game import TestGuessNumberGame
 from ruleta.test_ruleta import TestRuleta
 from sudoku.test_sudoku_board import TestSudokuBoard
@@ -21,6 +24,9 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestBets))
     # DUNGEON RAIDERS
     test_suite.addTest(unittest.makeSuite(TestDungeon))
+    test_suite.addTest(unittest.makeSuite(TestMonsterRoom))
+    test_suite.addTest(unittest.makeSuite(TestTrapRoom))
+    test_suite.addTest(unittest.makeSuite(TestTreasure))
     # ROULETTE
     test_suite.addTest(unittest.makeSuite(TestRuleta))
     # SUDOKU

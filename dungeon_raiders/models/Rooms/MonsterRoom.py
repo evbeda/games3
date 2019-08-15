@@ -1,5 +1,6 @@
 from .Room import Room
 
+
 class MonsterRoom(Room):
 
     def __init__(self, life, damage):

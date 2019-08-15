@@ -5,6 +5,7 @@ from .models.Game import Game
 from .models.Rooms.MonsterRoom import MonsterRoom
 from .models.Rooms.GoldRoom import GoldRoom
 from .models.Rooms.WoundRoom import WoundRoom
+from .models.Rooms.treasure import Treasure
 from parameterized import parameterized
 from .models.exceptions.UnplayableCardException import UnplayableCardException
 
@@ -56,12 +57,7 @@ class TestDungeon(unittest.TestCase):
         return hands
 
 
-class TestRoom(unittest.TestCase):
-
-    def _play(self, room, hands):
-        room.resolve_room(hands)
-        return hands
-
+class RoomHelper(unittest.TestCase):
     def _get_hands(self):
         
         player_a = Player('A')
@@ -69,52 +65,49 @@ class TestRoom(unittest.TestCase):
         player_a.add_wounds(5)
         player_b = Player('B')
         player_b.add_gold(3)
-        player_a.add_wounds(3)
+        player_b.add_wounds(3)
         player_c = Player('C')
         player_c.add_gold(0)
-        player_a.add_wounds(0)
+        player_c.add_wounds(0)
         player_d = Player('D')
         player_d.add_gold(5)
-        player_a.add_wounds(5)
+        player_d.add_wounds(5)
 
-        return HandPlayerState(
-            Player('A')), HandPlayerState(
-                Player('B')), HandPlayerState(Player('C'))
+        return HandPlayerState(player_a), HandPlayerState(player_b), \
+            HandPlayerState(player_c), HandPlayerState(player_d)
 
     def _play_cards_against_room(self, room, plays):
         hands = self._get_hands()
 
         for hand in hands:
             hand.play(plays[hands.index(hand)])
-
         return self._play(room, hands)
 
+    def _play(self, room, hands):
+        room.resolve_room(hands)
+        return hands
 
-class TestMonsterRoom(TestRoom):
+
+class TestMonsterRoom(RoomHelper):
 
     """ -------------------- MonsterRoom card --------------------"""
-    def __init__(self):
-        super().__init__()
-
     @parameterized.expand([
-        ([0, 0, 3], MonsterRoom(14, 3), [5, 3, 1]),
-        ([0, 0, 0], MonsterRoom(14, 3), [5, 5, 4]),
-        ([0, 3, 3], MonsterRoom(14, 3), [3, 2, 2])
+        ([5, 3, 3, 5], MonsterRoom(14, 3), [5, 3, 1, 2]),
+        ([5, 3, 0, 5], MonsterRoom(14, 3), [5, 5, 4, 1]),
+        ([5, 6, 3, 8], MonsterRoom(14, 3), [3, 2, 2, 2]),
     ])
-    def test_play_check_wounds_against_monster_room(
-            self, players_wounds, monster, plays):
-        handA, handB, handC = \
-            self._play_cards_against_room(monster, plays)
+    def test_play_check_wounds_against_monster_room(self, players_wounds, monster, plays):
+        handA, handB, handC, handD = \
+            super()._play_cards_against_room(monster, plays)
         self.assertEqual(players_wounds, [
             handA.player.wounds,
             handB.player.wounds,
-            handC.player.wounds])
+            handC.player.wounds,
+            handD.player.wounds])
 
 
-class TestTrapRoom(TestRoom):
+class TestTrapRoom(RoomHelper):
     """ -------------------- GoldRoom card --------------------"""
-    def __init__(self):
-        super().__init__()
 
     @parameterized.expand([
         ([3, 3, 0, 3], GoldRoom([0, 0, 1, 2, 3]), [3, 2, 4, 4]),
@@ -140,3 +133,21 @@ class TestTrapRoom(TestRoom):
         self.assertEqual(wound_values, [
             handA.player.wounds, handB.player.wounds, handC.player.wounds,
             handD.player.wounds])
+
+
+class TestTreasure(RoomHelper):
+    """ -------------------- Treasure card --------------------"""
+    @parameterized.expand([
+        ([9, 5, 0, 5], Treasure(2, [4, 2]), [5, 3, 1, 1]),
+        ([7, 5, 1, 5], Treasure(2, [4, 1]), [5, 5, 4, 1]),
+        ([8, 3, 0, 5], Treasure(1, [3]), [3, 2, 2, 1])
+    ])
+    def test_play_check_who_win_treasure(
+            self, players_gold_win, treasure, plays):
+        handA, handB, handC, handD = \
+            self._play_cards_against_room(treasure, plays)
+        self.assertEqual(players_gold_win, [
+            handA.player.gold,
+            handB.player.gold,
+            handC.player.gold,
+            handD.player.gold])
