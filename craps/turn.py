@@ -15,17 +15,15 @@ class Turn:
         if self.state == GAME_STARTED:
             if score in losing_scores:
                 return PLAYER_LOST
-            elif score in winning_scores:
+            if score in winning_scores:
                 return PLAYER_WON
-            else:
-                return GAME_IN_PROGRESS
-        elif self.state == GAME_IN_PROGRESS:
+            return GAME_IN_PROGRESS
+        if self.state == GAME_IN_PROGRESS:
             if score == self.point:
                 return PLAYER_WON
-            elif score == 7:
+            if score == 7:
                 return PLAYER_LOST
-            else:
-                return GAME_IN_PROGRESS
+            return GAME_IN_PROGRESS
 
     def shoot(self):
         # Throws two dice, returns their values and changes the state.
