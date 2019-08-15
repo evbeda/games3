@@ -1,7 +1,7 @@
-from .Trap import Trap
+from .trap import Trap
 
 
-class GoldRoom(Trap):
+class WoundRoom(Trap):
 
     def __init__(self, effects):
         super().__init__(effects)
@@ -10,10 +10,10 @@ class GoldRoom(Trap):
         affected_players = []
         players = [hand.player for hand in hands]
 
-        golds = [hand.player.gold for hand in hands]
-        max_gold = max(golds)
+        wounds_list = [hand.player.wounds for hand in hands]
+        min_wounds = min(wounds_list)
         for player in players:
-            if player.gold == max_gold:
+            if player.wounds == min_wounds:
                 affected_players.append(player)
 
         return affected_players
@@ -30,4 +30,4 @@ class GoldRoom(Trap):
 
         # Apply effect
         for player in affected_players:
-            player.gold -= trap_effect
+            player.wounds += trap_effect

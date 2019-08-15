@@ -1,5 +1,5 @@
-from .Rooms.Room import Room
-from .HandPlayerState import HandPlayerState
+from .rooms.room import Room
+from .hand_player_state import HandPlayerState
 
 
 class Level:
