@@ -2,9 +2,9 @@ import unittest
 from .models.player import Player
 from .models.handplayerstate import HandPlayerState
 from .models.game import Game
-from .models.rooms.monsterroom import MonsterRoom
-from .models.rooms.goldroom import GoldRoom
-from .models.rooms.woundroom import WoundRoom
+from .models.rooms.monster_room import MonsterRoom
+from .models.rooms.gold_room import GoldRoom
+from .models.rooms.wound_room import WoundRoom
 from .models.rooms.treasure import Treasure
 from parameterized import parameterized
 from .models.exceptions.UnplayableCardException import UnplayableCardException
