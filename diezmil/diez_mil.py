@@ -14,7 +14,7 @@ class DiezMil(object):
         self.players_qty = players_qty
 
     def check_players_qty(self, players_qty):
-        return True if players_qty == 0 else False
+        return False if players_qty == 0 else True
 
     def play(self):
 
