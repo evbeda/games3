@@ -92,6 +92,10 @@ class Board:
         ]
         return region_numbers
 
+    def validate_region(self, row, column, value):
+        board_region_numbers = self.get_region(row, column)
+        return str(value) not in board_region_numbers
+
     def letter_to_number(self, letter):
         return ord(letter.lower()) - 96
 

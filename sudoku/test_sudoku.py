@@ -77,6 +77,34 @@ class TestSudoku(unittest.TestCase):
         self.assertTrue(self.board.validate_column(column, value))
 
     @parameterized.expand([
+        ('a', 1, 6),
+        ('b', 4, 9),
+        ('c', 8, 8),
+        ('d', 1, 9),
+        ('e', 4, 6),
+        ('f', 9, 8),
+        ('g', 2, 3),
+        ('h', 4, 6),
+        ('i', 7, 8)
+    ])
+    def test_validate_insert_illegal_value_in_region(self, row, column, value):
+        self.assertFalse(self.board.validate_region(row, column, value))
+
+    @parameterized.expand([
+        ('a', 1, 1),
+        ('b', 4, 1),
+        ('c', 8, 1),
+        ('d', 1, 8),
+        ('e', 4, 7),
+        ('f', 9, 1),
+        ('g', 2, 4),
+        ('h', 4, 1),
+        ('i', 7, 4)
+    ])
+    def test_validate_insert_legal_value_in_region(self, row, column, value):
+        self.assertTrue(self.board.validate_region(row, column, value))
+
+    @parameterized.expand([
         (('a', 1), 9),
         (('b', 4), '1'),
         (('h', 1), 4),
