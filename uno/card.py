@@ -12,17 +12,17 @@
 
 class Card():
 
-    def same_type_validator(self, card1, card2):
-        if type(card1) == type(card2):
-            return True
-        else:
-            return False
+    def same_type_validator(self, card):
+        return type(self) == type(card)
 
 
 class PostColoredCard(Card):
 
     def __init__(self):
-        self.post_color = ''
+        self.color = ''
+
+    def set_color(self, color):
+        self.color = color
 
     def same_to(self, card):
         return True
@@ -34,11 +34,7 @@ class ColoredCard(Card):
         self.color = color
 
     def same_to(self, card):
-        if isinstance(card, PostColoredCard):
-            return True
-        elif self.color == card.color:
-            return True
-        return False
+        return self.color == card.color
 
 
 class NumberCard(ColoredCard):
@@ -53,10 +49,7 @@ class NumberCard(ColoredCard):
             return True
 
         if isinstance(card, NumberCard):
-            if card.number == self.number:
-                return True
-        else:
-            return False
+            return card.number == self.number
 
 
 class ReverseCard(ColoredCard):
@@ -83,9 +76,7 @@ class DrawTwoCard(ColoredCard):
 
 
 class DrawFourCard(PostColoredCard):
-    # Chequear por que necesita self, y cuando se agrega, explota en el test.
-    def evaluate_next_card(top_card, selected_card):
-        return True
+    pass
 
 
 class WildCard(PostColoredCard):
