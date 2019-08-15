@@ -59,7 +59,7 @@ class TestDungeon(unittest.TestCase):
 
 class RoomHelper(unittest.TestCase):
     def _get_hands(self):
-        
+
         player_a = Player('A')
         player_a.add_gold(5)
         player_a.add_wounds(5)
