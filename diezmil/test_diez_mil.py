@@ -52,7 +52,7 @@ class TestDiezMil(unittest.TestCase):
     ])
     def test_is_a_stair(self, dices, expected):
         self.assertEqual(self.play.is_a_stair(dices), expected)
-       
+
     # Test is a repeated
     @parameterized.expand([
         ([1, 1, 1, 3, 2], True),
@@ -61,6 +61,29 @@ class TestDiezMil(unittest.TestCase):
     ])
     def test_is_repeated(self, dices, expected):
         self.assertEqual(self.play.is_repeated(dices), expected)
+
+    # Test calculate repeated
+    @parameterized.expand([
+        ([2, 3, 3, 4, 4], ([], 0)),  # no score
+        ([1, 3, 3, 3, 3], ([3, 3, 3, 3], 600)),  # quadruple
+        ([4, 1, 1, 1, 1], ([1, 1, 1, 1], 2000)),  # four_ones
+        ([1, 1, 1, 1, 1], ([1, 1, 1, 1, 1], 10000)),  # five_ones
+        ([5, 5, 5, 5, 5], ([5, 5, 5, 5, 5], 2000)),  # five_fives
+    ])
+    def test_calculate_repeated(self, dices, expected_score):
+        self.assertEqual(self.play.calculate_repeated(dices), expected_score)
+
+    # Test check combination
+    @parameterized.expand([
+        ([1, 1, 1, 4, 5], ([1, 1, 1], 1000)),
+        ([1, 1, 1, 1, 5], ([1, 1, 1, 1], 2000)),
+        ([1, 4, 3, 4, 5], ([], 0)),
+        ([3, 3, 3, 4, 5], ([3, 3, 3], 300)),
+        ([4, 4, 4, 4, 5], ([4, 4, 4, 4], 800)),
+        ([1, 1, 1, 1, 1], ([1, 1, 1, 1, 1], 10000)),
+    ])
+    def test_check_combination(self, dices, expected_result):
+        self.assertEqual(self.play.check_combination(dices), expected_result)
 
 
 if __name__ == '__main__':
