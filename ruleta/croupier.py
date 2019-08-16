@@ -11,5 +11,14 @@ class Croupier:
             raise OutOfCashException()
         self.player.money -= ammount
 
-    def add_bet(self, bet):
+    def add_bet(self, bet, amount):
+        self.discount_money_from_player(amount)
         self.bets.append(bet)
+
+    def calculate_total_award(self, chosen_number):
+        for bet in self.bets:
+            self.player.money += bet.calculate_award(chosen_number)
+        else:
+            self.bets = []
+
+
