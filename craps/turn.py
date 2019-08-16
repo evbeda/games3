@@ -27,17 +27,17 @@ class Turn:
 
     def shoot(self):
         # Throws two dice, returns their values and changes the state.
-        dice = random.sample(range(1, 7), k=2)
-        next_state = self.get_next_state(dice)
+        self.dice = random.sample(range(1, 7), k=2)
+        next_state = self.get_next_state(self.dice)
         self.state = next_state
         if not self.point and next_state == GAME_IN_PROGRESS:
-            self.point = sum(dice)
-        return tuple(dice)
+            self.point = sum(self.dice)
+        return tuple(self.dice)
 
     def check_bets(self, dice):
         activated_bets = []
         for bet in self.bets:
-            if bet.check(self, dice):
+            if bet.check(self):
                 activated_bets.append(bet)
         self.bets = [
             bet
