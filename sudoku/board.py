@@ -1,34 +1,18 @@
 import math
-import requests
+from .api import fetch_board
 from . import (
     NOT_MODIFIABLE,
     REPEATED_ON_COLUMN,
     REPEATED_ON_ROW,
     REPEATED_ON_REGION,
-    API_URL
 )
 
 
 class Board:
     def __init__(self, board=None):
         # if board is None:
-        #     board = self.fetch_board()
+        #     board = fetch_board()
         self.board = self.build_board(board)
-
-    def parse_api_response(self, response):
-        result = [[' ' for i in range(9)] for j in range(9)]
-        squares = response['squares']
-        for square in squares:
-            x = square['x']
-            y = square['y']
-            result[x][y] = str(square['value'])
-        flat_matrix = [column for row in result for column in row]
-
-        return ''.join(flat_matrix)
-
-    def fetch_board(self):
-        response = requests.get(API_URL)
-        return self.parse_api_response(response.json())
 
     def build_board(self, board):
         return {

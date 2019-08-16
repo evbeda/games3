@@ -13,6 +13,7 @@ from guess_number_game.test_guess_number_game import TestGuessNumberGame
 from ruleta.test_ruleta import TestRuleta
 from sudoku.test_sudoku_board import TestSudokuBoard
 from sudoku.test_sudoku_game import TestSudokuGame
+from sudoku.test_api import TestSudokuApi
 from diezmil.test_diez_mil import TestDiezMil
 
 
@@ -36,6 +37,7 @@ def suite():
     # SUDOKU
     test_suite.addTest(unittest.makeSuite(TestSudokuBoard))
     test_suite.addTest(unittest.makeSuite(TestSudokuGame))
+    test_suite.addTest(unittest.makeSuite(TestSudokuApi))
     # DIEZ MIL
     test_suite.addTest(unittest.makeSuite(TestDiezMil))
     # GUESS NUMBER GAME
