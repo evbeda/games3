@@ -18,23 +18,23 @@ class Uno():
                 self.stack.stack_cards.pop())
         else:
             card = self.player.selected_card(command)
-            is_valid_card = card.is_valid(self.stack.discard_cards)
+            is_valid_card = card.is_valid(self.stack.discard_cards[-1])
             if is_valid_card is False:
                 return "Your card is not valid"
             else:
                 self.player.cards_player.remove(card)
                 self.stack.put_card_in_discard(card)
-                self.is_winner()
+                return self.winner()
 
-    def is_winner(self):
-        if self.player.show_player_cards == []:
+    def winner(self):
+        if self.player.cards_player == []:
             self.is_playing = False
             return "You WON"
 
     def build_board(self):
         board = "Your cards are: \n"
-        player_cards = self.player.show_player_cards()
-        last_card_played = self.stack.show_last_card_played()
+        player_cards = self.player.cards_player
+        last_card_played = self.stack.discard_cards[-1]
         for card in player_cards:
             board += card
             board += "\n"
