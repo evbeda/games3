@@ -111,7 +111,7 @@ class TestRuleta(unittest.TestCase):
         bet_type = bet(bet_value, ammount)
         self.assertEqual(
             bet_type.calculate_award(chosen_number),
-            award
+            award,
         )
 
     # Test for the game roullete
@@ -137,8 +137,17 @@ class TestRuleta(unittest.TestCase):
         self.assertEqual(50, self.player.money)
 
     def test_croupier_add_a_bet(self):
-        self.croupier.add_bet(StraightBet([13], 10))
+        self.croupier.add_bet(StraightBet([13], 10), 25)
         self.assertEqual(1, len(self.croupier.bets))
+
+    def test_croupier_reset_bets(self):
+        self.player = Player(50)
+        self.croupier = Croupier(self.player)
+        self.croupier.add_bet(StraightBet([30], 25), 25)
+        self.croupier.calculate_total_award(30)
+        self.assertEqual(self.player.money, 900)
+
+
 
 
 if __name__ == '__main__':

@@ -38,9 +38,8 @@ class GameRoulette:
         else:
             try:
                 bet_type, bet_values, ammount = self.resolve_command(command)
-                self.croupier.discount_money_from_player(ammount)
                 self.croupier.add_bet(
-                    BetCreator.create(bet_type, bet_values, ammount))
+                    BetCreator.create(bet_type, bet_values, ammount), amount)
                 return 'Your bet was saved succesfully'
             except OutOfCashException:
                 return f'Not enough cash! you have {self.player1.money}'
