@@ -3,6 +3,7 @@ from unittest.mock import patch
 from parameterized import parameterized
 from .diez_mil import DiezMil
 from .play import Play
+from .turn import Turn
 
 
 class TestDiezMil(unittest.TestCase):
@@ -17,29 +18,29 @@ class TestDiezMil(unittest.TestCase):
 
     #play testings
     def test_roll_dices_error(self):
-        dice_qty = self.play.play_dices(7)
-        self.assertEqual(dice_qty, False)
+        self.assertEqual(self.play.roll_dices(7), False)
 
     @patch('diezmil.play.random.randint', return_value=1)
     def test_roll_5_dices(self, mock_randint):
-        dice_qty = self.play.play_dices(5)
+        self.play.roll_dices(5)
         self.assertEqual(self.play.dices, [1, 1, 1, 1, 1])
 
     @patch('diezmil.play.random.randint', return_value=1)
     def test_roll_3_dices(self, mock_randint):
-        dice_qty = self.play.play_dices(3)
+        self.play.roll_dices(3)
         self.assertEqual(self.play.dices, [1, 1, 1])
 
     @parameterized.expand([
-        ([1, 5, 5], 200),
-        ([1, 5], 150),
-        ([1, 5, 1, 2, 3], 250),
-        ([2, 3, 2], 0),
-        ([5], 50),
+        ([1, 5, 5], ([1, 5, 5], 200)),
+        ([1, 5], ([1, 5], 150)),
+        ([1, 5, 1, 2, 3], ([1, 1, 5], 250)),
+        ([2, 3, 2], ([], 0)),
+        ([5], ([5], 50)),
     ])
     def test_individual_values(self, dices, expected_score):
         score = self.play.calculate_individual_values(dices)
         self.assertEqual(score, expected_score)
+
     # Test is a stair
     @parameterized.expand([
         ([1, 2, 3, 4, 5], True),
@@ -76,13 +77,25 @@ class TestDiezMil(unittest.TestCase):
     @parameterized.expand([
         ([1, 1, 1, 4, 5], ([1, 1, 1], 1000)),
         ([1, 1, 1, 1, 5], ([1, 1, 1, 1], 2000)),
-        ([1, 4, 3, 4, 5], ([], 0)),
+        ([1, 4, 3, 4, 5], ([1, 5], 150)),
         ([3, 3, 3, 4, 5], ([3, 3, 3], 300)),
         ([4, 4, 4, 4, 5], ([4, 4, 4, 4], 800)),
         ([1, 1, 1, 1, 1], ([1, 1, 1, 1, 1], 10000)),
     ])
     def test_check_combination(self, dices, expected_result):
         self.assertEqual(self.play.check_combination(dices), expected_result)
+
+    def test_first_play_of_the_turn_five_dices(self):
+        turn = Turn()
+        turn.generate_play()
+        self.assertEqual(len(turn.plays[-1].dices), 5)
+
+    def test_after_plays_of_the_same_turn(self):
+        turn = Turn()
+        turn.generate_play()
+        turn.plays[-1].select_dices([0, 1])
+        turn.generate_play()
+        self.assertEqual(len(turn.plays[-1].dices), 3)
 
 
 if __name__ == '__main__':
