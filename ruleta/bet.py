@@ -88,7 +88,7 @@ class EvenOddBet(Bet):
 bet_types = {
     'STRAIGHT_BET': StraightBet,
     'COLOR_BET': ColorBet,
-    'EVENODD_BET': EvenOddBet,
+    'EVEN_ODD_BET': EvenOddBet,
 }
 
 
@@ -109,4 +109,6 @@ class BetCreator:
         menu = ''
         for bet in bet_types:
             menu += bet.name
+        else:
+            menu += 'GO'
         return menu
