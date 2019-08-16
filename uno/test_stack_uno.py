@@ -1,7 +1,6 @@
 import unittest
 from parameterized import parameterized
 from .stack import Stack
-from .card import Card
 from .card import (
     NumberCard,
     ReverseCard,
@@ -30,16 +29,6 @@ class TestStack(unittest.TestCase):
                 count += 1
         return count
 
-    def test_take_card(self):
-        stack = Stack()
-        self.assertIsInstance(stack.take_card(), Card)
-
-    def test_len_cards(self):
-        stack = Stack()
-        len_previous_stack = len(stack.stack_cards)
-        stack.take_card()
-        self.assertEqual(len_previous_stack-1, len(stack.stack_cards))
-
     @parameterized.expand([
         ('number', 80),
         ('skip', 8),
@@ -54,7 +43,14 @@ class TestStack(unittest.TestCase):
     def test_stack_empty(self):
         stack = Stack()
         for i in range(0, 30):
-            stack.discard.append(stack.take_card())
+            stack.discard_cards.append(stack.stack_cards.pop())
         stack.stack_cards = []
-        stack.is_stack_empty()
-        self.assertEqual(29, len(stack.stack_cards))
+        discard_cards = stack.discard_cards
+        stack.recreate_stack()
+        for i in stack.stack_cards:
+            self.assertIn(i, discard_cards)
+
+    def test_cards_player(self):
+        stack = Stack()
+        cards_player = stack.generate_cards_player()
+        self.assertEqual(7, len(cards_player))

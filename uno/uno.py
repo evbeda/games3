@@ -21,8 +21,27 @@
 #     def shuffleAll(self):
 #         pass
 from .stack import Stack
+from .player import Player
 
 
 class Uno():
     def __init__(self):
+        self.is_playing = True
         self.stack = Stack()
+        self.player = Player(self.stack)
+        self.stack.put_card_in_discard()
+
+    def play(self, command):
+        if command == 'END GAME':
+            self.is_playing = False
+            return 'Bye'
+        elif command == '0':
+            return self.player.cards_player.pop(self.stack.stack_cards)
+        else:
+            card = self.player.selected_card(command)
+            is_valid_card = card.is_valid(self.stack.discard_cards)
+            if is_valid_card is False:
+                return "Your card is not valid"
+            else:
+                self.player.cards_player.remove(card)
+                self.stack.put_card_in_discard(card)
