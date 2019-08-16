@@ -10,7 +10,8 @@ import random
 
 class Stack():
     def __init__(self):
-        self.cards = self.generate_cards()
+        self.stack_cards = self.generate_cards()
+        self.discard = []
 
     def generate_cards(self):
         generated_cards = []
@@ -49,4 +50,10 @@ class Stack():
         return generated_cards
 
     def take_card(self):
-        return self.cards.pop()
+        return self.stack_cards.pop()
+
+    def is_stack_empty(self):
+        discard = self.discard
+        self.discard = self.discard.pop()
+        random.shuffle(discard)
+        self.stack_cards = discard

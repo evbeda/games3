@@ -25,7 +25,7 @@ class TestStack(unittest.TestCase):
             'wild': WildCard
         }
         count = 0
-        for card in stack.cards:
+        for card in stack.stack_cards:
             if type(card) == types[card_type]:
                 count += 1
         return count
@@ -36,9 +36,9 @@ class TestStack(unittest.TestCase):
 
     def test_len_cards(self):
         stack = Stack()
-        len_previous_stack = len(stack.cards)
+        len_previous_stack = len(stack.stack_cards)
         stack.take_card()
-        self.assertEqual(len_previous_stack-1, len(stack.cards))
+        self.assertEqual(len_previous_stack-1, len(stack.stack_cards))
 
     @parameterized.expand([
         ('number', 80),
@@ -50,3 +50,11 @@ class TestStack(unittest.TestCase):
     ])
     def test_stack_number_cards_quantity(self, card_type, quantity):
         self.assertEqual(self._count_type_cards(card_type), quantity)
+
+    def test_stack_empty(self):
+        stack = Stack()
+        for i in range(0, 30):
+            stack.discard.append(stack.take_card())
+        stack.stack_cards = []
+        stack.is_stack_empty()
+        self.assertEqual(29, len(stack.stack_cards))
