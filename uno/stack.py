@@ -1,11 +1,13 @@
-from .const import YELLOW, GREEN, BLUE, RED
-from .card import NumberCard
-from .card import ReverseCard
-from .card import SkipCard
-from .card import DrawTwoCard
-from .card import DrawFourCard
-from .card import WildCard
 import random
+from .const import YELLOW, GREEN, BLUE, RED
+from .card import (
+    NumberCard,
+    ReverseCard,
+    SkipCard,
+    DrawTwoCard,
+    DrawFourCard,
+    WildCard,
+)
 
 
 class Stack():
@@ -69,5 +71,3 @@ class Stack():
             cards_qty += 1
         return cards_player
 
-    def show_last_card_played(self):
-        return self.discard_cards[-1]
