@@ -83,13 +83,6 @@ class TestDiezMil(unittest.TestCase):
     def test_roll_3_dices(self, mock_randint):
         self.play.roll_dices(3)
         self.assertEqual(self.play.dices, [1, 1, 1])
-        dices = self.play.play_dices(5)
-        self.assertEqual(dices, [1, 1, 1, 1, 1])
-
-    @patch('diezmil.play.random.randint', return_value=1)
-    def test_roll_3_dices(self, mock_randint):
-        dices = self.play.play_dices(3)
-        self.assertEqual(dices, [1, 1, 1])
 
     @parameterized.expand([
         ([1, 5, 5], ([1, 5, 5], 200)),
