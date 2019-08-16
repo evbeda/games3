@@ -29,13 +29,15 @@ class TestTurn(unittest.TestCase):
 
     def test_player_loses_on_first_throw(self):
         losing_dice = [(1, 2), (1, 1), (6, 6)]
-        for dice in losing_dice:
-            self.assertEqual(self.turn.get_next_state(dice), PLAYER_LOST)
+        for die in losing_dice:
+            self.turn.dice = die
+            self.assertEqual(self.turn.get_next_state(), PLAYER_LOST)
 
     def test_player_wins_on_first_throw(self):
         winning_dice = [(4, 3), (5, 2), (6, 1), (5, 6)]
-        for dice in winning_dice:
-            self.assertEqual(self.turn.get_next_state(dice), PLAYER_WON)
+        for die in winning_dice:
+            self.turn.dice = die
+            self.assertEqual(self.turn.get_next_state(), PLAYER_WON)
 
     @parameterized.expand([
         ((2, 2), 4),
@@ -103,8 +105,6 @@ class TestTurn(unittest.TestCase):
         bet4 = PassBet(2, (5, 5))
         self.turn.bets = [bet1, bet2, bet3, bet4]
 
-    # REFACTOR
-
     @parameterized.expand([
         (PLAYER_WON, [0, 3]),   # Activate PASS_BETS
         (PLAYER_LOST, [1, 2])   # Activate DO_NOT_PASS_BETS
@@ -115,7 +115,7 @@ class TestTurn(unittest.TestCase):
         expected_activated_bets = []
         for index in expected_bets_index:
             expected_activated_bets.append(self.turn.bets[index])
-        actual_activated_bets = self.turn.check_bets((5, 5))
+        actual_activated_bets = self.turn.check_bets()
         self.assertEqual(actual_activated_bets, expected_activated_bets)
 
     @parameterized.expand([
@@ -128,7 +128,7 @@ class TestTurn(unittest.TestCase):
         expected_remaining_bets = []
         for index in expect_remaining_bets_index:
             expected_remaining_bets.append(self.turn.bets[index])
-        self.turn.check_bets((5, 5))
+        self.turn.check_bets()
         actual_remaining_bets = self.turn.bets
         self.assertEqual(actual_remaining_bets, expected_remaining_bets)
 
@@ -139,6 +139,6 @@ class TestTurn(unittest.TestCase):
     def test_pay_bets(self, state, expected_payment):
         self._set_bets()
         self.turn.state = state
-        payment = self.turn.pay_bets((5, 5))
+        payment = self.turn.pay_bets()
         self.assertEqual(payment, expected_payment)
     # END REFACTOR

@@ -38,9 +38,9 @@ class CrapsGame:
             self.is_playing = False
             return 'Game Over'
         if user_input == 'Go':
-            turn_dice = self.turn.shoot()
-            self.money += self.turn.pay_bets(turn_dice)
-            return turn_dice
+            self.turn.shoot()
+            self.money += self.turn.pay_bets()
+            return self.turn.dice
         try:
             bet_type, amount, bet_values = \
                 CrapsGame.resolve_command(user_input)
@@ -53,6 +53,15 @@ class CrapsGame:
         except OutOfCashException:
             return OUT_OF_CASH
 
+    def decrease_money(self, amount):
+        if amount >= self.money:
+            raise OutOfCashException()
+        self.money -= amount
+
+    # @property
+    # def board(self):
+    #     return self.turn.point
+
     # command like
     # BETNAME amount dice_options
     @staticmethod
@@ -64,12 +73,3 @@ class CrapsGame:
         if len(bet_values) > 2:
             bet_values = bet_values[0:2]
         return (bet_type, amount, bet_values)
-
-    def decrease_money(self, amount):
-        if amount >= self.money:
-            raise OutOfCashException()
-        self.money -= amount
-
-    # @property
-    # def board(self):
-    #     return self.turn.point
