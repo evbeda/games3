@@ -5,6 +5,7 @@ class Croupier:
     def __init__(self, player):
         self.player = player
         self.bets = []
+        self.in_a_turn = False
 
     def discount_money_from_player(self, ammount):
         if ammount >= self.player.money:
@@ -20,5 +21,3 @@ class Croupier:
             self.player.money += bet.calculate_award(chosen_number)
         else:
             self.bets = []
-
-

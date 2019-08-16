@@ -8,6 +8,17 @@ from .board import get_color_from_number
 from .board import get_dozen_from_number
 from .croupier import Croupier
 
+# Messages
+from . import SUCCESS_MESSAGE
+from . import NOT_ENOUGH_CASH_MESSAGE
+from . import INVALID_BET_MESSAGE
+from . import INVALID_BET_TYPE_MESSAGE
+from . import BYE_MESSAGE
+from . import END_GAME_COMMAND
+from . import NEXT_TURN_COMMAND
+from . import GO_COMMAND
+from . import SELECT_A_TYPE_OF_BET_MESSAGE
+
 # Exceptions
 from .exceptions.invalid_bet_exception import InvalidBetException
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
@@ -29,6 +40,7 @@ class TestRuleta(unittest.TestCase):
     def setUp(self):
         self.player = Player(100)
         self.croupier = Croupier(self.player)
+        self.game = GameRoulette()
 
     # Test for the roullete
     def test_numbers(self):
@@ -116,14 +128,19 @@ class TestRuleta(unittest.TestCase):
 
     # Test for the game roullete
     def test_resolve_command_method(self):
-        game = GameRoulette()
-        result = game.resolve_command('STRAIGHT_BET 14 100')
+        result = self.game.resolve_command('STRAIGHT_BET 14 100')
         self.assertEqual(('STRAIGHT_BET', [14], 100), result)
 
-    def test_user_type_END_and_next_turn_method_return_GAMEOVER(self):
-        game = GameRoulette()
-        game.play('END_GAME')
-        self.assertEqual('Game over', game.next_turn())
+    @parameterized.expand([
+        (NEXT_TURN_COMMAND, SELECT_A_TYPE_OF_BET_MESSAGE),
+        (END_GAME_COMMAND, BYE_MESSAGE),
+        ('STRAIGHT_BET 10 15', SUCCESS_MESSAGE),
+        ('STRAIGHT_BET 40 10', INVALID_BET_MESSAGE),
+        ('INVALID_BET 10 15', INVALID_BET_TYPE_MESSAGE),
+        ('STRAIGHT_BET 20 200', NOT_ENOUGH_CASH_MESSAGE)
+    ])
+    def test_user_typing_return_message(self, input, expected_message):
+        self.assertEqual(expected_message, self.game.play(input))
 
     # Test for the croupier
     def test_player_bets_100_but_have_50_should_fail(self):
@@ -146,8 +163,6 @@ class TestRuleta(unittest.TestCase):
         self.croupier.add_bet(StraightBet([30], 25), 25)
         self.croupier.calculate_total_award(30)
         self.assertEqual(self.player.money, 900)
-
-
 
 
 if __name__ == '__main__':
