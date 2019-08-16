@@ -9,9 +9,7 @@ from . import (
 
 
 class Board:
-    def __init__(self, board=None):
-        # if board is None:
-        #     board = fetch_board()
+    def __init__(self, board):
         self.board = self.build_board(board)
 
     def build_board(self, board):

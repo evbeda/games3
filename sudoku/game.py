@@ -1,24 +1,16 @@
-from .board import Board
 from . import NUMBER_ADDED, PLACE_A_NUMBER, GAME_OVER, YOU_WIN
+from .board import Board
+from .api import fetch_board
 
 
 class SudokuGame:
 
     name = 'Sudoku Game'
 
-    def __init__(self):
-        # Hardcoded for tests. Should use get_board api
-        self.game_board = Board(
-            " 6 3  8 4"
-            "537 9    "
-            " 4   63 7"
-            " 9  51238"
-            "         "
-            "71362  4 "
-            "3 64   1 "
-            "    6 523"
-            "1 2  9 8 "
-        )
+    def __init__(self, board=None):
+        if not board:
+            board = fetch_board()
+        self.game_board = Board(board)
         self.is_playing = True
 
     def next_turn(self):

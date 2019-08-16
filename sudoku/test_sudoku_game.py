@@ -2,6 +2,7 @@ import unittest
 from parameterized import parameterized
 from .game import SudokuGame
 from .board import Board
+from .api import mocked_requests_get
 from . import (
     NUMBER_ADDED,
     YOU_WIN,
@@ -10,13 +11,15 @@ from . import (
     NOT_MODIFIABLE,
     REPEATED_ON_COLUMN,
     REPEATED_ON_ROW,
-    REPEATED_ON_REGION
+    REPEATED_ON_REGION,
+    EXAMPLE_BOARD,
+    API_BOARD,
 )
 
 
 class TestSudokuGame(unittest.TestCase):
     def setUp(self):
-        self.game = SudokuGame()
+        self.game = SudokuGame(EXAMPLE_BOARD)
 
     def test_initial_next_turn(self):
         self.assertEqual(self.game.next_turn(), PLACE_A_NUMBER)
@@ -78,3 +81,12 @@ class TestSudokuGame(unittest.TestCase):
             "172539486"
         )
         self.assertEqual(self.game.play("a 1 2"), YOU_WIN)
+
+    def test_play_with_specific_board(self):
+        game = SudokuGame(EXAMPLE_BOARD)
+        self.assertEqual(game.game_board.board, Board(EXAMPLE_BOARD).board)
+
+    @unittest.mock.patch('requests.get', side_effect=mocked_requests_get)
+    def test_play_with_fetched_board(self, mocked_requests_get):
+        game = SudokuGame()
+        self.assertEqual(game.game_board.board, Board(API_BOARD).board)

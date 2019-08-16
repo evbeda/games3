@@ -6,22 +6,13 @@ from . import (
     REPEATED_ON_COLUMN,
     REPEATED_ON_ROW,
     REPEATED_ON_REGION,
+    EXAMPLE_BOARD,
 )
 
 
 class TestSudokuBoard(unittest.TestCase):
     def setUp(self):
-        self.board = Board(
-            " 6 3  8 4"
-            "537 9    "
-            " 4   63 7"
-            " 9  51238"
-            "         "
-            "71362  4 "
-            "3 64   1 "
-            "    6 523"
-            "1 2  9 8 "
-        )
+        self.board = Board(EXAMPLE_BOARD)
         self.finished_board = Board(
             "261375894"
             "537894162"
@@ -207,3 +198,4 @@ class TestSudokuBoard(unittest.TestCase):
 
     def test_is_finished_for_a_finished_board(self):
         self.assertTrue(self.finished_board.is_finished())
+
