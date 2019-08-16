@@ -21,10 +21,6 @@ class SudokuGame:
         )
         self.is_playing = True
 
-    # TODO use API
-    # def get_board(self):
-    #     pass
-
     def next_turn(self):
         if self.is_playing:
             return PLACE_A_NUMBER

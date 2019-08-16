@@ -1,14 +1,18 @@
 import math
+import requests
 from . import (
     NOT_MODIFIABLE,
     REPEATED_ON_COLUMN,
     REPEATED_ON_ROW,
     REPEATED_ON_REGION,
+    API_URL
 )
 
 
 class Board:
-    def __init__(self, board):
+    def __init__(self, board=None):
+        # if board is None:
+        #     board = self.fetch_board()
         self.board = self.build_board(board)
 
     def parse_api_response(self, response):
@@ -21,6 +25,10 @@ class Board:
         flat_matrix = [column for row in result for column in row]
 
         return ''.join(flat_matrix)
+
+    def fetch_board(self):
+        response = requests.get(API_URL)
+        return self.parse_api_response(response.json())
 
     def build_board(self, board):
         return {
