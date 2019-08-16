@@ -94,3 +94,15 @@ class TestCraps(unittest.TestCase):
     def test_craps_decrease_money_exception(self):
         with self.assertRaises(OutOfCashException):
             self.game.decrease_money(1200)
+
+    @patch('random.sample', return_value=(1, 1))
+    def test_craps_pay_bets_give_money(self, _):
+        # bets 50 on winning and 100 on losing
+        # 850 money remaining
+        # loses (because of the patch), so wins 200
+        # 1050 money remaining
+        expected_money = 1050
+        self.game.play("PASS_BET 50")
+        self.game.play("DO_NOT_PASS_BET 100")
+        self.game.play("Go")
+        self.assertEqual(self.game.money, expected_money)
