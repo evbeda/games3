@@ -1,15 +1,12 @@
 from .bet import BetCreator
 from .croupier import Croupier
 from .player import Player
-from . import SUCCESS_MESSAGE
-from . import NOT_ENOUGH_CASH_MESSAGE
-from . import INVALID_BET_MESSAGE
-from . import INVALID_BET_TYPE_MESSAGE
-from . import BYE_MESSAGE
-from . import NEXT_TURN_COMMAND
-from . import END_GAME_COMMAND
-from . import GO_COMMAND
-from . import SELECT_A_TYPE_OF_BET_MESSAGE
+from . import SUCCESS_MESSAGE, NOT_ENOUGH_CASH_MESSAGE \
+, INVALID_BET_MESSAGE \
+, INVALID_BET_TYPE_MESSAGE \
+, BYE_MESSAGE \
+, END_GAME_COMMAND \
+, GO_COMMAND \
 # Exceptions
 from .exceptions.out_of_cash_exception import OutOfCashException
 from .exceptions.invalid_bet_exception import InvalidBetException
@@ -21,14 +18,10 @@ class GameRoulette:
 
     def __init__(self):
         self.is_playing = True
-        self.in_a_turn = False
         self.croupier = Croupier(Player(100))
 
     def next_turn(self):
-        if self.in_a_turn:
-            return BetCreator.list_bets()
-        else:
-            return NEXT_TURN_COMMAND + '\n' + END_GAME_COMMAND
+        return BetCreator.list_bets() + 'GO\n END_GAME'
 
     def play(self, command):
         '''
@@ -38,11 +31,7 @@ class GameRoulette:
         GO
         QUIT
         '''
-        if command == NEXT_TURN_COMMAND:
-            self.in_a_turn = True
-            self.croupier.new_round()
-            return SELECT_A_TYPE_OF_BET_MESSAGE
-        elif command == END_GAME_COMMAND:
+        if command == END_GAME_COMMAND:
             self.is_playing = False
             return BYE_MESSAGE
         elif command == GO_COMMAND:
