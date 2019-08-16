@@ -104,45 +104,41 @@ class TestTurn(unittest.TestCase):
         self.turn.bets = [bet1, bet2, bet3, bet4]
 
     # REFACTOR
-    def test_check_bets_get_activated_pass_bets(self):
+
+    @parameterized.expand([
+        (PLAYER_WON, [0, 3]),   # Activate PASS_BETS
+        (PLAYER_LOST, [1, 2])   # Activate DO_NOT_PASS_BETS
+    ])
+    def test_check_bets_get_activated(self, state, expected_bets_index):
         self._set_bets()
-        self.turn.state = PLAYER_WON
-        expected_activated_bets = [self.turn.bets[0], self.turn.bets[3]]
+        self.turn.state = state
+        expected_activated_bets = []
+        for index in expected_bets_index:
+            expected_activated_bets.append(self.turn.bets[index])
         actual_activated_bets = self.turn.check_bets((5, 5))
         self.assertEqual(actual_activated_bets, expected_activated_bets)
 
-    def test_check_bets_get_activated_do_not_pass_bets(self):
+    @parameterized.expand([
+        (PLAYER_WON, [1, 2]),   # Only remains DO_NOT_PASS_BETS
+        (PLAYER_LOST, [0, 3])   # Only remains PASS_BETS
+    ])
+    def test_check_bets_get_deleted(self, state, expect_remaining_bets_index):
         self._set_bets()
-        self.turn.state = PLAYER_LOST
-        expected_activated_bets = [self.turn.bets[1], self.turn.bets[2]]
-        actual_activated_bets = self.turn.check_bets((5, 5))
-        self.assertEqual(actual_activated_bets, expected_activated_bets)
-
-    def test_check_bets_deleted_pass_bets(self):
-        self._set_bets()
-        self.turn.state = PLAYER_WON
-        expected_remaining_bets = [self.turn.bets[1], self.turn.bets[2]]
+        self.turn.state = state
+        expected_remaining_bets = []
+        for index in expect_remaining_bets_index:
+            expected_remaining_bets.append(self.turn.bets[index])
         self.turn.check_bets((5, 5))
         actual_remaining_bets = self.turn.bets
         self.assertEqual(actual_remaining_bets, expected_remaining_bets)
 
-    def test_check_bets_deleted_do_not_pass_bets(self):
+    @parameterized.expand([
+        (PLAYER_WON, 7*2),      # win PASS_BETS
+        (PLAYER_LOST, 23*2)     # win DO_NOT_PASS_BETS
+    ])
+    def test_pay_bets(self, state, expected_payment):
         self._set_bets()
-        self.turn.state = PLAYER_LOST
-        expected_remaining_bets = [self.turn.bets[0], self.turn.bets[3]]
-        self.turn.check_bets((5, 5))
-        actual_remaining_bets = self.turn.bets
-        self.assertEqual(actual_remaining_bets, expected_remaining_bets)
-
-    def test_pay_bets_pass_bets(self):
-        self._set_bets()
-        self.turn.state = PLAYER_WON
+        self.turn.state = state
         payment = self.turn.pay_bets((5, 5))
-        self.assertEqual(payment, 7*2)
-
-    def test_pay_bets_do_not_pass_bets(self):
-        self._set_bets()
-        self.turn.state = PLAYER_LOST
-        payment = self.turn.pay_bets((5, 5))
-        self.assertEqual(payment, 23*2)
+        self.assertEqual(payment, expected_payment)
     # END REFACTOR
