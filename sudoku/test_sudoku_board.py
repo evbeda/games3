@@ -7,7 +7,24 @@ from . import (
     REPEATED_ON_COLUMN,
     REPEATED_ON_ROW,
     REPEATED_ON_REGION,
+    API_URL
 )
+
+
+def _mocked_requests_get(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, json_data, status_code):
+            self.json_data = json_data
+            self.status_code = status_code
+
+        def json(self):
+            return self.json_data
+
+    if args[0] == API_URL:
+        with open('sudoku/api_response_example.json', 'r') as f:
+            return MockResponse(json.load(f), 200)
+
+    return MockResponse(None, 404)
 
 
 class TestSudokuBoard(unittest.TestCase):
@@ -34,6 +51,15 @@ class TestSudokuBoard(unittest.TestCase):
             "489167523"
             "172539486"
         )
+        self.api_board = "8   7  9 " \
+            " 5 4 9 7 " \
+            "749 6 5  " \
+            "  3    29" \
+            " 7432 8  " \
+            "  21 5 34" \
+            "  8 3 1 5" \
+            "16 9 4 82" \
+            "2 5681 4 "
 
     def test_existing_numbers_are_not_modifiable(self):
         self.assertFalse(self.board.is_modifiable('A', 2))
@@ -155,7 +181,6 @@ class TestSudokuBoard(unittest.TestCase):
         self.board.place(coordinates, value)
         self.assertEqual(self.board.board[row][column - 1]['val'], str(value))
 
-    # Checked in order: row, column, region
     @parameterized.expand([
         (('a', 1), 3, REPEATED_ON_ROW),
         (('b', 8), 4, REPEATED_ON_COLUMN),
@@ -170,7 +195,7 @@ class TestSudokuBoard(unittest.TestCase):
         row, column = coordinates
         with self.assertRaises(Exception) as cm:
             self.board.place(coordinates, value)
-        self.assertIn(message, str(cm.exception))  # check
+        self.assertIn(message, str(cm.exception))
         self.assertEqual(self.board.board[row][column - 1]['val'], ' ')
 
     @parameterized.expand([
@@ -214,15 +239,12 @@ class TestSudokuBoard(unittest.TestCase):
         response = None
         with open('sudoku/api_response_example.json', 'r') as f:
             response = json.load(f)
-        expected = "8   7  9 " \
-                   " 5 4 9 7 " \
-                   "749 6 5  " \
-                   "  3    29" \
-                   " 7432 8  " \
-                   "  21 5 34" \
-                   "  8 3 1 5" \
-                   "16 9 4 82" \
-                   "2 5681 4 "
         parsed = self.board.parse_api_response(response)
+        expected = self.api_board
         self.assertEqual(parsed, expected)
 
+    @unittest.mock.patch('requests.get', side_effect=_mocked_requests_get)
+    def test_fetch_board(self, mocked_request):
+        response = self.board.fetch_board()
+        mocked_request.assert_called_with(API_URL)
+        self.assertEqual(response, self.api_board)
