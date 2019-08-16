@@ -11,6 +11,17 @@ class Board:
     def __init__(self, board):
         self.board = self.build_board(board)
 
+    def parse_api_response(self, response):
+        result = [[' ' for i in range(9)] for j in range(9)]
+        squares = response['squares']
+        for square in squares:
+            x = square['x']
+            y = square['y']
+            result[x][y] = str(square['value'])
+        flat_matrix = [column for row in result for column in row]
+
+        return ''.join(flat_matrix)
+
     def build_board(self, board):
         return {
             "a": [

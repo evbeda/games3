@@ -1,3 +1,4 @@
+import json
 import unittest
 from parameterized import parameterized
 from .board import Board
@@ -208,3 +209,20 @@ class TestSudokuBoard(unittest.TestCase):
 
     def test_is_finished_for_a_finished_board(self):
         self.assertTrue(self.finished_board.is_finished())
+
+    def test_parse_api_response(self):
+        response = None
+        with open('sudoku/api_response_example.json', 'r') as f:
+            response = json.load(f)
+        expected = "8   7  9 " \
+                   " 5 4 9 7 " \
+                   "749 6 5  " \
+                   "  3    29" \
+                   " 7432 8  " \
+                   "  21 5 34" \
+                   "  8 3 1 5" \
+                   "16 9 4 82" \
+                   "2 5681 4 "
+        parsed = self.board.parse_api_response(response)
+        self.assertEqual(parsed, expected)
+
