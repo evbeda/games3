@@ -129,6 +129,4 @@ class BetCreator:
         menu = ''
         for bet in bet_types:
             menu += bet.name
-        else:
-            menu += 'GO'
         return menu

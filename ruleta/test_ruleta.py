@@ -10,15 +10,12 @@ from .board import get_dozen_from_number
 from .croupier import Croupier
 
 # Messages
-from . import SUCCESS_MESSAGE
-from . import NOT_ENOUGH_CASH_MESSAGE
-from . import INVALID_BET_MESSAGE
-from . import INVALID_BET_TYPE_MESSAGE
-from . import BYE_MESSAGE
-from . import END_GAME_COMMAND
-from . import NEXT_TURN_COMMAND
-from . import GO_COMMAND
-from . import SELECT_A_TYPE_OF_BET_MESSAGE
+from . import SUCCESS_MESSAGE, NOT_ENOUGH_CASH_MESSAGE \
+, INVALID_BET_MESSAGE \
+, INVALID_BET_TYPE_MESSAGE \
+, BYE_MESSAGE \
+, END_GAME_COMMAND \
+, GO_COMMAND \
 
 # Exceptions
 from .exceptions.invalid_bet_exception import InvalidBetException
@@ -134,7 +131,6 @@ class TestRuleta(unittest.TestCase):
         self.assertEqual(('STRAIGHT_BET', [14], 100), result)
 
     @parameterized.expand([
-        (NEXT_TURN_COMMAND, SELECT_A_TYPE_OF_BET_MESSAGE),
         (END_GAME_COMMAND, BYE_MESSAGE),
         ('STRAIGHT_BET 10 15', SUCCESS_MESSAGE),
         ('STRAIGHT_BET 40 10', INVALID_BET_MESSAGE),
