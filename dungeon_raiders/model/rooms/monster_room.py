@@ -3,9 +3,10 @@ from .room import Room
 
 class MonsterRoom(Room):
 
-    def __init__(self, life, damage):
-        self.life = life
-        self.damage = damage
+    def __init__(self, characteristics):
+        self.life = characteristics[0]
+        self.damage = characteristics[1]
+        self.name = characteristics[2]
 
     def resolve_room(self, hands):
         # Determine played cards

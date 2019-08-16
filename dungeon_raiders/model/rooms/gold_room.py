@@ -3,8 +3,10 @@ from .trap import Trap
 
 class GoldRoom(Trap):
 
-    def __init__(self, effects):
-        super().__init__(effects)
+    def __init__(self, characteristics):
+        self.name = characteristics[0]
+        self.effects = characteristics[1]
+        super().__init__(self.effects)
 
     def determine_affected_players(self, hands):
         affected_players = []
@@ -26,7 +28,9 @@ class GoldRoom(Trap):
         # Determine damage
         played_cards = [hand.last_card_played for hand in hands]
         max_card = max(played_cards)
-        trap_effect = self.effects[max_card-1]
+        for elem in self.effects:
+            if elem[0] == max_card:
+                trap_effect = elem[1]
 
         # Apply effect
         for player in affected_players:

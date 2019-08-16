@@ -10,13 +10,20 @@ class Treasure(Room):
         played_cards = [hand.last_card_played for hand in hands]
         cards_second_treasure = []
         max_value = max(played_cards)
-        first_treasure_winners = [(max_value, index) for index, max_value in enumerate(played_cards) if max_value == max(played_cards)]
+        first_treasure_winners = [
+            (max_value, index) for index, max_value in enumerate(played_cards)
+            if max_value == max(played_cards)
+            ]
         for card in played_cards:
             if card == max_value:
                 cards_second_treasure.append(0)
             else:
                 cards_second_treasure.append(card)
-        second_treasure_winners = [(max_value, index) for index, max_value in enumerate(cards_second_treasure) if max_value == max(cards_second_treasure)]
+        second_treasure_winners = [
+            (max_value, index) for index,
+            max_value in enumerate(cards_second_treasure)
+            if max_value == max(cards_second_treasure)
+            ]
 
         first_winners = len(first_treasure_winners)
         first_treasure = self.values[0]
