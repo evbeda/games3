@@ -1,5 +1,22 @@
 import requests
-from . import API_URL
+import json
+from . import API_URL, EXAMPLE_JSON
+
+
+def mocked_requests_get(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, json_data, status_code):
+            self.json_data = json_data
+            self.status_code = status_code
+
+        def json(self):
+            return self.json_data
+
+    if args[0] == API_URL:
+        with open(EXAMPLE_JSON, 'r') as f:
+            return MockResponse(json.load(f), 200)
+
+    return MockResponse(None, 404)
 
 
 def parse_api_response(response):
