@@ -12,17 +12,17 @@ from .constants import (
 
 BET_SCENARIO = [
         (PassBet(10, (1, 1)), PLAYER_WON, (1, 1), True, 20),
-        (PassBet(20, (1, 1)), PLAYER_LOST, (1, 1), False, 40),
-        (PassBet(30, (1, 1)), GAME_IN_PROGRESS, (1, 1), False, 60),
-        (PassBet(40, (1, 1)), GAME_STARTED, (1, 1), False, 80),
+        (PassBet(20, (1, 1)), PLAYER_LOST, (1, 1), False, 0),
+        (PassBet(30, (1, 1)), GAME_IN_PROGRESS, (1, 1), False, 0),
+        (PassBet(40, (1, 1)), GAME_STARTED, (1, 1), False, 0),
         (DoNotPassBet(10, (1, 1)), PLAYER_LOST, (1, 6), True, 20),
-        (DoNotPassBet(20, (1, 1)), PLAYER_WON, (1, 1), False, 40),
-        (DoNotPassBet(30, (1, 1)), GAME_IN_PROGRESS, (1, 1), False, 60),
-        (DoNotPassBet(40, (1, 1)), GAME_STARTED, (1, 1), False, 80),
-        (DoubleBet(10, (1, 1)), PLAYER_LOST, (1, 1), True, 20),
-        (DoubleBet(20, (2, 2)), PLAYER_WON, (2, 2), True, 40),
-        (DoubleBet(30, (3, 3)), GAME_IN_PROGRESS, (3, 3), True, 60),
-        (DoubleBet(40, (4, 4)), GAME_STARTED, (4, 3), False, 80),
+        (DoNotPassBet(20, (1, 1)), PLAYER_WON, (1, 1), False, 0),
+        (DoNotPassBet(30, (1, 1)), GAME_IN_PROGRESS, (1, 1), False, 0),
+        (DoNotPassBet(40, (1, 1)), GAME_STARTED, (1, 1), False, 0),
+        (DoubleBet(10, (1, 1)), PLAYER_LOST, (1, 1), True, 300),
+        (DoubleBet(20, (2, 2)), PLAYER_WON, (2, 2), True, 160),
+        (DoubleBet(30, (3, 3)), GAME_IN_PROGRESS, (3, 3), True, 300),
+        (DoubleBet(40, (4, 4)), GAME_STARTED, (4, 3), False, 0),
     ]
 
 
@@ -36,7 +36,7 @@ class TestBets(unittest.TestCase):
 
     def test_not_possible_to_pay_in_parent_bet(self):
         with self.assertRaises(NotImplementedError):
-            Bet(10).pay()
+            Bet(10).pay(self.game.turn)
 
     @parameterized.expand([
         ("PASS_BET", PassBet),
@@ -53,10 +53,14 @@ class TestBets(unittest.TestCase):
 
     @parameterized.expand(BET_SCENARIO)
     def test_bet_check_true(self, bet, state, dice, result, *args):
-        self.game.turn.state = state
-        self.game.turn.dice = dice
-        self.assertEqual(bet.check(self.game.turn), result)
+        turn = self.game.turn
+        turn.state = state
+        turn.dice = dice
+        self.assertEqual(bet.check(turn), result)
 
     @parameterized.expand(BET_SCENARIO)
-    def test_bet_pay(self, bet, _state, _dice, _result, expected_payment):
-        self.assertEqual(bet.pay(), expected_payment)
+    def test_bet_pay(self, bet, state, dice, _result, expected_payment):
+        turn = self.game.turn
+        turn.state = state
+        turn.dice = dice
+        self.assertEqual(bet.pay(turn), expected_payment)
