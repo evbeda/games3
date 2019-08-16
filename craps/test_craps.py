@@ -106,3 +106,15 @@ class TestCraps(unittest.TestCase):
         self.game.play("DO_NOT_PASS_BET 100")
         self.game.play("Go")
         self.assertEqual(self.game.money, expected_money)
+
+    @parameterized.expand([
+        (PLAYER_WON, False),
+        (PLAYER_LOST, False),
+        (GAME_IN_PROGRESS, True)
+    ])
+    def test_craps_compare_turn_after_state(self, state, expected):
+        self.game.turn.state = state
+        first_turn = self.game.turn
+        self.game.next_turn()
+        is_same_turn = self.game.turn == first_turn
+        self.assertEqual(is_same_turn, expected)
