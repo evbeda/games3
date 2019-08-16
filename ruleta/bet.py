@@ -43,9 +43,8 @@ class ColorBet(Bet):
     def __init__(self, bet_value, ammount):
         self.validate(bet_value[0])
         self.ammount = ammount
-        self.target_numbers = self.transform_bet_value_to_target_values(bet_value)
-        # super().__init__(self.transform_bet_value_to_target_values(bet_value),
-        #                  ammount)
+        self.target_numbers = \
+            self.transform_bet_value_to_target_values(bet_value)
 
     def transform_bet_value_to_target_values(self, bet_value):
         range_1 = [number for number in all_values if number in range(1, 11)
@@ -72,11 +71,12 @@ class EvenOddBet(Bet):
     name = 'EVEN_ODD_BET\n'
     reward = 2
     # to do same as in ColorBet
+
     def __init__(self, bet_value, ammount):
         self.validate(bet_value[0])
         self.ammount = ammount
-        self.target_numbers = self.transform_bet_value_to_target_values(bet_value)
-
+        self.target_numbers = \
+            self.transform_bet_value_to_target_values(bet_value)
 
     def validate(self, bet_value):
         ''' expect bet_value like "Even" or "Odd" '''
@@ -98,7 +98,7 @@ bet_types = {
 
 class BetCreator:
 
-    def create(self, bet_type, bet_values, ammount):
+    def create(bet_type, bet_values, ammount):
         bet = None
         bet_class = bet_types[bet_type]  # obtain bet Class from dictionary
         bet = bet_class(bet_values, ammount)

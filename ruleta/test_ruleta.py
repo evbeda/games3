@@ -6,14 +6,15 @@ from .player import Player
 from .game_roullete import GameRoulette
 from .board import get_color_from_number
 from .board import get_dozen_from_number
-from parameterized import parameterized
+from .croupier import Croupier
+
 # Exceptions
 from .exceptions.invalid_bet_exception import InvalidBetException
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 from .exceptions.out_of_cash_exception import OutOfCashException
 
 bet_scenario = [
-    #tipo de apuesta, tipo_input, amount, prize, number chosen, won/lose
+    # tipo de apuesta, tipo_input, amount, prize, number chosen, won/lose
     (StraightBet, [36], 25, 875, 36, True),
     (ColorBet, ['Red'], 300, 600, 36, True),
     # (EvenOddBet, ['ODD'], 30, 560, 36, False),
@@ -24,6 +25,10 @@ bet_scenario = [
 
 
 class TestRuleta(unittest.TestCase):
+
+    def setUp(self):
+        self.player = Player(100)
+        self.croupier = Croupier(self.player)
 
     # Test for the roullete
     def test_numbers(self):
@@ -37,7 +42,7 @@ class TestRuleta(unittest.TestCase):
         last_numbers = roulette.get_last_numbers()
         self.assertTrue(last_numbers[-1] == number)
 
-    #Test for the Board
+    # Test for the Board
     @parameterized.expand([
         (36,), (1,), (3,), (5,), (7,), (9,), (12,), (14,), (16,), (18,),
         (19,), (21,), (23,), (25,), (27,), (30,), (32,), (34,), (36,),
@@ -63,21 +68,9 @@ class TestRuleta(unittest.TestCase):
     def test_get_dozen_from_last_number(self, number, dozen):
         self.assertEqual(dozen, get_dozen_from_number(number))
 
-    # Test for the player
-    def test_player_bets_100_but_have_50_should_fail(self):
-        player = Player(50)
-        with self.assertRaises(OutOfCashException):
-            player.dicrement_money(100)
-
-    def test_player_have_100_bets_50_will_have_50(self):
-        player = Player(100)
-        player.dicrement_money(50)
-        self.assertEqual(50, player.money)
-
     # Tests for the bet creator
     def test_straight_bet(self):
-        bet_factory = BetCreator()
-        bet = bet_factory.create('STRAIGHT_BET', [17], 100)
+        bet = BetCreator.create('STRAIGHT_BET', [17], 100)
         self.assertIsInstance(bet, StraightBet)
 
     def test_invalid_type_bet(self):
@@ -131,6 +124,21 @@ class TestRuleta(unittest.TestCase):
         game = GameRoulette()
         game.play('END_GAME')
         self.assertEqual('Game over', game.next_turn())
+
+    # Test for the croupier
+    def test_player_bets_100_but_have_50_should_fail(self):
+        self.croupier = Croupier(Player(50))
+        with self.assertRaises(OutOfCashException):
+            self.croupier.discount_money_from_player(100)
+
+    def test_player_have_100_bets_50_will_have_50(self):
+
+        self.croupier.discount_money_from_player(50)
+        self.assertEqual(50, self.player.money)
+
+    def test_croupier_add_a_bet(self):
+        self.croupier.add_bet(StraightBet([13], 10))
+        self.assertEqual(1, len(self.croupier.bets))
 
 
 if __name__ == '__main__':

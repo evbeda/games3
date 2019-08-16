@@ -1,6 +1,7 @@
 from .bet import BetCreator
-from .player import Player
+from .croupier import Croupier
 from .roulette import Roulette
+from .player import Player
 # Exceptions
 from .exceptions.out_of_cash_exception import OutOfCashException
 from .exceptions.invalid_bet_exception import InvalidBetException
@@ -12,9 +13,8 @@ class GameRoulette:
 
     def __init__(self):
         self.is_playing = True
-        self.player1 = Player(100)
+        self.croupier = Croupier(Player(100))
         self.roulette1 = Roulette()
-        self.round_bets = []
 
     def next_turn(self):
         return BetCreator.list_bets() if self.is_playing else 'Game over'
@@ -33,15 +33,14 @@ class GameRoulette:
         elif command == 'GO':
             pass
             # correr ruleta
-            # ver si el jugador gano
+            # croupier resuelve el award
             # reset round_bets
         else:
             try:
                 bet_type, bet_values, ammount = self.resolve_command(command)
-                self.player1.dicrement_money(ammount)
-                bet_creator = BetCreator()
-                self.round_bets.append(
-                    bet_creator.create(bet_type, bet_values, ammount))
+                self.croupier.discount_money_from_player(ammount)
+                self.croupier.add_bet(
+                    BetCreator.create(bet_type, bet_values, ammount))
                 return 'Your bet was saved succesfully'
             except OutOfCashException:
                 return f'Not enough cash! you have {self.player1.money}'
