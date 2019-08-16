@@ -17,10 +17,10 @@ bet_scenario = [
     # tipo de apuesta, tipo_input, amount, prize, number chosen, won/lose
     (StraightBet, [36], 25, 875, 36, True),
     (ColorBet, ['Red'], 300, 600, 36, True),
-    # (EvenOddBet, ['ODD'], 30, 560, 36, False),
+    (EvenOddBet, ['ODD'], 30, 0, 36, False),
     (StraightBet, [36], 25, 0, 35, False),
     (ColorBet, ['Red'], 300, 0, 35, False),
-    # (EvenOddBet, ['ODD'], 30, 560, 35, True),
+    (EvenOddBet, ['ODD'], 30, 60, 35, True),
 ]
 
 
@@ -110,8 +110,8 @@ class TestRuleta(unittest.TestCase):
     ):
         bet_type = bet(bet_value, ammount)
         self.assertEqual(
-            bet_type.calculate_total_award(chosen_number),
-            award,
+            bet_type.calculate_award(chosen_number),
+            award
         )
 
     # Test for the game roullete
