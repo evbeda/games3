@@ -35,10 +35,7 @@ class GameRoulette:
             self.is_playing = False
             return BYE_MESSAGE
         elif command == GO_COMMAND:
-            self.croupier.play()
-            # correr ruleta
-            # croupier resuelve el award
-            # reset round_bets
+            return self.croupier.play()
         else:
             try:
                 bet_type, bet_values, amount = self.resolve_command(command)
