@@ -33,9 +33,14 @@ class ColoredCard(Card):
 
 class NumberCard(ColoredCard):
 
+    name = 'Number'
+
     def __init__(self, color, number):
         super().__init__(color)
         self.number = number
+
+    def __str__(self):
+        return '{} - {}'.format(self.number, self.color)
 
     def same_number(self, card):
         if self.same_type(card):
@@ -48,20 +53,36 @@ class NumberCard(ColoredCard):
 
 class ReverseCard(ColoredCard):
 
+    name = 'Reverse'
+
     def __init__(self, color):
         super().__init__(color)
+
+    def __str__(self):
+        return '{} - {}'.format(self.name, self.color)
 
 
 class SkipCard(ColoredCard):
 
+    name = 'Skip'
+
     def __init__(self, color):
         super().__init__(color)
 
+    def __str__(self):
+        return '{} - {}'.format(self.name, self.color)
+
 
 class DrawTwoCard(ColoredCard):
+
+    name = 'Draw Two'
+
     def __init__(self, color):
         self.color = color
         self.cardsToDraw = 2
+
+    def __str__(self):
+        return '{} - {}'.format(self.name, self.color)
 
 # TODO This should check the stack, not a previous card. Check camel_case.
     def action(self, previousCard):
@@ -71,8 +92,16 @@ class DrawTwoCard(ColoredCard):
 
 
 class DrawFourCard(PostColoredCard):
-    pass
+
+    name = 'Draw Four'
+
+    def __str__(self):
+        return '{}'.format(self.name)
 
 
 class WildCard(PostColoredCard):
-    pass
+
+    name = 'Wild'
+
+    def __str__(self):
+        return '{}'.format(self.name)

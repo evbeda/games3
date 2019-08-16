@@ -1,6 +1,6 @@
 import unittest
 from parameterized import parameterized
-from .const import RED, YELLOW, GREEN
+from .const import RED, YELLOW, GREEN, BLUE
 from .card import (
     NumberCard,
     ReverseCard,
@@ -11,7 +11,7 @@ from .card import (
 )
 
 
-class TestUno(unittest.TestCase):
+class TestUnoCards(unittest.TestCase):
 
     @parameterized.expand([
         (SkipCard(RED), NumberCard(RED, '1')),
@@ -76,10 +76,10 @@ class TestUno(unittest.TestCase):
     ])
     def test_same_color_invalid_color_to_colored_card(
         self,
-        top_card,
         selected_card,
+        top_card,
     ):
-        self.assertFalse(top_card.same_color(selected_card))
+        self.assertFalse(selected_card.same_color(top_card))
 
     @parameterized.expand([
         (SkipCard(RED), WildCard()),
@@ -214,10 +214,10 @@ class TestUno(unittest.TestCase):
     ])
     def test_is_valid_from_colored_card_to_invalid_colored_card(
         self,
-        top_card,
         selected_card,
+        top_card,
     ):
-        self.assertFalse(top_card.is_valid(selected_card))
+        self.assertFalse(selected_card.is_valid(top_card))
 
     @parameterized.expand([
         (SkipCard(RED), WildCard()),
@@ -232,7 +232,7 @@ class TestUno(unittest.TestCase):
     def test_is_valid_from_colored_card_to_invalid_postcolored_card(
         self,
         selected_card,
-        top_card
+        top_card,
     ):
         top_card.set_color(YELLOW)
         self.assertFalse(selected_card.is_valid(top_card))
@@ -257,3 +257,14 @@ class TestUno(unittest.TestCase):
         top_card
     ):
         self.assertTrue(selected_card.is_valid(top_card))
+
+    @parameterized.expand([
+        (SkipCard(RED), 'Skip - red'),
+        (ReverseCard(GREEN), 'Reverse - green'),
+        (DrawTwoCard(BLUE), 'Draw Two - blue'),
+        (NumberCard(YELLOW, '0'), '0 - yellow'),
+        (DrawFourCard(), 'Draw Four'),
+        (WildCard(), 'Wild'),
+    ])
+    def test_cards_correct_representation(self, card, representation):
+        self.assertEqual(str(card), representation)

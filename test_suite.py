@@ -1,5 +1,5 @@
 import unittest
-from uno.test_uno import TestUno
+from uno.test_uno_cards import TestUnoCards
 from uno.test_stack_uno import TestStack
 from craps.test_craps import TestCraps
 from craps.test_turn import TestTurn
@@ -20,7 +20,7 @@ from diezmil.test_diez_mil import TestDiezMil
 def suite():
     test_suite = unittest.TestSuite()
     # UNO
-    test_suite.addTest(unittest.makeSuite(TestUno))
+    test_suite.addTest(unittest.makeSuite(TestUnoCards))
     test_suite.addTest(unittest.makeSuite(TestStack))
     # CRAPS
     test_suite.addTest(unittest.makeSuite(TestCraps))
