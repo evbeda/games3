@@ -1,2 +1,3 @@
 SETUP = 'SETUP'
 GO = 'GO'
+GAMING = 'GAMING'

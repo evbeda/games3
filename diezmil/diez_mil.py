@@ -1,6 +1,6 @@
 from .player import Player
 from .turn import Turn
-from .__init__ import SETUP, GO
+from .__init__ import SETUP, GO, GAMING
 from .exceptions.exceptions import NegativePlayersQuantityException, \
     NullPlayersQuantityException, DifferentPlayerQuantityAndNamesException, \
     ManyPlayersQuantityException, NotCorrectPlayersQuantityException, \
@@ -79,13 +79,23 @@ class DiezMil(object):
             # Crear un turno para el jugador y que empiecen las apuestas
             if self.actual_turn:
                 self.actual_turn = Turn(self.players[self.who_is_playing])
+                self.actual_turn.generate_play(5)
+                self.state = GAMING
+            
+            # MOSTRAR LOS DADOS QUE SALIERON
 
+# ------------------------------------------------------------------------------
             command = self.resolve_command(command)
-            self.actual_turn.generate_play()
+            if command[0] == 'SELECT_DICES':
+                self.actual_turn.generate_play(5)
+            elif command[0] == 'NO_MORE_GAMING':
+                # calcular el puntaje
+                # checkear si gano
+                # sino ejecutar next_turn
+                pass
+                
 
-            # El primer jugador jugo pero no termino
-            # El primer jugador decide terminar
-            # Comienza el siguiente jugador
+            self.actual_turn.generate_play()
 
     # Por cada jugador, mostrar su puntaje
     @property

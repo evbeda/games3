@@ -159,7 +159,6 @@ class TestDiezMil(unittest.TestCase):
     # USAR PARA EL TEST - NO BORRAR
     # @parameterized.expand([
     #     ('SELECT_DICES 1 3'),
-    #     ('PLAY_AGAIN'),
     #     ('NO_MORE_GAMING')
     # ])
     # def test_play(self, state):
