@@ -97,10 +97,10 @@ class TestTurn(unittest.TestCase):
             self.assertEqual(self.turn.state, PLAYER_WON)
 
     def _set_bets(self):
-        bet1 = PassBet(5)
-        bet2 = DoNotPassBet(8)
-        bet3 = DoNotPassBet(15)
-        bet4 = PassBet(2)
+        bet1 = PassBet(5, (5, 5))
+        bet2 = DoNotPassBet(8, (5, 5))
+        bet3 = DoNotPassBet(15, (5, 5))
+        bet4 = PassBet(2, (5, 5))
         self.turn.bets = [bet1, bet2, bet3, bet4]
 
     # REFACTOR
