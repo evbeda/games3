@@ -32,16 +32,17 @@ class TestBets(unittest.TestCase):
 
     def test_not_possible_to_check_in_parent_bet(self):
         with self.assertRaises(NotImplementedError):
-            Bet(10).check(self.game.turn)
+            Bet(10, None).check(self.game.turn)
 
     def test_not_possible_to_pay_in_parent_bet(self):
         with self.assertRaises(NotImplementedError):
-            Bet(10).pay(self.game.turn)
+            Bet(10, None).pay(self.game.turn)
 
     @parameterized.expand([
         ("PASS_BET", PassBet),
         ("DO_NOT_PASS_BET", DoNotPassBet),
-        ("DOUBLE_BET", DoubleBet)
+        ("DOUBLE_BET", DoubleBet),
+        # ("SEVEN_BET", SevenBet)
     ])
     def test_bet_creator_returns_correct_type(self, type_string, bet_child):
         bet = BetCreator.create(type_string, 2, (1, 2))
