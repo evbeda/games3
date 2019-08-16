@@ -68,3 +68,6 @@ class Stack():
             cards_player.append(self.stack_cards.pop())
             cards_qty += 1
         return cards_player
+
+    def show_last_card_played(self):
+        return self.discard_cards[-1]
