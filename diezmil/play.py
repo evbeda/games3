@@ -17,11 +17,15 @@ class Play(object):
         self.dices.sort()
         self.check_combination(self.dices)
 
+    def choose_dices(self, selected_dices_positions):
+        return [
+            value
+            for position, value in enumerate(self.dices)
+            if position in selected_dices_positions
+        ]
+
     def select_dices(self, selected_dices_positions):
-        # self.selected_dices += self.dices[selected_dices_positions]
-        # print(self.selected_dices)
-        for position in selected_dices_positions:
-            self.selected_dices.append(self.dices[position])
+        self.dices = self.choose_dices(selected_dices_positions)
         self.play_score = self.check_combination(self.selected_dices)[1]
         self.is_playing = False
 

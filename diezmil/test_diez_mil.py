@@ -85,17 +85,23 @@ class TestDiezMil(unittest.TestCase):
     def test_check_combination(self, dices, expected_result):
         self.assertEqual(self.play.check_combination(dices), expected_result)
 
-    def test_first_play_of_the_turn_five_dices(self):
+    def test_first_play_of_the_turn_five_dices_number_of_dices(self):
         turn = Turn()
         turn.generate_play()
         self.assertEqual(len(turn.plays[-1].dices), 5)
 
-    def test_after_plays_of_the_same_turn(self):
+    def test_after_plays_of_the_same_turn_number_of_dices(self):
         turn = Turn()
         turn.generate_play()
         turn.plays[-1].select_dices([0, 1])
         turn.generate_play()
         self.assertEqual(len(turn.plays[-1].dices), 3)
+
+    def play_select_dice(self):
+        play = Play()
+        play.dices = [1, 5, 6, 4, 2]
+        dices_selected = play.choose_dices([1, 2])
+        self.assertEqual(dices_selected, [5, 6])
 
 
 if __name__ == '__main__':

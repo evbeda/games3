@@ -15,7 +15,7 @@ class Turn:
             play.roll_dices(dices)
             self.plays.append(play)
         elif not self.plays[-1].is_playing:
-            dices = 5 - len(self.plays[-1].selected_dices)
+            dices = 5 - len(self.plays[-1].dices)
             play = Play()
             self.plays.append(play)
             self.plays[-1].roll_dices(dices)
