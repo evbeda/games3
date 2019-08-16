@@ -26,4 +26,3 @@ from .stack import Stack
 class Uno():
     def __init__(self):
         self.stack = Stack()
-        self.discard = []
