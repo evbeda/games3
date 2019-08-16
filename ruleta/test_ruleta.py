@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
 from .roulette import Roulette
-from .bet import BetCreator, StraightBet, ColorBet, EvenOddBet
+from .bet import BetCreator, StraightBet, ColorBet, EvenOddBet, LowHighBet
 from .player import Player
 from .game_roullete import GameRoulette
 from .board import get_color_from_number
@@ -93,7 +93,8 @@ class TestRuleta(unittest.TestCase):
     @parameterized.expand([
         (StraightBet, [40], 17),
         (ColorBet, ['Reds'], 300),
-        (EvenOddBet, ['ODDs'], 30)
+        (EvenOddBet, ['ODDs'], 30),
+        (LowHighBet, ['Lower'], 11)
     ])
     def test_invalid_bets(self, bet, bet_value, ammount):
         with self.assertRaises(InvalidBetException):
@@ -157,12 +158,14 @@ class TestRuleta(unittest.TestCase):
         self.croupier.add_bet(StraightBet([13], 10), 25)
         self.assertEqual(1, len(self.croupier.bets))
 
-    def test_croupier_reset_bets(self):
+    def test_croupier_add_reward_to_player(self):
         self.player = Player(50)
         self.croupier = Croupier(self.player)
         self.croupier.add_bet(StraightBet([30], 25), 25)
+        self.croupier.add_bet(EvenOddBet(['even'], 10), 10)
+        self.croupier.add_bet(LowHighBet(['low'], 5), 5)
         self.croupier.calculate_total_award(30)
-        self.assertEqual(self.player.money, 900)
+        self.assertEqual(self.player.money, 905)
 
 
 if __name__ == '__main__':

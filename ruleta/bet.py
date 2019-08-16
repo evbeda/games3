@@ -84,11 +84,30 @@ class EvenOddBet(Bet):
         else:
             return list(set(all_values) - set(odd))
 
+class LowHighBet(Bet):
+    name = 'LOW_HIGH_BET\n'
+    reward = 2
+
+    def __init__(self, bet_value, amount):
+        super().__init__(bet_value, amount)
+
+    def validate(self, bet_value):
+        if bet_value[0].lower() not in ['low', 'high']:
+            raise InvalidBetException()
+
+    def transform_bet_values_to_target_values(self, bet_value):
+        low = [number for number in all_values if number in range(1, 19)]
+        if bet_value[0].lower() == 'low':
+            return low
+        else:
+            return list(set(all_values) - set(low))
+    
 
 bet_types = {
     'STRAIGHT_BET': StraightBet,
     'COLOR_BET': ColorBet,
-    'EVEN_ODD_BET': EvenOddBet,
+    'EVENODD_BET': EvenOddBet,
+    'LOWHIGH_BET': LowHighBet,
 }
 
 
