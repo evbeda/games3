@@ -26,11 +26,9 @@ class CrapsGame:
 
     def next_turn(self):
         if self.turn.state == PLAYER_LOST:
-            # testear
             self.turn = Turn()
             return LOST_MESSAGE
         if self.turn.state == PLAYER_WON:
-            # testear
             self.turn = Turn()
             return WON_MESSAGE
         return BET_MESSAGE
@@ -41,22 +39,19 @@ class CrapsGame:
             return 'Game Over'
         if user_input == 'Go':
             turn_dice = self.turn.shoot()
-            # not tested ...
             self.money += self.turn.pay_bets(turn_dice)
-            # ... not tested
             return turn_dice
-        else:
-            try:
-                bet_type, amount, bet_values = \
-                    CrapsGame.resolve_command(user_input)
-                bet = BetCreator.create(bet_type, amount, bet_values)
-                self.decrease_money(amount)
-                self.turn.bets.append(bet)
-                return BET_PLACED + bet_type
-            except InvalidBetTypeException:
-                return INVALID_BET_TYPE
-            except OutOfCashException:
-                return OUT_OF_CASH
+        try:
+            bet_type, amount, bet_values = \
+                CrapsGame.resolve_command(user_input)
+            bet = BetCreator.create(bet_type, amount, bet_values)
+            self.decrease_money(amount)
+            self.turn.bets.append(bet)
+            return BET_PLACED + bet_type
+        except InvalidBetTypeException:
+            return INVALID_BET_TYPE
+        except OutOfCashException:
+            return OUT_OF_CASH
 
     # command like
     # BETNAME amount dice_options
