@@ -1,9 +1,15 @@
 import unittest
+from .__init__ import SETUP, GO
 from unittest.mock import patch
 from parameterized import parameterized
 from .diez_mil import DiezMil
 from .play import Play
 from .turn import Turn
+from .player import Player
+from .exceptions.exceptions import NegativePlayersQuantityException, \
+    NullPlayersQuantityException, DifferentPlayerQuantityAndNamesException, \
+    ManyPlayersQuantityException, NotCorrectPlayersQuantityException, \
+    NotANumberException
 
 
 class TestDiezMil(unittest.TestCase):
@@ -16,7 +22,55 @@ class TestDiezMil(unittest.TestCase):
     def test_check_players_qty(self):
         self.assertEqual(self.game.check_players_qty(0), False)
 
-    #play testings
+    @parameterized.expand([
+        (1, ['Lenny'], [Player('Lenny')]),
+        (2, ['Lenny', 'Carl'], [Player('Lenny'), Player('Carl')]),
+    ])
+    def test_players_creator(self, players_quantity, names, expected_players):
+        players = self.game.players_creator(players_quantity, names)
+        for player in players:
+            index = players.index(player)
+            self.assertTrue(player.__gt__(expected_players[index]))
+
+    @parameterized.expand([
+        (-1, [], NegativePlayersQuantityException),
+        (0, [], NullPlayersQuantityException),
+        (2, ['Lenny'], DifferentPlayerQuantityAndNamesException),
+        (1, ['Lenny', 'Carl'], DifferentPlayerQuantityAndNamesException),
+        (6, [], ManyPlayersQuantityException),
+    ])
+    def test_players_creator_exceptions(self, players_quantity, names, exc):
+        with self.assertRaises(exc):
+            self.game.players_creator(players_quantity, names)
+
+    @parameterized.expand([
+        ('-1', NotCorrectPlayersQuantityException),
+        ('0', NotCorrectPlayersQuantityException),
+        ('%', NotANumberException),
+        (' ', NotANumberException),
+        ('_', NotANumberException),
+    ])
+    def test_ask_for_players_quantity_exceptions(self, players_quantity, exc):
+        with patch('builtins.input', return_value=players_quantity):
+            with self.assertRaises(exc):
+                self.game.ask_for_players_quantity()
+
+    @parameterized.expand([
+        (1, 3, 1, SETUP),
+        (1, 5, 2, GO),
+        (2, 5, 3, GO),
+        (3, 5, 4, GO),
+        (4, 5, 5, GO),
+        (5, 5, 1, GO),
+    ])
+    def test_next_turn(self, who_is_playing, players_qty, expected, state):
+        self.game.players_qty = players_qty
+        self.game.state = state
+        self.game.who_is_playing = who_is_playing
+        self.game.next_turn()
+        self.assertEqual(expected, self.game.who_is_playing)
+
+    # Play testings
     def test_roll_dices_error(self):
         self.assertEqual(self.play.roll_dices(7), False)
 
@@ -29,6 +83,13 @@ class TestDiezMil(unittest.TestCase):
     def test_roll_3_dices(self, mock_randint):
         self.play.roll_dices(3)
         self.assertEqual(self.play.dices, [1, 1, 1])
+        dices = self.play.play_dices(5)
+        self.assertEqual(dices, [1, 1, 1, 1, 1])
+
+    @patch('diezmil.play.random.randint', return_value=1)
+    def test_roll_3_dices(self, mock_randint):
+        dices = self.play.play_dices(3)
+        self.assertEqual(dices, [1, 1, 1])
 
     @parameterized.expand([
         ([1, 5, 5], ([1, 5, 5], 200)),
@@ -102,6 +163,15 @@ class TestDiezMil(unittest.TestCase):
         play.dices = [1, 5, 6, 4, 2]
         dices_selected = play.choose_dices([1, 2])
         self.assertEqual(dices_selected, [5, 6])
+    # USAR PARA EL TEST - NO BORRAR
+    # @parameterized.expand([
+    #     ('SELECT_DICES 1 3'),
+    #     ('PLAY_AGAIN'),
+    #     ('NO_MORE_GAMING')
+    # ])
+    # def test_play(self, state):
+    #     self.game.state = state
+    #     self.game.play()
 
 
 if __name__ == '__main__':
