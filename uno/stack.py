@@ -5,6 +5,7 @@ from .card import SkipCard
 from .card import DrawTwoCard
 from .card import DrawFourCard
 from .card import WildCard
+import random
 
 
 class Stack():
@@ -12,6 +13,7 @@ class Stack():
         self.cards = self.generate_cards()
 
     def generate_cards(self):
+        generated_cards = []
         generated_number_cards = [
             NumberCard(color, num)
             for num in range(0, 10)
@@ -38,24 +40,13 @@ class Stack():
             for num in range(0, 4)
         ]
         generated_cards = generated_number_cards + \
-                          generated_reverse_cards + \
-                          generated_skip_cards + \
-                          generated_draw_two_cards + \
-                          generated_draw_four_cards + \
-                          generated_wild_cards
+            generated_reverse_cards + \
+            generated_skip_cards + \
+            generated_draw_two_cards + \
+            generated_draw_four_cards + \
+            generated_wild_cards
+        random.shuffle(generated_cards)
         return generated_cards
 
-    def count_type_cards(self, card_type):
-        types = {
-            'number': NumberCard,
-            'skip': SkipCard,
-            'reverse': ReverseCard,
-            'draw_two_cards': DrawTwoCard,
-            'draw_four_cards': DrawFourCard,
-            'wild': WildCard
-        }
-        count = 0
-        for card in self.cards:
-            if type(card) == types[card_type]:
-                count += 1
-        return count
+    def take_card(self):
+        return self.cards.pop()

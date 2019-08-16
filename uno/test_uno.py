@@ -1,6 +1,5 @@
 import unittest
 from parameterized import parameterized
-from .stack import Stack
 from .const import RED, YELLOW
 from .card import (
     NumberCard,
@@ -146,15 +145,3 @@ class TestUno(unittest.TestCase):
     ])
     def test_same_to_postcolored_card_to_card(self, selected_card, top_card):
         self.assertTrue(selected_card.same_to(top_card))
-
-    @parameterized.expand([
-        ('number', 80),
-        ('skip', 8),
-        ('reverse', 8),
-        ('draw_two_cards', 8),
-        ('draw_four_cards', 4),
-        ('wild', 4)
-    ])
-    def test_stack_number_cards_quantity(self, card_type, quantity):
-        stack = Stack()
-        self.assertEqual(stack.count_type_cards(card_type), quantity)
