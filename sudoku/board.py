@@ -1,5 +1,4 @@
 import math
-from .api import fetch_board
 from . import (
     NOT_MODIFIABLE,
     REPEATED_ON_COLUMN,

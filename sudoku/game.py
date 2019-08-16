@@ -30,8 +30,16 @@ class SudokuGame:
             return NUMBER_ADDED
         except Exception as e:
             return str(e)
-    
-    # TODO print
-    # @property
-    # def board(self):
-    #     pass
+
+    @property
+    def board(self):
+        ret = ""
+        for k, row in self.game_board.board.items():
+            for index, item in enumerate(row):
+                ret += item["val"] + " "
+                if index in [2, 5]:
+                    ret += "|"
+            ret += "\n"
+            if k in ['c', 'f']:
+                ret += "------+------+------\n"
+        return ret
