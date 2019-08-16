@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from parameterized import parameterized
 from .roulette import Roulette
 from .bet import BetCreator, StraightBet, ColorBet, EvenOddBet, LowHighBet
@@ -155,16 +156,17 @@ class TestRuleta(unittest.TestCase):
         self.assertEqual(50, self.player.money)
 
     def test_croupier_add_a_bet(self):
-        self.croupier.add_bet(StraightBet([13], 10), 25)
-        self.assertEqual(1, len(self.croupier.bets))
+        self.croupier.add_bet(StraightBet([13], 10))
+        self.assertEqual(1, len(self.croupier.round.bets))
 
-    def test_croupier_add_reward_to_player(self):
+    @patch('ruleta.roulette.randint', return_value=30)
+    def test_croupier_add_reward_to_player(self, mock_randint):
         self.player = Player(50)
         self.croupier = Croupier(self.player)
-        self.croupier.add_bet(StraightBet([30], 25), 25)
-        self.croupier.add_bet(EvenOddBet(['even'], 10), 10)
-        self.croupier.add_bet(LowHighBet(['low'], 5), 5)
-        self.croupier.calculate_total_award(30)
+        self.croupier.add_bet(StraightBet([30], 25))
+        self.croupier.add_bet(EvenOddBet(['even'], 10))
+        self.croupier.add_bet(LowHighBet(['low'], 5))
+        self.croupier.play()
         self.assertEqual(self.player.money, 905)
 
 

@@ -13,4 +13,3 @@ class Roulette:
 
     def get_last_numbers(self):
         return self.last_numbers
-

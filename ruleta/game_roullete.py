@@ -1,6 +1,5 @@
 from .bet import BetCreator
 from .croupier import Croupier
-from .roulette import Roulette
 from .player import Player
 from . import SUCCESS_MESSAGE
 from . import NOT_ENOUGH_CASH_MESSAGE
@@ -22,11 +21,11 @@ class GameRoulette:
 
     def __init__(self):
         self.is_playing = True
+        self.in_a_turn = False
         self.croupier = Croupier(Player(100))
-        self.roulette = Roulette()
 
     def next_turn(self):
-        if self.croupier.in_a_turn:
+        if self.in_a_turn:
             return BetCreator.list_bets()
         else:
             return NEXT_TURN_COMMAND + '\n' + END_GAME_COMMAND
@@ -40,13 +39,14 @@ class GameRoulette:
         QUIT
         '''
         if command == NEXT_TURN_COMMAND:
-            self.croupier.in_a_turn = True
+            self.in_a_turn = True
+            self.croupier.new_round()
             return SELECT_A_TYPE_OF_BET_MESSAGE
         elif command == END_GAME_COMMAND:
             self.is_playing = False
             return BYE_MESSAGE
         elif command == GO_COMMAND:
-            pass
+            self.croupier.play()
             # correr ruleta
             # croupier resuelve el award
             # reset round_bets
@@ -54,7 +54,7 @@ class GameRoulette:
             try:
                 bet_type, bet_values, amount = self.resolve_command(command)
                 self.croupier.add_bet(
-                    BetCreator.create(bet_type, bet_values, amount), amount)
+                    BetCreator.create(bet_type, bet_values, amount))
                 return SUCCESS_MESSAGE
             except OutOfCashException:
                 return NOT_ENOUGH_CASH_MESSAGE
