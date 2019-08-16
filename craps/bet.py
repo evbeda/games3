@@ -18,7 +18,6 @@ class PassBet(Bet):
     def check(self, turn):
         return turn.state == PLAYER_WON
 
-    # not tested
     def pay(self, turn):
         if self.check(turn):
             return 2 * self.amount
@@ -32,6 +31,16 @@ class DoNotPassBet(Bet):
     def pay(self, turn):
         if self.check(turn):
             return 2 * self.amount
+        return 0
+
+
+class SevenBet(Bet):
+    def check(self, turn):
+        return sum(turn.dice) == 7
+
+    def pay(self, turn):
+        if self.check(turn):
+            return 4 * self.amount
         return 0
 
 
@@ -62,7 +71,7 @@ BET_TYPES = {
     'PASS_BET': PassBet,
     'DO_NOT_PASS_BET': DoNotPassBet,
     'DOUBLE_BET': DoubleBet,
-    # 'SEVEN_BET': SevenBet
+    'SEVEN_BET': SevenBet
 }
 
 
