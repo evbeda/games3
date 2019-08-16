@@ -49,5 +49,5 @@ class Turn:
         activated_bets = self.check_bets(dice)
         amount = 0
         for bet in activated_bets:
-            amount += bet.pay()
+            amount += bet.pay(self)
         return amount
