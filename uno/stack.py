@@ -11,7 +11,7 @@ import random
 class Stack():
     def __init__(self):
         self.stack_cards = self.generate_cards()
-        self.discard = []
+        self.discard_cards = []
 
     def generate_cards(self):
         generated_cards = []
@@ -49,11 +49,22 @@ class Stack():
         random.shuffle(generated_cards)
         return generated_cards
 
-    def take_card(self):
-        return self.stack_cards.pop()
+    def recreate_stack(self):
+        discard_cards = self.discard_cards
+        self.discard_cards = self.discard_cards.pop()
+        random.shuffle(discard_cards)
+        self.stack_cards = discard_cards
 
-    def is_stack_empty(self):
-        discard = self.discard
-        self.discard = self.discard.pop()
-        random.shuffle(discard)
-        self.stack_cards = discard
+    def put_card_in_discard(self, card=None):
+        if card is None:
+            self.discard_cards.append(self.stack_cards.pop())
+        else:
+            self.discard_cards.append(card)
+
+    def generate_cards_player(self):
+        cards_qty = 0
+        cards_player = []
+        while cards_qty != 7:
+            cards_player.append(self.stack_cards.pop())
+            cards_qty += 1
+        return cards_player
