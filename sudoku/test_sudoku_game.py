@@ -2,6 +2,16 @@ import unittest
 from parameterized import parameterized
 from .game import SudokuGame
 from .board import Board
+from . import (
+    NUMBER_ADDED,
+    YOU_WIN,
+    GAME_OVER,
+    PLACE_A_NUMBER,
+    NOT_MODIFIABLE,
+    REPEATED_ON_COLUMN,
+    REPEATED_ON_ROW,
+    REPEATED_ON_REGION
+)
 
 
 class TestSudokuGame(unittest.TestCase):
@@ -9,11 +19,11 @@ class TestSudokuGame(unittest.TestCase):
         self.game = SudokuGame()
 
     def test_initial_next_turn(self):
-        self.assertEqual(self.game.next_turn(), 'Place a number')
+        self.assertEqual(self.game.next_turn(), PLACE_A_NUMBER)
 
     def test_game_is_over(self):
         self.game.is_playing = False
-        self.assertEqual(self.game.next_turn(), 'Game over')
+        self.assertEqual(self.game.next_turn(), GAME_OVER)
 
     @parameterized.expand([
         ('a 1 2',),
@@ -31,25 +41,17 @@ class TestSudokuGame(unittest.TestCase):
         ('a 5 7',),
     ])
     def test_play_number_legally(self, user_input):
-        self.assertEqual(self.game.play(user_input), 'Number added.')
+        self.assertEqual(self.game.play(user_input), NUMBER_ADDED)
 
     @parameterized.expand([
-        ('a 1 6',),
-        ('b 8 2',),
-        ('c 3 4',),
-        ('d 4 1',),
-        ('e 5 5',),
-        ('f 6 7',),
-        ('g 7 6',),
-        ('h 2 5',),
-        ('i 9 4',),
-        ('e 1 7',),
-        ('g 2 3',),
-        ('e 9 2',),
-        ('a 5 5',),
+        ('a 1 6', REPEATED_ON_ROW),
+        ('b 8 2', REPEATED_ON_COLUMN),
+        ('c 3 2', REPEATED_ON_COLUMN),
+        ('d 4 1', REPEATED_ON_ROW),
+        ('B 7 4', REPEATED_ON_REGION),
     ])
-    def test_play_number_ilegally(self, user_input):
-        self.assertEqual(self.game.play(user_input), 'Invalid number.')
+    def test_play_number_ilegally(self, user_input, message):
+        self.assertIn(message, self.game.play(user_input))
 
     @parameterized.expand([
         ('a 2 6',),
@@ -61,9 +63,7 @@ class TestSudokuGame(unittest.TestCase):
         ('h 7 5',),
     ])
     def test_play_number_forbidden(self, user_input):
-        self.assertEqual(
-            self.game.play(user_input),
-            'You can not modify the initial values.')
+        self.assertIn(NOT_MODIFIABLE, self.game.play(user_input))
 
     def test_play_win(self):
         self.game.game_board = Board(
@@ -77,4 +77,4 @@ class TestSudokuGame(unittest.TestCase):
             "489167523"
             "172539486"
         )
-        self.assertEqual(self.game.play("a 1 2"), 'You win!')
+        self.assertEqual(self.game.play("a 1 2"), YOU_WIN)

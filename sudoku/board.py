@@ -1,4 +1,10 @@
 import math
+from . import (
+    NOT_MODIFIABLE,
+    REPEATED_ON_COLUMN,
+    REPEATED_ON_ROW,
+    REPEATED_ON_REGION,
+)
 
 
 class Board:
@@ -102,19 +108,25 @@ class Board:
     def number_to_letter(self, number):
         return chr(number + 96)
 
+    def validate_number(self, coordinates, value):
+        row, column = coordinates
+        errors = []
+        if not self.is_modifiable(row, column):
+            errors.append(NOT_MODIFIABLE)
+        if not self.validate_row(row, value):
+            errors.append(REPEATED_ON_ROW)
+        if not self.validate_column(column, value):
+            errors.append(REPEATED_ON_COLUMN)
+        if not self.validate_region(row, column, value):
+            errors.append(REPEATED_ON_REGION)
+        if errors:
+            raise Exception(', '.join(errors))
+
     def place(self, coordinates, value):
         value = str(value)
         row, column = coordinates
-        if not self.is_modifiable(row, column):
-            raise Exception()
-        if (
-            self.validate_row(row, value) and
-            self.validate_column(column, value) and
-            self.validate_region(row, column, value)
-        ):
-            self.board[row][column - 1]["val"] = value
-            return 'Number added.'
-        return 'Invalid number.'
+        self.validate_number(coordinates, value)
+        self.board[row][column - 1]["val"] = value
 
     def is_finished(self):
         return all(

@@ -1,4 +1,5 @@
 from .board import Board
+from . import NUMBER_ADDED, PLACE_A_NUMBER, GAME_OVER, YOU_WIN
 
 
 class SudokuGame:
@@ -26,22 +27,22 @@ class SudokuGame:
 
     def next_turn(self):
         if self.is_playing:
-            return "Place a number"
+            return PLACE_A_NUMBER
         else:
-            return "Game over"
+            return GAME_OVER
 
     # user_input = "a 1 4"
     def play(self, user_input):
         row, column, value = user_input.split(" ")
         try:
-            place = self.game_board.place((row, int(column)), int(value))
-        except Exception:
-            return 'You can not modify the initial values.'
-        if self.game_board.is_finished():
-            self.is_playing = False
-            return 'You win!'
-        return place
-
+            self.game_board.place((row, int(column)), int(value))
+            if self.game_board.is_finished():
+                self.is_playing = False
+                return YOU_WIN
+            return NUMBER_ADDED
+        except Exception as e:
+            return str(e)
+    
     # TODO print
     # @property
     # def board(self):

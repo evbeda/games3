@@ -1,6 +1,12 @@
 import unittest
 from parameterized import parameterized
 from .board import Board
+from . import (
+    NOT_MODIFIABLE,
+    REPEATED_ON_COLUMN,
+    REPEATED_ON_ROW,
+    REPEATED_ON_REGION,
+)
 
 
 class TestSudokuBoard(unittest.TestCase):
@@ -145,29 +151,25 @@ class TestSudokuBoard(unittest.TestCase):
     ])
     def test_place_number_legally(self, coordinates, value):
         row, column = coordinates
-        self.assertEqual(self.board.place(coordinates, value), 'Number added.')
+        self.board.place(coordinates, value)
         self.assertEqual(self.board.board[row][column - 1]['val'], str(value))
 
+    # Checked in order: row, column, region
     @parameterized.expand([
-        (('a', 1), 6),
-        (('b', 8), 2),
-        (('c', 3), 4),
-        (('d', 4), 1),
-        (('e', 5), 5),
-        (('f', 6), 7),
-        (('g', 7), 6),
-        (('h', 2), 5),
-        (('i', 9), 4),
-        (('e', 1), 7),
-        (('g', 2), 3),
-        (('e', 9), 2),
-        (('a', 5), 5),
+        (('a', 1), 3, REPEATED_ON_ROW),
+        (('b', 8), 4, REPEATED_ON_COLUMN),
+        (('c', 3), 7, REPEATED_ON_ROW),
+        (('g', 2), 2, REPEATED_ON_REGION),
+        (('f', 9), 8, REPEATED_ON_COLUMN),
+        (('b', 8), 8, REPEATED_ON_REGION),
     ])
-    def test_place_number_illegally(self, coordinates, value):
+    def test_place_number_illegally(
+            self, coordinates, value, message):
+
         row, column = coordinates
-        self.assertEqual(
-            self.board.place(coordinates, value),
-            'Invalid number.')
+        with self.assertRaises(Exception) as cm:
+            self.board.place(coordinates, value)
+        self.assertIn(message, str(cm.exception))  # check
         self.assertEqual(self.board.board[row][column - 1]['val'], ' ')
 
     @parameterized.expand([
@@ -182,11 +184,24 @@ class TestSudokuBoard(unittest.TestCase):
     def test_place_number_already_set(self, coordinates, value):
         row, column = coordinates
         original_value = self.board.board[row][column - 1]['val']
-        with self.assertRaises(Exception):
+        with self.assertRaises(Exception) as cm:
             self.board.place(coordinates, value)
+        self.assertIn(NOT_MODIFIABLE, str(cm.exception))
         self.assertEqual(
             self.board.board[row][column - 1]['val'],
             original_value)
+
+    @parameterized.expand([
+        (('a', 1), 3, REPEATED_ON_ROW),
+        (('b', 8), 4, REPEATED_ON_COLUMN),
+        (('e', 1), 9, REPEATED_ON_REGION),
+        (('a', 2), 1, NOT_MODIFIABLE),
+    ])
+    def test_validate_invalid_number(
+            self, coordinates, value, message):
+        with self.assertRaises(Exception) as cm:
+            self.board.validate_number(coordinates, value)
+        self.assertIn(message, str(cm.exception))
 
     def test_is_finished_for_an_unfinished_board(self):
         self.assertFalse(self.board.is_finished())
