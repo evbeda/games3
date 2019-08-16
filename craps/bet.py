@@ -3,7 +3,8 @@ from .constants import PLAYER_WON, PLAYER_LOST
 
 
 class Bet:
-    def __init__(self, amount):
+    def __init__(self, amount, selected_dices):
+        self.selected_dices = selected_dices
         self.amount = amount
 
     def check(self, turn):
@@ -14,10 +15,6 @@ class Bet:
 
 
 class PassBet(Bet):
-    def __init__(self, amount, selected_dices):
-        self.selected_dices = selected_dices
-        super().__init__(amount)
-
     def check(self, turn):
         return turn.state == PLAYER_WON
 
@@ -29,10 +26,6 @@ class PassBet(Bet):
 
 
 class DoNotPassBet(Bet):
-    def __init__(self, amount, selected_dices):
-        self.selected_dices = selected_dices
-        super().__init__(amount)
-
     def check(self, turn):
         return turn.state == PLAYER_LOST
 
@@ -43,10 +36,6 @@ class DoNotPassBet(Bet):
 
 
 class DoubleBet(Bet):
-    def __init__(self, amount, selected_dices):
-        self.selected_dices = selected_dices
-        super().__init__(amount)
-
     def check(self, turn):
         return turn.dice[0] == turn.dice[1]
 
@@ -72,7 +61,8 @@ class DoubleBet(Bet):
 BET_TYPES = {
     'PASS_BET': PassBet,
     'DO_NOT_PASS_BET': DoNotPassBet,
-    'DOUBLE_BET': DoubleBet
+    'DOUBLE_BET': DoubleBet,
+    # 'SEVEN_BET': SevenBet
 }
 
 
