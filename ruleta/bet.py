@@ -7,11 +7,11 @@ all_values = list(range(37))
 class Bet:
     # reward = 0
 
-    def __init__(self, bet_value, ammount):
+    def __init__(self, bet_value, amount):
         self.validate(bet_value)
         self.target_numbers = \
             self.transform_bet_values_to_target_values(bet_value)
-        self.ammount = ammount
+        self.amount = amount
 
     def transform_bet_values_to_target_values(self, bet_value):
         return bet_value
@@ -21,7 +21,7 @@ class Bet:
 
     def calculate_award(self, chosen_number):
         if self.is_winner(chosen_number):
-            return self.reward * self.ammount
+            return self.reward * self.amount
         else:
             return 0
 
@@ -84,6 +84,7 @@ class EvenOddBet(Bet):
         else:
             return list(set(all_values) - set(odd))
 
+
 class LowHighBet(Bet):
     name = 'LOW_HIGH_BET\n'
     reward = 2
@@ -101,7 +102,7 @@ class LowHighBet(Bet):
             return low
         else:
             return list(set(all_values) - set(low))
-    
+
 
 bet_types = {
     'STRAIGHT_BET': StraightBet,
