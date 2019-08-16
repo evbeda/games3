@@ -30,7 +30,7 @@ class Croupier:
         chosen_number = self.roulette.generate_number()
         award = self.distribute_awards(chosen_number)
         if award > 0:
-            return WON_MESSAGE + str(award)
+            return WON_MESSAGE + str(award) + ' chips'
         else:
             return LOST_MESSAGE
 

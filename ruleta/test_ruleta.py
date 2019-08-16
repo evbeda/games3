@@ -16,6 +16,8 @@ from . import SUCCESS_MESSAGE, NOT_ENOUGH_CASH_MESSAGE \
 , BYE_MESSAGE \
 , END_GAME_COMMAND \
 , GO_COMMAND \
+, WON_MESSAGE \
+, LOST_MESSAGE
 
 # Exceptions
 from .exceptions.invalid_bet_exception import InvalidBetException
@@ -139,6 +141,19 @@ class TestRuleta(unittest.TestCase):
     ])
     def test_user_typing_return_message(self, input, expected_message):
         self.assertEqual(expected_message, self.game.play(input))
+
+    @patch('ruleta.roulette.randint', return_value=30)
+    def test_play_round(self, mock_randint):
+        self.player = Player(50)
+        self.game.croupier.add_bet(StraightBet([30], 25))
+        self.assertEqual(WON_MESSAGE + '875 chips', self.game.play(GO_COMMAND))
+
+    @patch('ruleta.roulette.randint', return_value=31)
+    def test_play_round(self, mock_randint):
+        self.player = Player(50)
+        self.game.croupier.add_bet(StraightBet([30], 25))
+        self.assertEqual(LOST_MESSAGE, self.game.play(GO_COMMAND))
+
 
     # Test for the croupier
     def test_player_bets_100_but_have_50_should_fail(self):
