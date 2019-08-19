@@ -4,6 +4,7 @@ from parameterized import parameterized
 from .exceptions.out_of_cash_exception import OutOfCashException
 from .game import CrapsGame
 from .turn import Turn
+from .bet import PassBet
 from .constants import (
     PLAYER_LOST,
     PLAYER_WON,
@@ -128,3 +129,16 @@ class TestCraps(unittest.TestCase):
         self.game.play('Go')
         is_same_turn = self.game.turn == first_turn
         self.assertEqual(is_same_turn, expected)
+
+    def test_board_craps(self):
+        craps = CrapsGame()
+        craps.turn.point = 10
+        craps.turn.bets = [PassBet(5, (5, 5))]
+        craps.turn.dice = [(1, 2)]
+        bet = PassBet(5, (5, 5))
+        board = ''
+        board += 'Point: {}\n'.format(10)
+        board += 'Dice: {}\n'.format([(1, 2)])
+        board += 'Bet:\n{}'.format(bet)
+        board += 'Money: {}'.format(1000)
+        self.assertEqual(board, craps.board)
