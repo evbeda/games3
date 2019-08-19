@@ -9,6 +9,7 @@ from dungeon_raiders.test_dungeon import TestMonsterRoom
 from dungeon_raiders.test_dungeon import TestTrapRoom
 from dungeon_raiders.test_dungeon import TestTreasure
 from dungeon_raiders.test_dungeon import TestLevel
+from dungeon_raiders.test_dungeon import TestPlayer
 from guess_number_game.test_guess_number_game import TestGuessNumberGame
 from ruleta.test_ruleta import TestRuleta
 from sudoku.test_sudoku_board import TestSudokuBoard
@@ -32,6 +33,7 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestTrapRoom))
     test_suite.addTest(unittest.makeSuite(TestTreasure))
     test_suite.addTest(unittest.makeSuite(TestLevel))
+    test_suite.addTest(unittest.makeSuite(TestPlayer))
     # ROULETTE
     test_suite.addTest(unittest.makeSuite(TestRuleta))
     # SUDOKU

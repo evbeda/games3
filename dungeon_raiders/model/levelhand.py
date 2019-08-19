@@ -1,7 +1,7 @@
 from .exceptions.UnplayableCardException import UnplayableCardException
 
 
-class HandPlayerState:
+class HandPlayer:
     def __init__(self, player):
         self.cards_to_play = [1, 2, 3, 4, 5]
         self.player = player

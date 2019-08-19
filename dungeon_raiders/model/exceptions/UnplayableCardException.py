@@ -1,2 +1,0 @@
-class UnplayableCardException(Exception):
-    pass

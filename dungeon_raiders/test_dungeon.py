@@ -1,14 +1,16 @@
 import unittest
+from unittest.mock import patch
 from parameterized import parameterized
-from .model.player import Player
-from .model.hand_player_state import HandPlayerState
+from .model.player import Player, ComputerPlayer, HumanPlayer
+from .model.hand_player import HandPlayer
 from .model.game import Game
 from .model.level import Level
 from .model.rooms.monster_room import MonsterRoom
 from .model.rooms.gold_room import GoldRoom
 from .model.rooms.wound_room import WoundRoom
 from .model.rooms.treasure import Treasure
-from .model.exceptions.UnplayableCardException import UnplayableCardException
+from .model.exceptions.exceptions import UnplayableCardException, \
+    NotANumberException, NotCorrectSelectedCardException
 from .model.__init__ import GOLDS, WOUNDS
 
 
@@ -16,23 +18,23 @@ class TestDungeon(unittest.TestCase):
 
     """ -------------------- Player tests -------------------- """
     def test_init_hand(self):
-        hand = HandPlayerState(Player('A'))
+        hand = HandPlayer(Player('A'))
         self.assertEqual(5, len(hand.cards_to_play))
 
     def test_check_if_player_can_play_card_2(self):
-        hand = HandPlayerState(Player('A'))
+        hand = HandPlayer(Player('A'))
         hand.play(2)
         hand.play(5)
         with self.assertRaises(UnplayableCardException):
             hand.play(2)
 
     def test_check_actual_card(self):
-        hand = HandPlayerState(Player('A'))
+        hand = HandPlayer(Player('A'))
         hand.play(2)
         self.assertEqual(2, hand.last_card_played)
 
     def test_check_if_3_is_in_hand(self):
-        hand = HandPlayerState(Player('A'))
+        hand = HandPlayer(Player('A'))
         hand.play(3)
         self.assertTrue(3 not in hand.cards_to_play)
 
@@ -75,8 +77,8 @@ class RoomHelper(unittest.TestCase):
         player_d.add_gold(5)
         player_d.add_wounds(5)
 
-        return HandPlayerState(player_a), HandPlayerState(player_b), \
-            HandPlayerState(player_c), HandPlayerState(player_d)
+        return HandPlayer(player_a), HandPlayer(player_b), \
+            HandPlayer(player_c), HandPlayer(player_d)
 
     def _play_cards_against_room(self, room, plays):
         hands = self._get_hands()
@@ -173,7 +175,34 @@ class TestLevel(unittest.TestCase):
     def test_check_if_each_levels_has_five_rooms(self):
         level = Level([Player('A'), Player('B'), Player('C')])
         self.assertEqual(5, len(level.rooms))
-    def test_check_if_each_levels_has_five_rooms(self):
-        level = Level([Player('A'), Player('B'), Player('C')])
-        self.assertEqual(3, len(level.hands))
 
+
+class TestPlayer(unittest.TestCase):
+    @parameterized.expand([
+        (ComputerPlayer(), [3, 4, 5]),
+        (ComputerPlayer(), [1, 2, 3, 4, 5]),
+        (ComputerPlayer(), []),
+    ])
+    def test_select_card_computer_player_valid(self, player, cards):
+        selected_card = player.select_card(cards)
+        self.assertTrue(True, selected_card in cards)
+
+    @parameterized.expand([
+        ([1, 2, 3, 4, 5], '1'),
+        ([1, 2, 3, 4, 5], '5'),
+        ([1, 2, 3], '3'),
+    ])
+    def test_select_card_human_player_valid(self, cards, sel_card):
+        with patch('builtins.input', return_value=sel_card):
+            self.assertTrue(HumanPlayer().select_card(cards))
+
+    @parameterized.expand([
+        ([1, 2, 3, 4], '5', NotCorrectSelectedCardException),
+        ([1, 2, 3, 4], '0', NotCorrectSelectedCardException),
+        ([1, 2, 3, 4, 5], '%', NotANumberException),
+        ([1, 2, 3, 4, 5], '_', NotANumberException),
+    ])
+    def test_select_card_human_player_not_valid(self, cards, sel_card, exc):
+        with self.assertRaises(exc):
+            with patch('builtins.input', return_value=sel_card):
+                self.assertTrue(HumanPlayer().select_card(cards))

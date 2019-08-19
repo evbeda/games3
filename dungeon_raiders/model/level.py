@@ -5,7 +5,7 @@ from .rooms.monster_room import MonsterRoom
 from .rooms.treasure import Treasure
 from .rooms.gold_room import GoldRoom
 from .rooms.wound_room import WoundRoom
-from .hand_player_state import HandPlayerState
+from .hand_player import HandPlayer
 
 
 class Level:
@@ -17,7 +17,7 @@ class Level:
 
     def create_hands_for_level(self, players):
         for player in players:
-            self.hands.append(HandPlayerState(player))
+            self.hands.append(HandPlayer(player))
 
     def select_room(self):
         for i in range(5):
