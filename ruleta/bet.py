@@ -1,6 +1,6 @@
 from .exceptions.invalid_bet_exception import InvalidBetException
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
-from .board import board
+from .board import BOARD
 
 all_values = list(range(1, 37))
 
@@ -50,11 +50,11 @@ class DoubleBet(Bet):
     def validate(self, bet_values):
         row1 = 0
         row2 = 0
-        for row in board:
+        for row in BOARD:
             if bet_values[0] in row:
-                row1 = board.index(row)
+                row1 = BOARD.index(row)
             if bet_values[1] in row:
-                row2 = board.index(row)
+                row2 = BOARD.index(row)
         if(sorted(bet_values) in [[0, 2], [0, 1]]):
             pass
         elif abs(row1-row2) == 0 and abs(bet_values[0]-bet_values[1]) != 3:
@@ -142,7 +142,7 @@ class StreetBet(Bet):
         bet_values.sort()
         valid_bets = []
         for index in range(1, 13):
-            valid_bets.append([row[index] for row in board])
+            valid_bets.append([row[index] for row in BOARD])
         if bet_values not in valid_bets:
             raise InvalidBetException()
 
