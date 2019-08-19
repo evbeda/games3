@@ -26,11 +26,9 @@ class Uno():
                 else:
                     self.player.cards_player.remove(card)
                     self.stack.put_card_in_discard(card)
-                    # Activate card action
-                    # card.action(self.player)
                     return self.winner()
         if not self.computer_player.loses_turn:
-            pass
+            self.computer_player.auto_play()
 
     def winner(self):
         if self.player.cards_player == []:
