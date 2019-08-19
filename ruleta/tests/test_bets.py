@@ -12,7 +12,8 @@ from ..bet import (
     StreetBet,
     SixLineBet,
     DoubleBet,
-    OneDozenBet
+    OneDozenBet,
+    TwoDozenBet
 )
 
 # Exceptions
@@ -35,7 +36,10 @@ bet_scenario = [
     (DoubleBet, [1, 2], 50, 850, 2, True),
     (DoubleBet, [1, 2], 50, 0, 5, False),
     (OneDozenBet, 1, 10, 20, 3, True),
-    (OneDozenBet, 1, 10, 0, 23, False)
+    (OneDozenBet, 1, 10, 0, 23, False),
+    (TwoDozenBet, [1, 2], 10, 15, 3, True),
+    (TwoDozenBet, [2, 3], 10, 15, 18, True),
+    (TwoDozenBet, [2, 3], 10, 0, 2, False),
 ]
 
 RED_CORRECT_VALUES = \
@@ -57,6 +61,9 @@ class TestBetsRoulette(TestCase):
         (DoubleBet, [0, 36], 100),
         (DoubleBet, [0, 0], 50),
         (OneDozenBet, 4, 50),
+        (TwoDozenBet, [1, 1], 50),
+        (TwoDozenBet, [1], 50),
+        (TwoDozenBet, [1, 4], 50),
     ])
     def test_invalid_bets(self, bet, bet_value, ammount):
         with self.assertRaises(InvalidBetException):
@@ -79,8 +86,12 @@ class TestBetsRoulette(TestCase):
         (DoubleBet, [0, 3], [0, 3]),
         (DoubleBet, [4, 7], [4, 7]),
         (OneDozenBet, 1, [x for x in range(1, 13)]),
-        (OneDozenBet, 2, [x for x in range(12, 25)]),
-        (OneDozenBet, 3, [x for x in range(24, 37)]),
+        (OneDozenBet, 2, [x for x in range(13, 25)]),
+        (OneDozenBet, 3, [x for x in range(25, 37)]),
+        (TwoDozenBet, [1, 2], [x for x in range(1, 25)]),
+        (TwoDozenBet, [2, 3], [x for x in range(13, 37)]),
+        (TwoDozenBet, [1, 3], [x for x in range(1, 13)] +
+            [x for x in range(25, 37)]),
     ])
     def test_valid_bets(self, bet, bet_value, expected_target_numbers):
         bet = bet(bet_value, 10)
@@ -120,7 +131,8 @@ class TestBetCreator(TestCase):
         ('STREET_BET', [16, 17, 18], 100, StreetBet),
         ('SIXLINE_BET', [16, 19], 10, SixLineBet),
         ('DOUBLE_BET', [23, 24], 30, DoubleBet),
-        ('ONEDOZEN_BET', 1, 20, OneDozenBet)
+        ('ONEDOZEN_BET', 1, 20, OneDozenBet),
+        ('TWODOZEN_BET', [1, 2], 20, TwoDozenBet),
     ])
     def test_bet_creator(
             self, bet_type, bet_values, amount, expected_instance):

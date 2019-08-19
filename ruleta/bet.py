@@ -1,6 +1,7 @@
 from .exceptions.invalid_bet_exception import InvalidBetException
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 from .board import BOARD
+import math
 
 all_values = list(range(1, 37))
 
@@ -21,10 +22,8 @@ class Bet:
         return chosen_number in self.target_numbers
 
     def calculate_award(self, chosen_number):
-        if self.is_winner(chosen_number):
-            return self.reward * self.amount
-        else:
-            return 0
+        return math.floor(self.reward * self.amount) \
+            if self.is_winner(chosen_number) else 0
 
 
 class StraightBet(Bet):
@@ -177,14 +176,43 @@ class OneDozenBet(Bet):
 
     def transform_bet_values_to_target_values(self, bet_value):
         # For example: bet_value = 1
-        # low = 0
+        # low = 0, high = 13
         low = 12 * (bet_value - 1)
-        # high = 13
         high = (12 * bet_value) + 1
         possible_target_values = [n for n in range(low, high)]
-        if 0 in possible_target_values:
-            possible_target_values.remove(0)
+        possible_target_values.pop(0)
         return possible_target_values
+
+
+class TwoDozenBet(Bet):
+    name = 'TWODOZEN_BET\n'
+    reward = 1.5
+
+    def __init__(self, bet_values, amount):
+        super().__init__(bet_values, amount)
+
+    def validate(self, bet_values):
+        if len(bet_values) != 2:
+            raise InvalidBetException()
+        # It verifies that both values are between 1 and 3 and aren't equal
+        if bet_values[0] in list(range(1, 4)) and \
+            bet_values[1] in list(range(1, 4)) and \
+                bet_values[0] != bet_values[1]:
+            pass
+        else:
+            raise InvalidBetException()
+
+    def transform_bet_values_to_target_values(self, bet_values):
+        all_target_values = []
+        for bet_value in bet_values:
+            low = 12 * (bet_value - 1)
+            high = (12 * bet_value) + 1
+            possible_target_values = [n for n in range(low, high)]
+            possible_target_values.pop(0)
+            all_target_values += possible_target_values
+        # Remove duplicated values
+        all_target_values = list(dict.fromkeys(all_target_values))
+        return all_target_values
 
 
 bet_types = {
@@ -195,7 +223,8 @@ bet_types = {
     'STREET_BET': StreetBet,
     'SIXLINE_BET': SixLineBet,
     'DOUBLE_BET': DoubleBet,
-    'ONEDOZEN_BET': OneDozenBet
+    'ONEDOZEN_BET': OneDozenBet, 
+    'TWODOZEN_BET': TwoDozenBet
 }
 
 
