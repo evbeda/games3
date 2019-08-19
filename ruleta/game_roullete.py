@@ -1,3 +1,4 @@
+from .board import show_board
 from .bet import BetCreator
 from .croupier import Croupier
 from .player import Player
@@ -63,4 +64,4 @@ class GameRoulette:
 
     @property
     def board(self):
-        self.roulette1.get_last_numbers()
+        return "\n" + show_board() + BetCreator.list_bets()
