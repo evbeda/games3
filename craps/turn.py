@@ -7,6 +7,7 @@ class Turn:
         self.state = GAME_STARTED
         self.point = None
         self.bets = []
+        self.dice = None
 
     def get_next_state(self):
         losing_scores = [2, 3, 12]
@@ -27,11 +28,13 @@ class Turn:
 
     def shoot(self):
         # Throws two dice, returns their values and changes the state.
-        self.dice = random.sample(range(1, 7), k=2)
+        dice = random.sample(range(1, 7), k=2)
+        self.dice = tuple(dice)
         self.state = self.get_next_state()
+        amount = self.pay_bets()
         if not self.point and self.state == GAME_IN_PROGRESS:
-            self.point = sum(self.dice)
-        return tuple(self.dice)
+            self.point = sum(dice)
+        return amount
 
     def check_bets(self):
         activated_bets = []

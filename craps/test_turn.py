@@ -16,14 +16,14 @@ class TestTurn(unittest.TestCase):
 
     def test_shoots_two_dice(self):
         # Tests that only two dice are thrown.
-        dice = self.turn.shoot()
-        dice_count = len(dice)
+        self.turn.shoot()
+        dice_count = len(self.turn.dice)
         self.assertEqual(dice_count, 2)
 
     def test_dice_shot_numbers(self):
         # Tests that dice numbers are between 1 and 6.
-        dice = self.turn.shoot()
-        for die in dice:
+        self.turn.shoot()
+        for die in self.turn.dice:
             self.assertGreaterEqual(die, 1)
             self.assertLessEqual(die, 6)
 
