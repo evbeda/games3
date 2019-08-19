@@ -1,8 +1,7 @@
 from unittest import TestCase
 from parameterized import parameterized
 from ..roulette import Roulette
-from ..board import get_color_from_number
-from ..board import get_dozen_from_number
+from ..board import get_color_from_number, get_dozen_from_number, show_board
 
 
 class TestRoulette(TestCase):
@@ -46,3 +45,13 @@ class TestBoard(TestCase):
     ])
     def test_get_dozen_from_last_number(self, number, dozen):
         self.assertEqual(dozen, get_dozen_from_number(number))
+
+    def test_show_numbers_board(self):
+        expected_board = "+--+--+--+--+--+--+--+--+--+--+--+--+--+\n" + \
+            "|00|01|04|07|10|13|16|19|22|25|28|31|34|\n" + \
+            "+--+--+--+--+--+--+--+--+--+--+--+--+--+\n" + \
+            "|00|02|05|08|11|14|17|20|23|26|29|32|35|\n" + \
+            "+--+--+--+--+--+--+--+--+--+--+--+--+--+\n" + \
+            "|00|03|06|09|12|15|18|21|24|27|30|33|36|\n" + \
+            "+--+--+--+--+--+--+--+--+--+--+--+--+--+\n"
+        self.assertEqual(show_board(), expected_board)

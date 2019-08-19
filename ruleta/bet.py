@@ -28,7 +28,7 @@ class Bet:
 
 
 class StraightBet(Bet):
-    name = 'STRAIGHT_BET\n'
+    name = 'STRAIGHT_BET'
     reward = 35
 
     def __init__(self, bet_value, amount):
@@ -41,7 +41,7 @@ class StraightBet(Bet):
 
 
 class DoubleBet(Bet):
-    name = 'DOUBLE_BET\n'
+    name = 'DOUBLE_BET'
     reward = 17
 
     def __init__(self, bet_values, amount):
@@ -66,7 +66,7 @@ class DoubleBet(Bet):
 
 
 class ColorBet(Bet):
-    name = 'COLOR_BET\n'
+    name = 'COLOR_BET'
     reward = 2
 
     def __init__(self, bet_value, amount):
@@ -93,7 +93,7 @@ class ColorBet(Bet):
 
 
 class EvenOddBet(Bet):
-    name = 'EVEN_ODD_BET\n'
+    name = 'EVEN_ODD_BET'
     reward = 2
 
     def __init__(self, bet_value, amount):
@@ -112,7 +112,7 @@ class EvenOddBet(Bet):
 
 
 class LowHighBet(Bet):
-    name = 'LOW_HIGH_BET\n'
+    name = 'LOW_HIGH_BET'
     reward = 2
 
     def __init__(self, bet_value, amount):
@@ -131,7 +131,7 @@ class LowHighBet(Bet):
 
 
 class StreetBet(Bet):
-    name = 'STREET_BET\n'
+    name = 'STREET_BET'
     reward = 11
 
     def __init__(self, bet_values, amount):
@@ -148,7 +148,7 @@ class StreetBet(Bet):
 
 
 class SixLineBet(Bet):
-    name = 'SIXLINE_BET\n'
+    name = 'SIXLINE_BET'
     reward = 5
 
     def __init__(self, bet_values, amount):
@@ -165,7 +165,7 @@ class SixLineBet(Bet):
 
 
 class OneDozenBet(Bet):
-    name = 'ONEDOZEN_BET\n'
+    name = 'ONEDOZEN_BET'
     reward = 2
 
     def __init__(self, bet_values, amount):
@@ -213,7 +213,5 @@ class BetCreator:
 
     @staticmethod
     def list_bets():
-        menu = ''
-        for bet in bet_types:
-            menu += bet.name
-        return menu
+        bet_names = [bet_class.name for bet_class in bet_types.values()]
+        return ', '.join(bet_names)

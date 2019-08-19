@@ -62,3 +62,7 @@ class IntegrationTest(TestCase):
         self.player = Player(50)
         self.game.croupier.add_bet(StraightBet([30], 25))
         self.assertEqual(LOST_MESSAGE, self.game.play(GO_COMMAND))
+
+    def test_show_board(self):
+        # print(self.game.board)
+        pass

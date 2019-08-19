@@ -25,3 +25,14 @@ def get_color_from_number(number):
         range_4 = (29 <= number <= 36 and number % 2 == 0)
         return 'red' if range_1 or range_2 or range_3 or range_4 \
             else 'black'
+
+
+def show_board():
+    line_separator = "+" + "--+"*13 + "\n"
+    board = line_separator
+    for row in BOARD:
+        # converts to string and adds leading zeros
+        row = [str(number).zfill(2) for number in row]
+        board += "|" + "|".join(row) + "|\n"
+        board += line_separator
+    return board
