@@ -11,3 +11,8 @@ BET_MESSAGE = 'Place a bet'
 BET_PLACED = 'Your bet was placed successfully: '
 INVALID_BET_TYPE = 'Invalid bet type'
 OUT_OF_CASH = "You don't have enough money"
+
+# Bet States
+BET_IN_PROGRESS = 'In progress'
+BET_PAYED = 'Payed'
+BET_LOST = 'Lost'
