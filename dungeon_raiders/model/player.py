@@ -4,8 +4,9 @@ from .exceptions.exceptions import NotANumberException, \
 
 
 class Player:
-    def __init__(self, player_name='', character=None):
-        self.character = character[0] if character else 0
+    def __init__(self, name='', character=None):
+        self.name = ''
+        self.character = character[0] if character else ''
         self.wounds = character[1] if character else 0
         self.gold = character[2] if character else 0
 

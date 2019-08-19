@@ -18,3 +18,11 @@ GOLDS = [
     ['Caldero de lava', [(5, 3), (4, 2), (3, 1)]],
     ['Atrapa monedas', [(5, 2), (4, 2), (3, 1), (2, 1)]]
 ]
+
+CHARACTER = [
+    ['Hechicero', 1, 1],
+    ['Exploradora', 3, 2],
+    ['Guerrero', 2, 0],
+    ['Ladrona', 2, 2],
+    ['Caballero', 1, 1]
+    ]
