@@ -1,13 +1,15 @@
 from .level import Level
-from ..model.__init__ import CHARACTER
+from . import CHARACTER, EXIT
 from .player import Player
 import random
 
 
 class Game:
     def __init__(self):
+        self.is_playing = True
         self.players = self.create_players()
         self.levels = self.create_levels()
+        self.current_level = self.levels[0]
 
     def create_levels(self):
         return [Level(self.players) for i in range(5)]
@@ -23,10 +25,11 @@ class Game:
         return self.players[0]
 
     def next_turn(self):
-        pass    
-
-    def play(self, number_card):
         pass
+
+    def play(self, command):
+        if command == EXIT:
+            self.is_playing = False
 
     @property
     def board(self):

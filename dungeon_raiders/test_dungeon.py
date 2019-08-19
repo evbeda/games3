@@ -11,7 +11,7 @@ from .model.rooms.wound_room import WoundRoom
 from .model.rooms.treasure import Treasure
 from .model.exceptions.exceptions import UnplayableCardException, \
     NotANumberException, NotCorrectSelectedCardException
-from .model.__init__ import GOLDS, WOUNDS
+from .model import GOLDS, WOUNDS, EXIT
 
 
 class TestDungeon(unittest.TestCase):
@@ -203,3 +203,14 @@ class TestPlayer(unittest.TestCase):
         with self.assertRaises(exc):
             with patch('builtins.input', return_value=sel_card):
                 self.assertTrue(HumanPlayer().select_card(cards))
+
+    def test_game_is_playing(self):
+        game = Game()
+        self.assertTrue(game.is_playing)
+        game.play(command=EXIT)
+        self.assertFalse(game.is_playing)
+
+    def test_game_levels(self):
+        game = Game()
+        self.assertEqual(game.current_level, game.levels[0])
+
