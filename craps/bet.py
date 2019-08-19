@@ -1,11 +1,19 @@
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
-from .constants import PLAYER_WON, PLAYER_LOST
+from .constants import (
+    PLAYER_WON,
+    PLAYER_LOST,
+    BET_IN_PROGRESS,
+    BET_LOST,
+    BET_PAYED,
+)
 
 
 class Bet:
     def __init__(self, amount, selected_dices):
         self.selected_dices = selected_dices
         self.amount = amount
+        self.amount_payed = 0
+        self.state = BET_IN_PROGRESS
 
     def check(self, turn):
         raise NotImplementedError
@@ -20,8 +28,13 @@ class PassBet(Bet):
 
     def pay(self, turn):
         if self.check(turn):
-            return 2 * self.amount
-        return 0
+            self.amount_payed = 2 * self.amount
+            self.state = BET_PAYED
+            return self.amount_payed
+        else:
+            self.state = BET_LOST
+            self.amount_payed = 0
+            return self.amount_payed
 
 
 class DoNotPassBet(Bet):
@@ -30,8 +43,13 @@ class DoNotPassBet(Bet):
 
     def pay(self, turn):
         if self.check(turn):
-            return 2 * self.amount
-        return 0
+            self.amount_payed = 2 * self.amount
+            self.state = BET_PAYED
+            return self.amount_payed
+        else:
+            self.amount_payed = 0
+            self.state = BET_LOST
+            return self.amount_payed
 
 
 class SevenBet(Bet):
@@ -40,8 +58,13 @@ class SevenBet(Bet):
 
     def pay(self, turn):
         if self.check(turn):
-            return 4 * self.amount
-        return 0
+            self.amount_payed = 4 * self.amount
+            self.state = BET_PAYED
+            return self.amount_payed
+        else:
+            self.amount_payed = 0
+            self.state = BET_LOST
+            return self.amount_payed
 
 
 class DoubleBet(Bet):
@@ -58,8 +81,13 @@ class DoubleBet(Bet):
             (5, 5): 8
         }
         if self.check(turn):
-            return rates[turn.dice] * self.amount
-        return 0
+            self.amount_payed = rates[turn.dice] * self.amount
+            self.state = BET_PAYED
+            return self.amount_payed
+        else:
+            self.amount_payed = 0
+            self.state = BET_IN_PROGRESS
+            return self.amount_payed
 
 
 # class ConcrentDiceBet(Bet):

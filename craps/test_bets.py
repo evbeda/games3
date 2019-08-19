@@ -7,7 +7,10 @@ from .constants import (
     PLAYER_LOST,
     PLAYER_WON,
     GAME_IN_PROGRESS,
-    GAME_STARTED
+    GAME_STARTED,
+    BET_IN_PROGRESS,
+    BET_LOST,
+    BET_PAYED,
 )
 
 BET_SCENARIO = [
@@ -68,3 +71,20 @@ class TestBets(unittest.TestCase):
         turn.state = state
         turn.dice = dice
         self.assertEqual(bet.pay(turn), expected_payment)
+
+    def test_bet_states_in_progress_initial_state(self):
+        bet = BetCreator.create("PASS_BET", 20)
+        self.assertEqual(bet.state, BET_IN_PROGRESS)
+
+    @parameterized.expand([
+        (PassBet(10, None), PLAYER_WON, (2, 5), BET_PAYED),
+        (PassBet(10, None), PLAYER_LOST, (6, 6), BET_LOST),
+        (PassBet(10, None), PLAYER_WON, (5, 2), BET_PAYED),
+        (PassBet(10, None), PLAYER_LOST, (5, 3), BET_LOST)
+        ])
+    def test_bet_states_payed(self, bet, turn_state, dice, bet_state):
+        turn = self.game.turn
+        turn.state = turn_state
+        turn.dice = dice
+        bet.pay(turn)
+        self.assertEqual(bet.state, bet_state)
