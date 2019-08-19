@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 from parameterized import parameterized
-from .bet import PassBet, DoNotPassBet
+from .bet import Bet, PassBet, DoNotPassBet
 from .turn import Turn
 from .constants import GAME_IN_PROGRESS, GAME_STARTED, PLAYER_LOST, PLAYER_WON
 
@@ -142,3 +142,15 @@ class TestTurn(unittest.TestCase):
         payment = self.turn.pay_bets()
         self.assertEqual(payment, expected_payment)
     # END REFACTOR
+    
+    def test_board_turn(self):
+        turn = Turn()
+        turn.point = 10
+        turn.bets = [PassBet(5, (5, 5))]
+        turn.dice = [(1, 2)]
+        bet = PassBet(5, (5, 5))
+        board = ''
+        board += 'Point: {}\n'.format(10)
+        board += 'Dice: {}\n'.format([(1, 2)])
+        board += 'Bet:\n{}'.format(bet)
+        self.assertEqual(board, turn.build_board())
