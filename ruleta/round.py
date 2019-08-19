@@ -7,3 +7,10 @@ class Round:
 
     def calculate_total_award(self, chosen_number):
         return sum([bet.calculate_award(chosen_number) for bet in self.bets])
+
+    def show_bets(self):
+        if len(self.bets) == 0:
+            return "No bets"
+        # stringify each bet
+        bets_str = [str(bet) for bet in self.bets]
+        return "\n".join(bets_str)

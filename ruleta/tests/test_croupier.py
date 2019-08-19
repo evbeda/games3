@@ -1,6 +1,7 @@
 # Modules
 from unittest import TestCase
 from unittest.mock import patch
+from parameterized import parameterized
 # Model
 from ..croupier import Croupier
 from ..player import Player
@@ -31,7 +32,6 @@ class TestCroupier(TestCase):
             self.croupier.discount_money_from_player(100)
 
     def test_player_have_100_bets_50_will_have_50(self):
-
         self.croupier.discount_money_from_player(50)
         self.assertEqual(50, self.player.money)
 
@@ -48,3 +48,17 @@ class TestCroupier(TestCase):
         self.croupier.add_bet(LowHighBet(['low'], 5))
         self.croupier.play()
         self.assertEqual(self.player.money, 905)
+
+    def test_show_player_money(self):
+        self.assertEqual(self.croupier.show_player_money(), "$100")
+
+    @parameterized.expand([
+        ([], "No bets"),
+        ([StraightBet([15], 10)], "STRAIGHT_BET 15, bet $10"),
+        ([StraightBet([15], 10), DoubleBet([3, 6], 20)],
+            "STRAIGHT_BET 15, bet $10\nDOUBLE_BET 3 6, bet $20"),
+    ])
+    def test_show_placed_bets(self, bets, expected):
+        for bet in bets:
+            self.croupier.add_bet(bet)
+        self.assertEqual(self.croupier.show_placed_bets(), expected)

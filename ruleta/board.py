@@ -30,7 +30,7 @@ def get_color_from_number(number):
 def show_board():
     line_separator = "+" + "--+"*13 + "\n"
     board = line_separator
-    for row in BOARD:
+    for row in BOARD[::-1]:
         # converts to string and adds leading zeros
         row = [str(number).zfill(2) for number in row]
         board += "|" + "|".join(row) + "|\n"

@@ -64,5 +64,4 @@ class IntegrationTest(TestCase):
         self.assertEqual(LOST_MESSAGE, self.game.play(GO_COMMAND))
 
     def test_show_board(self):
-        # print(self.game.board)
         pass
