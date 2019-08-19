@@ -12,12 +12,16 @@ class Level:
     def __init__(self, players):
         self.rooms = []
         self.hands = []
+        self.create_hands_for_level(players)
+        self.select_room()
 
+    def create_hands_for_level(self, players):
         for player in players:
             self.hands.append(HandPlayerState(player))
 
+    def select_room(self):
         for i in range(5):
-            number_room = randint(0, 2)
+            number_room = randint(0, 3)
             if number_room == MONSTER_ROOM:
                 self.rooms.append(MonsterRoom(choice(MONSTERS)))
             elif number_room == TREASURE_ROOM:
