@@ -14,7 +14,8 @@ from .constants import (
     BET_MESSAGE,
     BET_PLACED,
     INVALID_BET_TYPE,
-    OUT_OF_CASH
+    OUT_OF_CASH,
+    CAN_NOT_LEAVE,
 )
 
 
@@ -42,8 +43,17 @@ class TestCraps(unittest.TestCase):
         self.game.turn.state = PLAYER_WON
         self.assertEqual(self.game.next_turn(), WON_MESSAGE)
 
-    def test_craps_player_wants_to_quit(self):
+    @parameterized.expand([
+        (PLAYER_WON, ),
+        (PLAYER_LOST, ),
+    ])
+    def test_craps_player_wants_to_quit_allowed(self, state):
+        self.game.turn.state = state
         self.assertEqual(self.game.play('No'), 'Game Over')
+
+    def test_craps_player_wants_to_quit_not_allowed(self):
+        self.game.turn.state = GAME_IN_PROGRESS
+        self.assertEqual(self.game.play('No'), CAN_NOT_LEAVE + BET_MESSAGE)
 
     @parameterized.expand([
         ((2, 2),),
@@ -115,6 +125,6 @@ class TestCraps(unittest.TestCase):
     def test_craps_compare_turn_after_state(self, state, expected):
         self.game.turn.state = state
         first_turn = self.game.turn
-        self.game.next_turn()
+        self.game.play('Go')
         is_same_turn = self.game.turn == first_turn
         self.assertEqual(is_same_turn, expected)

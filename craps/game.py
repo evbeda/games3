@@ -10,7 +10,8 @@ from .constants import (
     BET_MESSAGE,
     BET_PLACED,
     INVALID_BET_TYPE,
-    OUT_OF_CASH
+    OUT_OF_CASH,
+    CAN_NOT_LEAVE,
 )
 
 
@@ -26,18 +27,21 @@ class CrapsGame:
 
     def next_turn(self):
         if self.turn.state == PLAYER_LOST:
-            self.turn = Turn()
             return LOST_MESSAGE
         if self.turn.state == PLAYER_WON:
-            self.turn = Turn()
             return WON_MESSAGE
         return BET_MESSAGE
 
     def play(self, user_input):
         if user_input == 'No':
-            self.is_playing = False
-            return 'Game Over'
+            if self.turn.state == PLAYER_LOST or self.turn.state == PLAYER_WON:
+                self.is_playing = False
+                return 'Game Over'
+            else:
+                return CAN_NOT_LEAVE + BET_MESSAGE
         if user_input == 'Go':
+            if self.turn.state == PLAYER_LOST or self.turn.state == PLAYER_WON:
+                self.turn = Turn()
             self.money += self.turn.shoot()
             return self.turn.dice
         try:
