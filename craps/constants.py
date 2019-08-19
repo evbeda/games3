@@ -11,6 +11,7 @@ BET_MESSAGE = 'Place a bet'
 BET_PLACED = 'Your bet was placed successfully: '
 INVALID_BET_TYPE = 'Invalid bet type'
 OUT_OF_CASH = "You don't have enough money"
+CAN_NOT_LEAVE = "You can't leave until the turn ends. "
 
 # Bet States
 BET_IN_PROGRESS = 'In progress'
