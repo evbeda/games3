@@ -133,3 +133,15 @@ class Board:
             column['val'] != ' '
             for row in self.board
             for column in self.board[row])
+
+    def show_board(self):
+        ret = ""
+        for k, row in self.board.items():
+            for index, item in enumerate(row):
+                ret += item["val"] + " "
+                if index in [2, 5]:
+                    ret += "|"
+            ret += "\n"
+            if k in ['c', 'f']:
+                ret += "------+------+------\n"
+        return ret
