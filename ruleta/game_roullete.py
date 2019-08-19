@@ -10,6 +10,7 @@ from . import (
     END_GAME_COMMAND,
     GO_COMMAND
 )
+
 # Exceptions
 from .exceptions.out_of_cash_exception import OutOfCashException
 from .exceptions.invalid_bet_exception import InvalidBetException
