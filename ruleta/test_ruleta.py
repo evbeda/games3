@@ -9,7 +9,8 @@ from .bet import (
     EvenOddBet,
     LowHighBet,
     StreetBet,
-    SixLineBet
+    SixLineBet,
+    DoubleBet,
 )
 from .player import Player
 from .game_roullete import GameRoulette
@@ -46,6 +47,8 @@ bet_scenario = [
     (StreetBet, [13, 14, 15], 10, 0, 10, False),
     (SixLineBet, [1, 4], 30, 150, 6, True),
     (SixLineBet, [1, 4], 30, 0, 8, False),
+    (DoubleBet, [1, 2], 50, 850, 2, True),
+    (DoubleBet, [1, 2], 50, 0, 5, False),
 ]
 
 RED_CORRECT_VALUES = \
@@ -107,7 +110,8 @@ class TestRuleta(unittest.TestCase):
         ('EVENODD_BET', ['ODD'], 30, EvenOddBet),
         ('LOWHIGH_BET', ['Low'], 11, LowHighBet),
         ('STREET_BET', [16, 17, 18], 100, StreetBet),
-        ('SIXLINE_BET', [16, 19], 10, SixLineBet)
+        ('SIXLINE_BET', [16, 19], 10, SixLineBet),
+        ('DOUBLE_BET', [23, 24], 30, DoubleBet),
     ])
     def test_bet_creator(
             self, bet_type, bet_values, amount, expected_instance):
@@ -125,7 +129,9 @@ class TestRuleta(unittest.TestCase):
         (EvenOddBet, ['ODDs'], 30),
         (LowHighBet, ['Lower'], 11),
         (StreetBet, [1, 2, 4], 100),
-        (SixLineBet, [12, 13], 10)
+        (SixLineBet, [12, 13], 10),
+        (DoubleBet, [0, 36], 100),
+        (DoubleBet, [0, 0], 50)
     ])
     def test_invalid_bets(self, bet, bet_value, ammount):
         with self.assertRaises(InvalidBetException):
@@ -141,7 +147,12 @@ class TestRuleta(unittest.TestCase):
         (LowHighBet, ['Low'], [x for x in range(1, 19)]),
         (LowHighBet, ['high'], [x for x in range(19, 37)]),
         (StreetBet, [1, 2, 3], [1, 2, 3]),
-        (SixLineBet, [25, 28], [25, 26, 27, 28, 29, 30])
+        (SixLineBet, [25, 28], [25, 26, 27, 28, 29, 30]),
+        (DoubleBet, [2, 5], [2, 5]),
+        (DoubleBet, [33, 36], [33, 36]),
+        (DoubleBet, [1, 2], [1, 2]),
+        (DoubleBet, [0, 3], [0, 3]),
+        (DoubleBet, [4, 7], [4, 7])
     ])
     def test_valid_bets(self, bet, bet_value, expected_target_numbers):
         bet = bet(bet_value, 10)

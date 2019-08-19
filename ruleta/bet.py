@@ -40,6 +40,31 @@ class StraightBet(Bet):
             raise InvalidBetException()
 
 
+class DoubleBet(Bet):
+    name = 'DOUBLE_BET\n'
+    reward = 17
+
+    def __init__(self, bet_values, amount):
+        super().__init__(bet_values, amount)
+
+    def validate(self, bet_values):
+        row1 = 0
+        row2 = 0
+        for row in board:
+            if bet_values[0] in row:
+                row1 = board.index(row)
+            if bet_values[1] in row:
+                row2 = board.index(row)
+        if(sorted(bet_values) in [[0, 2], [0, 1]]):
+            pass
+        elif abs(row1-row2) == 0 and abs(bet_values[0]-bet_values[1]) != 3:
+            raise InvalidBetException
+        elif abs(row1-row2) > 1:
+            raise InvalidBetException
+        elif abs(row1-row2) == 1 and abs(bet_values[0]-bet_values[1]) != 1:
+            raise InvalidBetException
+
+
 class ColorBet(Bet):
     name = 'COLOR_BET\n'
     reward = 2
@@ -145,7 +170,8 @@ bet_types = {
     'EVENODD_BET': EvenOddBet,
     'LOWHIGH_BET': LowHighBet,
     'STREET_BET': StreetBet,
-    'SIXLINE_BET': SixLineBet
+    'SIXLINE_BET': SixLineBet,
+    'DOUBLE_BET': DoubleBet,
 }
 
 
