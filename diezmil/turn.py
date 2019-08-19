@@ -1,14 +1,14 @@
 from .play import Play
-from . import WINNING_PLAY
+from . import WINNING_PLAY, PLAYING
 
 
 class Turn:
 
-    def __init__(self):
+    def __init__(self, player):
         self.acumulated_score = 0
-        self.player = None
+        self.player = player
         self.plays = []
-        self.compute_win_score = False
+        self.state = PLAYING
 
     def generate_play(self, dices=5):
         if not self.plays:

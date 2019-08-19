@@ -140,12 +140,14 @@ class TestDiezMil(unittest.TestCase):
         self.assertEqual(self.play.check_combination(dices), expected_result)
 
     def test_first_play_of_the_turn_five_dices_number_of_dices(self):
-        turn = Turn()
+        player = Player('TEST_PLAYER')
+        turn = Turn(player)
         turn.generate_play()
         self.assertEqual(len(turn.plays[-1].dices), 5)
 
     def test_after_plays_of_the_same_turn_number_of_dices(self):
-        turn = Turn()
+        player = Player('TEST_PLAYER')
+        turn = Turn(player)
         turn.generate_play()
         turn.plays[-1].select_dices([0, 1])
         turn.generate_play()
@@ -169,14 +171,15 @@ class TestDiezMil(unittest.TestCase):
         )
 
     def test_calculate_acumulated_score(self):
-        turn = Turn()
+        player = Player('TEST_PLAYER')
+        turn = Turn(player)
         turn.plays = []
         turn.calculate_acumulated_score()
         self.assertEqual(turn.acumulated_score, 0)
 
     def test_five_ones_win(self):
-        turn = Turn()
-        turn.player = Player(name='TEST_PLAYER')
+        player = Player('TEST_PLAYER')
+        turn = Turn(player)
         with patch('random.randint', side_effect=[1, 1, 1, 1, 1]):
             turn.generate_play()
         turn.calculate_acumulated_score()
