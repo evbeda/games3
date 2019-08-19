@@ -16,7 +16,7 @@ class Play(object):
         for j in range(dice_qty):
             self.dices.append(random.randint(1, 6))
         self.dices.sort()
-        self.check_combination(self.dices)
+        self.play_score = self.check_combination(self.dices)[1]
 
     def choose_dices(self, selected_dices_positions):
         return [
@@ -46,10 +46,8 @@ class Play(object):
 
     def check_combination(self, dices):
         if dices == [1, 1, 1, 1, 1]:
-            self.play_score = 10000
-            return WINNING_PLAY
+            return (dices, WINNING_PLAY)
         if self.is_a_stair(dices):
-            self.play_temp_score = 500
             return (dices, 500)
         elif self.is_repeated(dices):
             self.play_temp_score = self.calculate_repeated(dices)[1]

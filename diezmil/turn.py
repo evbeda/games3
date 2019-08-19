@@ -24,7 +24,7 @@ class Turn:
     def calculate_acumulated_score(self):
         for play in self.plays:
             if play.play_score == WINNING_PLAY:
-                self.acumulated_score = 10000
+                self.player.actual_score = 10000
                 break
             else:
                 self.acumulated_score += play.play_score
