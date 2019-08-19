@@ -122,11 +122,30 @@ class StreetBet(Bet):
             raise InvalidBetException()
 
 
+class SixLineBet(Bet):
+    name = 'SIXLINE_BET\n'
+    reward = 5
+
+    def __init__(self, bet_values, amount):
+        super().__init__(bet_values, amount)
+
+    def validate(self, bet_values):
+        bet_values.sort()
+        valid_numbers = [[n, n+3] for n in range(1, 37, 3) if n != 34]
+        if bet_values not in valid_numbers:
+            raise InvalidBetException
+
+    def transform_bet_values_to_target_values(self, bet_values):
+        return [n for n in range(bet_values[0], bet_values[1] + 3)]
+
+
 bet_types = {
     'STRAIGHT_BET': StraightBet,
     'COLOR_BET': ColorBet,
     'EVENODD_BET': EvenOddBet,
     'LOWHIGH_BET': LowHighBet,
+    'STREET_BET': StreetBet,
+    'SIXLINE_BET': SixLineBet
 }
 
 
