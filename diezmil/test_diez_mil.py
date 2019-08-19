@@ -1,5 +1,5 @@
 import unittest
-from .__init__ import SETUP, GO, WINNING_PLAY
+from . import SETUP, GO, WINNING_PLAY
 from unittest.mock import patch
 from parameterized import parameterized
 from .diez_mil import DiezMil

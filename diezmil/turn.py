@@ -1,5 +1,5 @@
 from .play import Play
-from .__init__ import WINNING_PLAY
+from . import WINNING_PLAY
 
 
 class Turn:

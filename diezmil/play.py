@@ -1,5 +1,5 @@
 import random
-from .__init__ import WINNING_PLAY
+from . import WINNING_PLAY
 
 
 
