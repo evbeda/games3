@@ -53,3 +53,11 @@ class Turn:
         for bet in activated_bets:
             amount += bet.pay(self)
         return amount
+
+    def build_board(self):
+        board = ''
+        board += 'Point: {}\n'.format(self.point)
+        board += 'Dice: {}\n'.format(self.dice)
+        for bet in self.bets:
+            board += 'Bet:\n{}'.format(bet)
+        return board

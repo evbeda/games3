@@ -61,9 +61,12 @@ class CrapsGame:
             raise OutOfCashException()
         self.money -= amount
 
-    # @property
-    # def board(self):
-    #     return self.turn.point
+    @property
+    def board(self):
+        ret = ''
+        ret += self.turn.build_board()
+        ret += 'Money: {}'.format(self.money)
+        return ret
 
     # command like
     # BETNAME amount dice_options

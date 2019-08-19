@@ -17,3 +17,9 @@ CAN_NOT_LEAVE = "You can't leave until the turn ends. "
 BET_IN_PROGRESS = 'In progress'
 BET_PAYED = 'Payed'
 BET_LOST = 'Lost'
+
+# Bet Names
+PASS_BET = 'PASS_BET'
+DO_NOT_PASS_BET = 'DO_NOT_PASS_BET'
+DOUBLE_BET = 'DOUBLE_BET'
+SEVEN_BET = 'SEVEN_BET'

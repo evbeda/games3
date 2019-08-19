@@ -5,6 +5,10 @@ from .constants import (
     BET_IN_PROGRESS,
     BET_LOST,
     BET_PAYED,
+    PASS_BET,
+    DO_NOT_PASS_BET,
+    DOUBLE_BET,
+    SEVEN_BET,
 )
 
 
@@ -23,6 +27,17 @@ class Bet:
 
 
 class PassBet(Bet):
+
+    type = PASS_BET
+
+    def __str__(self):
+        ret = ''
+        ret += 'Bet type: {}\n'.format(self.type)
+        ret += 'Amount bet: {}\n'.format(self.amount)
+        ret += 'Amount payed: {}\n'.format(self.amount_payed)
+        ret += 'Bet state: {}\n'.format(self.state)
+        return ret
+
     def check(self, turn):
         return turn.state == PLAYER_WON
 
@@ -38,6 +53,17 @@ class PassBet(Bet):
 
 
 class DoNotPassBet(Bet):
+
+    type = DO_NOT_PASS_BET
+
+    def __str__(self):
+        ret = ''
+        ret += 'Bet type: {}\n'.format(self.type)
+        ret += 'Amount bet: {}\n'.format(self.amount)
+        ret += 'Amount payed: {}\n'.format(self.amount_payed)
+        ret += 'Bet state: {}\n'.format(self.state)
+        return ret
+
     def check(self, turn):
         return turn.state == PLAYER_LOST
 
@@ -53,6 +79,17 @@ class DoNotPassBet(Bet):
 
 
 class SevenBet(Bet):
+
+    type = SEVEN_BET
+
+    def __str__(self):
+        ret = ''
+        ret += 'Bet type: {}\n'.format(self.type)
+        ret += 'Amount bet: {}\n'.format(self.amount)
+        ret += 'Amount payed: {}\n'.format(self.amount_payed)
+        ret += 'Bet state: {}\n'.format(self.state)
+        return ret
+
     def check(self, turn):
         return sum(turn.dice) == 7
 
@@ -68,6 +105,17 @@ class SevenBet(Bet):
 
 
 class DoubleBet(Bet):
+
+    type = DOUBLE_BET
+
+    def __str__(self):
+        ret = ''
+        ret += 'Bet type: {}\n'.format(self.type)
+        ret += 'Amount bet: {}\n'.format(self.amount)
+        ret += 'Amount payed: {}\n'.format(self.amount_payed)
+        ret += 'Bet state: {}\n'.format(self.state)
+        return ret
+
     def check(self, turn):
         return turn.dice[0] == turn.dice[1]
 
@@ -96,10 +144,10 @@ class DoubleBet(Bet):
 
 
 BET_TYPES = {
-    'PASS_BET': PassBet,
-    'DO_NOT_PASS_BET': DoNotPassBet,
-    'DOUBLE_BET': DoubleBet,
-    'SEVEN_BET': SevenBet
+    PASS_BET: PassBet,
+    DO_NOT_PASS_BET: DoNotPassBet,
+    DOUBLE_BET: DoubleBet,
+    SEVEN_BET: SevenBet,
 }
 
 
@@ -122,5 +170,5 @@ class BetCreator:
 #    def list_bets():
 #        menu = ''
 #        for bet in bet_types:
-#            menu += bet.name
+#            menu += bet.type
 #        return menu
