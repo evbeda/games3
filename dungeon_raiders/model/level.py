@@ -10,23 +10,22 @@ from .hand_player import HandPlayer
 
 class Level:
     def __init__(self, players):
-        self.rooms = []
-        self.hands = []
-        self.create_hands_for_level(players)
-        self.select_room()
+        self.rooms = self.select_rooms()
+        self.hands = self.create_hands_for_level(players)
 
     def create_hands_for_level(self, players):
-        for player in players:
-            self.hands.append(HandPlayer(player))
+        return [HandPlayer(player) for player in players]
 
-    def select_room(self):
+    def select_rooms(self):
+        rooms = []
         for i in range(5):
             number_room = randint(0, 3)
             if number_room == MONSTER_ROOM:
-                self.rooms.append(MonsterRoom(choice(MONSTERS)))
+                rooms.append(MonsterRoom(choice(MONSTERS)))
             elif number_room == TREASURE_ROOM:
-                self.rooms.append(Treasure(choice(TREASURES)))
+                rooms.append(Treasure(choice(TREASURES)))
             elif number_room == GOLD_TRAP_ROOM:
-                self.rooms.append(GoldRoom(choice(GOLDS)))
+                rooms.append(GoldRoom(choice(GOLDS)))
             else:
-                self.rooms.append(WoundRoom(choice(WOUNDS)))
+                rooms.append(WoundRoom(choice(WOUNDS)))
+        return rooms
