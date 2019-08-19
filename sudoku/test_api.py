@@ -1,6 +1,8 @@
 import unittest
 import json
 from parameterized import parameterized
+from requests.exceptions import RequestException
+import sudoku
 from . import (
     API_BOARD, API_URL, EXAMPLE_JSON, COLUMN_OUT_OF_RANGE, ROW_OUT_OF_RANGE,
     VALUE_OUT_OF_RANGE, RESPONSE_INVALID, SIZE_INVALID, NO_SQUARES)
@@ -45,3 +47,10 @@ class TestSudokuApi(unittest.TestCase):
             fetch_board()
         except Exception as e:
             self.fail('Incorrect structure: ' + str(e))
+
+    def test_404_api_connection(self):
+        original_URL = sudoku.api.API_URL
+        sudoku.api.API_URL = 'http://www.cs.utep.edu/cheon/ws/UNO/new/'
+        with self.assertRaises(RequestException):
+            fetch_board()
+        sudoku.api.API_URL = original_URL

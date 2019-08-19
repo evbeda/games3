@@ -14,11 +14,12 @@ def mocked_requests_get(*args, **_):
         def json(self):
             return self.json_data
 
+        def raise_for_status(self):
+            pass
+
     if args[0] == API_URL:
         with open(EXAMPLE_JSON, 'r') as f:
             return MockResponse(json.load(f), 200)
-
-    return MockResponse(None, 404)
 
 
 def parse_api_response(response):
@@ -54,5 +55,6 @@ def validate_response(response):
 
 def fetch_board():
     response = requests.get(API_URL)
+    response.raise_for_status()
     validate_response(response.json())
     return parse_api_response(response.json())
