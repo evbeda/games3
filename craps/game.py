@@ -39,9 +39,9 @@ class CrapsGame:
                 return 'Game Over'
             else:
                 return CAN_NOT_LEAVE + BET_MESSAGE
+        if self.turn.state == PLAYER_LOST or self.turn.state == PLAYER_WON:
+            self.turn = Turn()
         if user_input == 'Go':
-            if self.turn.state == PLAYER_LOST or self.turn.state == PLAYER_WON:
-                self.turn = Turn()
             self.money += self.turn.shoot()
             return self.turn.dice
         try:
