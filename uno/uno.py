@@ -11,7 +11,7 @@ class Uno():
         self.stack.put_card_in_discard()
 
     def play(self, command):
-        if self.player.is_turn:
+        if not self.player.loses_turn:
             if command == 'END GAME':
                 self.is_playing = False
                 return 'Bye'
@@ -29,7 +29,7 @@ class Uno():
                     # Activate card action
                     # card.action(self.player)
                     return self.winner()
-        if self.computer_player.is_turn:
+        if not self.computer_player.loses_turn:
             pass
 
     def winner(self):

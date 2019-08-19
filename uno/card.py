@@ -50,6 +50,9 @@ class NumberCard(ColoredCard):
     def is_valid(self, card):
         return self.same_color(card) or self.same_number(card)
 
+    def get_action(self):
+        return (False, 0)
+
 
 class ReverseCard(ColoredCard):
 
@@ -61,8 +64,8 @@ class ReverseCard(ColoredCard):
     def __str__(self):
         return '{} - {}'.format(self.name, self.color)
 
-    def action(self, player):
-        player.is_turn = False
+    def get_action(self):
+        return (True, 0)
 
 
 class SkipCard(ColoredCard):
@@ -75,8 +78,8 @@ class SkipCard(ColoredCard):
     def __str__(self):
         return '{} - {}'.format(self.name, self.color)
 
-    def action(self, player):
-        player.is_turn = False
+    def get_action(self):
+        return (True, 0)
 
 
 class DrawTwoCard(ColoredCard):
@@ -85,21 +88,24 @@ class DrawTwoCard(ColoredCard):
 
     def __init__(self, color):
         self.color = color
-        self.cardsToDraw = 2
+        self.cards_to_draw = 2
 
     def __str__(self):
         return '{} - {}'.format(self.name, self.color)
 
-# TODO This should check the stack, not a previous card. Check camel_case.
-    def action(self, previousCard):
-        if type(previousCard) == DrawTwoCard:
-            self.cardsToDraw += previousCard.cardsToDraw
-        return self.cardsToDraw
+    def get_action(self):
+        return (True, 2)
+        # if type(previousCard) == DrawTwoCard:
+        #     self.cards_to_draw += previousCard.cards_to_draw
+        # return self.cards_to_draw
 
 
 class DrawFourCard(PostColoredCard):
 
     name = 'Draw Four'
+
+    def get_action(self):
+        return (True, 4)
 
     def __str__(self):
         return '{}'.format(self.name)
