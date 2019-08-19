@@ -61,6 +61,9 @@ class ReverseCard(ColoredCard):
     def __str__(self):
         return '{} - {}'.format(self.name, self.color)
 
+    def action(self, player):
+        player.is_turn = False
+
 
 class SkipCard(ColoredCard):
 
@@ -71,6 +74,9 @@ class SkipCard(ColoredCard):
 
     def __str__(self):
         return '{} - {}'.format(self.name, self.color)
+
+    def action(self, player):
+        player.is_turn = False
 
 
 class DrawTwoCard(ColoredCard):

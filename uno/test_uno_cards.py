@@ -9,6 +9,8 @@ from .card import (
     DrawFourCard,
     DrawTwoCard,
 )
+from .player import Player
+from .stack import Stack
 
 
 class TestUnoCards(unittest.TestCase):
@@ -268,3 +270,17 @@ class TestUnoCards(unittest.TestCase):
     ])
     def test_cards_correct_representation(self, card, representation):
         self.assertEqual(str(card), representation)
+
+    def test_card_skip_card_action(self):
+        stack = Stack()
+        adversary = Player(stack.generate_cards_player())
+        card = SkipCard(GREEN)
+        card.action(adversary)
+        self.assertEqual(adversary.is_turn, False)
+
+    def test_card_reverse_card_action(self):
+        stack = Stack()
+        adversary = Player(stack.generate_cards_player())
+        card = ReverseCard(GREEN)
+        card.action(adversary)
+        self.assertEqual(adversary.is_turn, False)

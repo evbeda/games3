@@ -22,7 +22,7 @@ class TestUnoGame(unittest.TestCase):
 
     def test_remaining_initial_stack_length(self):
         uno = Uno()
-        self.assertEqual(len(uno.stack.stack_cards), 104)
+        self.assertEqual(len(uno.stack.stack_cards), 97)
 
     def test_initial_cards_player_length(self):
         uno = Uno()
@@ -36,7 +36,7 @@ class TestUnoGame(unittest.TestCase):
     def test_initial_take_card_stack_length(self):
         uno = Uno()
         uno.play('0')
-        self.assertEqual(len(uno.stack.stack_cards), 103)
+        self.assertEqual(len(uno.stack.stack_cards), 96)
 
     def test_initial_take_card_cards_player_length(self):
         uno = Uno()

@@ -6,25 +6,31 @@ class Uno():
     def __init__(self):
         self.is_playing = True
         self.stack = Stack()
-        self.player = Player(self.stack)
+        self.player = Player(self.stack.generate_cards_player())
+        self.computer_player = Player(self.stack.generate_cards_player())
         self.stack.put_card_in_discard()
 
     def play(self, command):
-        if command == 'END GAME':
-            self.is_playing = False
-            return 'Bye'
-        elif command == '0':
-            return self.player.cards_player.append(
-                self.stack.stack_cards.pop())
-        else:
-            card = self.player.selected_card(command)
-            is_valid_card = card.is_valid(self.stack.discard_cards[-1])
-            if is_valid_card is False:
-                return "Your card is not valid"
+        if self.player.is_turn:
+            if command == 'END GAME':
+                self.is_playing = False
+                return 'Bye'
+            elif command == '0':
+                return self.player.cards_player.append(
+                    self.stack.stack_cards.pop())
             else:
-                self.player.cards_player.remove(card)
-                self.stack.put_card_in_discard(card)
-                return self.winner()
+                card = self.player.selected_card(command)
+                is_valid_card = card.is_valid(self.stack.discard_cards[-1])
+                if is_valid_card is False:
+                    return "Your card is not valid"
+                else:
+                    self.player.cards_player.remove(card)
+                    self.stack.put_card_in_discard(card)
+                    # Activate card action
+                    # card.action(self.player)
+                    return self.winner()
+        if self.computer_player.is_turn:
+            pass
 
     def winner(self):
         if self.player.cards_player == []:
