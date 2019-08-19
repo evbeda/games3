@@ -1,6 +1,12 @@
 import unittest
 from unittest.mock import patch
 
+from sudoku import (
+    ALMOST_FINISHED_EXAMPLE_BOARD,
+    ALMOST_FINISHED_SHOWN_BOARD,
+    FINISHED_SHOWN_BOARD,
+    YOU_WIN
+    )
 from game import Game
 
 
@@ -36,6 +42,7 @@ class TestGame(unittest.TestCase):
             self.game.game_inputs(),
             'Select Game\n'
             '0: Guess Number Game\n'
+            '1: Sudoku Game\n'
             '9: to quit\n'
         )
 
@@ -56,15 +63,54 @@ class TestGame(unittest.TestCase):
                     return '50'
 
         with \
-                patch('game.Game.get_input', side_effect=ControlInputValues()), \
-                patch('game.Game.output', side_effect=self.output_collector), \
-                patch('guess_number_game.guess_number_game.randint', return_value=50):
+                patch(
+                    'game.Game.get_input', side_effect=ControlInputValues()), \
+                patch(
+                    'game.Game.output', side_effect=self.output_collector), \
+                patch(
+                    'guess_number_game.guess_number_game.randint',
+                    return_value=50):
             self.game.play()
 
         self.assertEqual(
             self.output_collector.output_collector,
             ['[]', 'you win', '[50]'],
         )
+
+    def test_play_sudoku(self):
+
+        class ControlInputValues(object):
+            def __init__(self, *args, **kwargs):
+                self.played = False
+                self.play_count = -1
+                self.plays = [
+                    'a 1 2',
+                ]
+
+            def __call__(self, console_output):
+                if 'Select Game' in console_output:
+                    if self.played:
+                        return '9'
+                    self.played = True
+                    return '1'
+                self.play_count += 1
+                return self.plays[self.play_count]
+
+        with \
+                patch(
+                    'game.Game.get_input', side_effect=ControlInputValues()
+                    ), \
+                patch('game.Game.output', side_effect=self.output_collector), \
+                patch(
+                    'sudoku.game.fetch_board',
+                    return_value=ALMOST_FINISHED_EXAMPLE_BOARD,
+                ):
+            self.game.play()
+
+        self.assertEqual(
+            self.output_collector.output_collector,
+            [ALMOST_FINISHED_SHOWN_BOARD, YOU_WIN, FINISHED_SHOWN_BOARD],
+         )
 
 
 if __name__ == "__main__":

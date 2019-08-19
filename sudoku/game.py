@@ -15,6 +15,7 @@ from .invalid_input_exception import InvalidInputException
 class SudokuGame:
 
     name = 'Sudoku Game'
+    input_args = 3
 
     def __init__(self, board=None):
         if not board:
@@ -29,9 +30,7 @@ class SudokuGame:
             return GAME_OVER
 
     # user_input = "a 1 4"
-    def play(self, user_input):
-        row, column, value = user_input.split(" ")
-
+    def play(self, row, column, value):
         try:
             self.validate_input(row, column, value)
             self.game_board.place((row, int(column)), int(value))
