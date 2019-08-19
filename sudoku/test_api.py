@@ -1,7 +1,11 @@
 import unittest
 import json
-from . import API_URL, EXAMPLE_JSON, API_BOARD
-from .api import fetch_board, parse_api_response, mocked_requests_get
+from parameterized import parameterized
+from . import (
+    API_BOARD, API_URL, EXAMPLE_JSON, COLUMN_OUT_OF_RANGE, ROW_OUT_OF_RANGE,
+    VALUE_OUT_OF_RANGE, RESPONSE_INVALID, SIZE_INVALID, NO_SQUARES)
+from .api import (
+    fetch_board, parse_api_response, mocked_requests_get, validate_response)
 
 
 class TestSudokuApi(unittest.TestCase):
@@ -19,3 +23,25 @@ class TestSudokuApi(unittest.TestCase):
         response = fetch_board()
         mocked_request.assert_called_with(API_URL)
         self.assertEqual(response, API_BOARD)
+
+    @parameterized.expand([
+        ('{"response": false}', RESPONSE_INVALID),
+        ('{"response": true, "size": "7"}', SIZE_INVALID),
+        ('{"response": true, "size": "9", "squares":[] }', NO_SQUARES),
+        ('{"response": true, "size": "9", '
+            '"squares":[{"x":9,"y":3,"value":7}]}', ROW_OUT_OF_RANGE),
+        ('{"response": true, "size": "9", '
+            '"squares":[{"x":3,"y":9,"value":7}]}', COLUMN_OUT_OF_RANGE),
+        ('{"response": true, "size": "9",'
+            '"squares":[{"x":3,"y":3,"value":10}]}', VALUE_OUT_OF_RANGE)
+    ])
+    def test_incorrect_response(self, response, message):
+        with self.assertRaises(Exception) as e:
+            validate_response(json.loads(response))
+        self.assertEqual(str(e.exception), message)
+
+    def test_correct_strucutre(self):
+        try:
+            fetch_board()
+        except Exception as e:
+            self.fail('Incorrect structure: ' + str(e))
