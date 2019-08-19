@@ -1,6 +1,15 @@
-from . import NUMBER_ADDED, PLACE_A_NUMBER, GAME_OVER, YOU_WIN
+from . import (
+    NUMBER_ADDED,
+    PLACE_A_NUMBER,
+    GAME_OVER,
+    YOU_WIN,
+    INVALID_INPUT_COLUMN,
+    INVALID_INPUT_ROW,
+    INVALID_INPUT_VALUE,
+)
 from .board import Board
 from .api import fetch_board
+from .invalid_input_exception import InvalidInputException
 
 
 class SudokuGame:
@@ -22,7 +31,9 @@ class SudokuGame:
     # user_input = "a 1 4"
     def play(self, user_input):
         row, column, value = user_input.split(" ")
+
         try:
+            self.validate_input(row, column, value)
             self.game_board.place((row, int(column)), int(value))
             if self.game_board.is_finished():
                 self.is_playing = False
@@ -30,7 +41,20 @@ class SudokuGame:
             return NUMBER_ADDED
         except Exception as e:
             return str(e)
+        except InvalidInputException as e:
+            return str(e)
 
     @property
     def board(self):
         return self.game_board.show_board()
+
+    def validate_input(self, row, column, value):
+        errors = ""
+        if 'a' <= value.lower() < 'z' or not 0 < int(value) <= 9:
+            errors += INVALID_INPUT_VALUE + '\n'
+        if 'a' <= column.lower() < 'z' or not 0 < int(column) <= 9:
+            errors += INVALID_INPUT_COLUMN + '\n'
+        if not 'a' <= row.lower() <= 'z':
+            errors += INVALID_INPUT_ROW + '\n'
+        if errors:
+            raise InvalidInputException(errors)
