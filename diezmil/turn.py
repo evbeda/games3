@@ -22,7 +22,7 @@ class Turn:
             self.plays[-1].roll_dices(dices)
 
     def calculate_acumulated_score(self):
-        for play in plays:
+        for play in self.plays:
             if play.play_score == WINNING_PLAY:
                 self.acumulated_score = 10000
                 break

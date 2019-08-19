@@ -163,6 +163,7 @@ class TestDiezMil(unittest.TestCase):
     def test_five_ones(self, dices, expected_result, expected_score):
         self.assertEqual(self.play.check_combination(dices), expected_result)
         self.assertEqual(self.play.play_score, expected_score)
+
     def test_create_players(self):
         PLAYER1_NAME = 'PLAYER1_NAME'
         PLAYER2_NAME = 'PLAYER2_NAME'
@@ -173,6 +174,13 @@ class TestDiezMil(unittest.TestCase):
             [x.name for x in self.game.players],
             player_names
         )
+
+    def test_calculate_acumulated_score(self):
+        turn = Turn()
+        turn.plays = []
+        turn.calculate_acumulated_score()
+        self.assertEqual(turn.acumulated_score, 0)
+
 
     # USAR PARA EL TEST - NO BORRAR
     # @parameterized.expand([

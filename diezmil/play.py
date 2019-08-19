@@ -2,7 +2,6 @@ import random
 from . import WINNING_PLAY
 
 
-
 class Play(object):
     def __init__(self):
         self.play_score = 0
