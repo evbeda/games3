@@ -126,10 +126,10 @@ class TestDiezMil(unittest.TestCase):
     def test_calculate_repeated(self, dices, expected_score):
         self.assertEqual(self.play.calculate_repeated(dices), expected_score)
 
-    # Test check combination
     @parameterized.expand([
         ([1, 1, 1, 4, 5], ([1, 1, 1], 1000)),
         ([1, 1, 1, 1, 5], ([1, 1, 1, 1], 2000)),
+        ([1, 1, 1, 1, 1], ([1, 1, 1, 1, 1], WINNING_PLAY)),
         ([1, 4, 3, 4, 5], ([1, 5], 150)),
         ([3, 3, 3, 4, 5], ([3, 3, 3], 300)),
         ([1, 2, 3, 4, 5], ([1, 2, 3, 4, 5], 500)),
@@ -157,13 +157,6 @@ class TestDiezMil(unittest.TestCase):
         dices_selected = play.choose_dices([1, 2])
         self.assertEqual(dices_selected, [5, 6])
 
-    @parameterized.expand([
-        ([1, 1, 1, 1, 1], WINNING_PLAY, 10000),
-    ])
-    def test_five_ones(self, dices, expected_result, expected_score):
-        self.assertEqual(self.play.check_combination(dices), expected_result)
-        self.assertEqual(self.play.play_score, expected_score)
-
     def test_create_players(self):
         PLAYER1_NAME = 'PLAYER1_NAME'
         PLAYER2_NAME = 'PLAYER2_NAME'
@@ -180,6 +173,14 @@ class TestDiezMil(unittest.TestCase):
         turn.plays = []
         turn.calculate_acumulated_score()
         self.assertEqual(turn.acumulated_score, 0)
+
+    def test_five_ones_win(self):
+        turn = Turn()
+        turn.player = Player(name='TEST_PLAYER')
+        with patch('random.randint', side_effect=[1, 1, 1, 1, 1]):
+            turn.generate_play()
+        turn.calculate_acumulated_score()
+        self.assertEqual(turn.player.actual_score, 10000)
 
 
     # USAR PARA EL TEST - NO BORRAR
