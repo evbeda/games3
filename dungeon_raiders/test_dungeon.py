@@ -36,7 +36,7 @@ class TestDungeon(unittest.TestCase):
         hand.play(3)
         self.assertTrue(3 not in hand.cards_to_play)
 
-    """ -------------------- Game tests -------------------- """
+    """ -------------------- Game tests -------------------- """ 
     def test_check_if_game_has_5_levels(self):
         game = Game([Player('A'), Player('B'), Player('C'), Player('D')])
         self.assertEqual(5, len(game.levels))
@@ -175,6 +175,6 @@ class TestLevel(unittest.TestCase):
         self.assertEqual(5, len(level.rooms))
 
     def test_check_if_level_has_hands_for_player(self):
-        level = Level([Player('A'), Player('B'), Player('C')])
+        level = Level([Player('A')])
         self.assertEqual(3, len(level.hands))
-
+        
