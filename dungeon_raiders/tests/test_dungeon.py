@@ -1,4 +1,5 @@
 import unittest
+from parameterized import parameterized
 from ..model.exceptions.exceptions import UnplayableCardException
 from ..model.hand_player import HandPlayer
 from ..model.game import Game
@@ -32,19 +33,39 @@ class TestDungeon(unittest.TestCase):
     """ -------------------- Game tests -------------------- """
     def test_check_if_game_has_5_levels(self):
         game = Game()
-        self.assertEqual(5, len(game.levels))
+        self.assertEqual(5, len(game.create_levels()))
 
-    def test_check_if_player_a_wins(self):
+    def test_check_if_game_has_3_players(self):
         game = Game()
-        game.players[0].gold = 50
-        game.players[0].wounds = 10
-        game.players[1].gold = 40
-        game.players[1].wounds = 15
-        game.players[2].gold = 60
-        game.players[2].wounds = 20
-        self.assertEqual(game.players[0], game.get_winner())
+        self.assertEqual(3, len(game.create_players()))
 
-    def _play(self, room, hands):
-        room.resolve_room(hands)
-        return hands
-
+    @parameterized.expand([
+        ([50, 10], [40, 20], [60, 20], [1, 2], [0, 1, 2], [2]),
+        ([60, 10], [40, 20], [60, 20], [1, 2], [0, 1, 2], [0]),
+        ([60, 10], [40, 20], [60, 10], [1], [0, 2], [0, 2]),
+        ([60, 10], [60, 10], [60, 10], [0, 1, 2], [0, 1, 2], [0, 1, 2]),
+    ])
+    def test_check_resolve_game(self, player1, player2, player3,
+                                max_wound, finalists, winner):
+        game = Game()
+        game.players[0].gold = player1[0]
+        game.players[0].wounds = player1[1]
+        game.players[1].gold = player2[0]
+        game.players[1].wounds = player2[1]
+        game.players[2].gold = player3[0]
+        game.players[2].wounds = player3[1]
+        expected_max_wound = [player for player in game.players
+                              if game.players.index(player) in max_wound]
+        expected_finalists = [player for player in game.players
+                              if game.players.index(player) in finalists]
+        expected_winners = [player for player in game.players
+                            if game.players.index(player) in winner]
+        # players_with_max_wounds
+        players_max_wound = game.get_players_with_max_wounds(game.players)
+        self.assertEqual(players_max_wound, expected_max_wound)
+        # finalists
+        finalists = game.get_finalists()
+        self.assertEqual(finalists, expected_finalists)
+        # winner/winner
+        winners = game.resolve_game()
+        self.assertEqual(winners, expected_winners)
