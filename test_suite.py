@@ -12,7 +12,16 @@ from dungeon_raiders.test_dungeon import TestTreasure
 from dungeon_raiders.test_dungeon import TestLevel
 from dungeon_raiders.test_dungeon import TestPlayer
 from guess_number_game.test_guess_number_game import TestGuessNumberGame
-from ruleta.test_ruleta import TestRuleta
+from ruleta.tests.test_ruleta import (
+    TestRoulette,
+    TestBoard
+)
+from ruleta.tests.test_bets import (
+    TestBetsRoulette,
+    TestBetCreator,
+)
+from ruleta.tests.test_croupier import TestCroupier
+from ruleta.tests.integration_test import IntegrationTest
 from sudoku.test_sudoku_board import TestSudokuBoard
 from sudoku.test_sudoku_game import TestSudokuGame
 from sudoku.test_api import TestSudokuApi
@@ -37,7 +46,12 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestLevel))
     test_suite.addTest(unittest.makeSuite(TestPlayer))
     # ROULETTE
-    test_suite.addTest(unittest.makeSuite(TestRuleta))
+    test_suite.addTest(unittest.makeSuite(TestBetsRoulette))
+    test_suite.addTest(unittest.makeSuite(TestBetCreator))
+    test_suite.addTest(unittest.makeSuite(TestRoulette))
+    test_suite.addTest(unittest.makeSuite(TestCroupier))
+    test_suite.addTest(unittest.makeSuite(IntegrationTest))
+    test_suite.addTest(unittest.makeSuite(TestBoard))
     # SUDOKU
     test_suite.addTest(unittest.makeSuite(TestSudokuBoard))
     test_suite.addTest(unittest.makeSuite(TestSudokuGame))
