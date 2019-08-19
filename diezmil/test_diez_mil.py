@@ -63,11 +63,11 @@ class TestDiezMil(unittest.TestCase):
         (4, 5, 5, GO),
         (5, 5, 1, GO),
     ])
-    def test_next_turn(self, who_is_playing, players_qty, expected, state):
+    def test_next_player(self, who_is_playing, players_qty, expected, state):
         self.game.players_qty = players_qty
         self.game.state = state
         self.game.who_is_playing = who_is_playing
-        self.game.next_turn()
+        self.game.next_player()
         self.assertEqual(expected, self.game.who_is_playing)
 
     # Play testings
