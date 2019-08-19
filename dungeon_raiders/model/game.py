@@ -6,28 +6,15 @@ import random
 
 class Game:
     def __init__(self):
-        self.players = []
-        self.create_players()
-        self.create_levels()
+        self.players = self.create_players()
+        self.levels = self.create_levels()
 
     def create_levels(self):
-        self.levels = [
-            Level(self.players),
-            Level(self.players),
-            Level(self.players),
-            Level(self.players),
-            Level(self.players)
-            ]
+        return [Level(self.players) for i in range(5)]
 
     def create_players(self):
-        characters = []
-        list_shuffle = list(range(0, 5))
-        random.shuffle(list_shuffle)
-        for k, v in enumerate(list_shuffle):
-            characters.append(CHARACTER[v])
-            self.players.append(Player('', characters[k]))
-            if len(characters) == 3:
-                break
+        players = [Player(character=c) for c in random.sample(CHARACTER, k=3)]
+        return players
 
     def get_winner(self):
         self.players.sort(key=lambda elem: elem.wounds)
@@ -39,7 +26,6 @@ class Game:
         pass    
 
     def play(self, number_card):
-
         pass
 
     @property
