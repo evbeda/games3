@@ -15,7 +15,11 @@ from . import (
     EXAMPLE_BOARD,
     EXAMPLE_SHOWN_BOARD,
     API_BOARD,
+    INVALID_INPUT_COLUMN,
+    INVALID_INPUT_ROW,
+    INVALID_INPUT_VALUE,
 )
+from .invalid_input_exception import InvalidInputException
 
 
 class TestSudokuGame(unittest.TestCase):
@@ -94,3 +98,24 @@ class TestSudokuGame(unittest.TestCase):
 
     def test_board(self):
         self.assertEqual(EXAMPLE_SHOWN_BOARD, self.game.board)
+
+    @parameterized.expand([
+        ('2', '2', '6'),
+        ('b', 'a', '9'),
+        ('c', '9', 'a'),
+        ('2', 'a', 'a'),
+    ])
+    def test_invalid_input(self, row, column, value):
+        with self.assertRaises(InvalidInputException):
+            self.game.validate_input(row, column, value)
+
+    @parameterized.expand([
+        ('2 2 6', INVALID_INPUT_ROW + '\n'),
+        ('b a 9', INVALID_INPUT_COLUMN + '\n'),
+        ('c 9 a', INVALID_INPUT_VALUE + '\n'),
+        ('2 a a', INVALID_INPUT_VALUE + '\n' +
+            INVALID_INPUT_COLUMN + '\n' +
+            INVALID_INPUT_ROW + '\n'),
+    ])
+    def test_invalid_input_text(self, user_input, expected_msg):
+        self.assertEqual(self.game.play(user_input), expected_msg)

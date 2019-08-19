@@ -54,3 +54,6 @@ EXAMPLE_SHOWN_BOARD = "  6   |3     |8   4 \n" \
             "3   6 |4     |  1   \n" \
             "      |  6   |5 2 3 \n" \
             "1   2 |    9 |  8   \n"
+INVALID_INPUT_ROW = "Invalid row"
+INVALID_INPUT_COLUMN = "Invalid column"
+INVALID_INPUT_VALUE = "Invalid value"
