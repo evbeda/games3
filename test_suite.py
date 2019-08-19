@@ -26,6 +26,7 @@ from sudoku.test_sudoku_board import TestSudokuBoard
 from sudoku.test_sudoku_game import TestSudokuGame
 from sudoku.test_api import TestSudokuApi
 from diezmil.test_diez_mil import TestDiezMil
+from test_game import TestGame
 
 
 def suite():
@@ -60,6 +61,8 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestDiezMil))
     # GUESS NUMBER GAME
     test_suite.addTest(unittest.makeSuite(TestGuessNumberGame))
+    # GAME MACHINE
+    test_suite.addTest(unittest.makeSuite(TestGame))
 
 
 if __name__ == '__main__':
