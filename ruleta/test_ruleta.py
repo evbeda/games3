@@ -2,7 +2,14 @@ import unittest
 from unittest.mock import patch
 from parameterized import parameterized
 from .roulette import Roulette
-from .bet import BetCreator, StraightBet, ColorBet, EvenOddBet, LowHighBet
+from .bet import (
+    BetCreator,
+    StraightBet,
+    ColorBet,
+    EvenOddBet,
+    LowHighBet,
+    StreetBet
+)
 from .player import Player
 from .game_roullete import GameRoulette
 from .board import get_color_from_number
@@ -10,15 +17,17 @@ from .board import get_dozen_from_number
 from .croupier import Croupier
 
 # Messages
-from . import SUCCESS_MESSAGE, NOT_ENOUGH_CASH_MESSAGE \
-, INVALID_BET_MESSAGE \
-, INVALID_BET_TYPE_MESSAGE \
-, BYE_MESSAGE \
-, END_GAME_COMMAND \
-, GO_COMMAND \
-, WON_MESSAGE \
-, LOST_MESSAGE
-
+from . import (
+    SUCCESS_MESSAGE,
+    NOT_ENOUGH_CASH_MESSAGE,
+    INVALID_BET_MESSAGE,
+    INVALID_BET_TYPE_MESSAGE,
+    BYE_MESSAGE,
+    END_GAME_COMMAND,
+    GO_COMMAND,
+    WON_MESSAGE,
+    LOST_MESSAGE
+)
 # Exceptions
 from .exceptions.invalid_bet_exception import InvalidBetException
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
@@ -94,20 +103,31 @@ class TestRuleta(unittest.TestCase):
         (StraightBet, [40], 17),
         (ColorBet, ['Reds'], 300),
         (EvenOddBet, ['ODDs'], 30),
-        (LowHighBet, ['Lower'], 11)
+        (LowHighBet, ['Lower'], 11),
+        (StreetBet, [1, 2, 4], 100)
     ])
     def test_invalid_bets(self, bet, bet_value, ammount):
         with self.assertRaises(InvalidBetException):
             bet(bet_value, ammount)
 
+    # Test for the bets
+    @parameterized.expand([
+        (StraightBet, [30], [30]),
+        (ColorBet, ['Red'], [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]),
+        (ColorBet, ['black'], [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]),
+        (EvenOddBet, ['ODD'], [x for x in range(1, 37) if x % 2 == 1]),
+        (EvenOddBet, ['EvEN'], [x for x in range(1, 37) if x % 2 == 0]),
+        (LowHighBet, ['Low'], [x for x in range(1, 19)]),
+        (LowHighBet, ['high'], [x for x in range(19, 37)]),
+        (StreetBet, [1, 2, 3], [1, 2, 3])
+    ])
+    def test_valid_bets(self, bet, bet_value, expected_target_numbers):
+        bet = bet(bet_value, 10)
+        self.assertEqual(bet.target_numbers, expected_target_numbers)
+
     @parameterized.expand(bet_scenario)
-    def test_valid_bets(self,
-                        bet,
-                        bet_value,
-                        ammount,
-                        award,
-                        chosen_number,
-                        expect_winner):
+    def test_is_winner(
+            self, bet, bet_value, ammount, award, chosen_number, expect_winner):
         bet_type = bet(bet_value, ammount)
         self.assertEqual(bet_type.is_winner(chosen_number), expect_winner)
 
@@ -153,7 +173,6 @@ class TestRuleta(unittest.TestCase):
         self.player = Player(50)
         self.game.croupier.add_bet(StraightBet([30], 25))
         self.assertEqual(LOST_MESSAGE, self.game.play(GO_COMMAND))
-
 
     # Test for the croupier
     def test_player_bets_100_but_have_50_should_fail(self):
