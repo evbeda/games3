@@ -14,7 +14,7 @@ class DiezMil(object):
         self.base_score = 0
         self.players = []
         self.who_is_playing = 0
-        self.actual_turn = []
+        self.actual_turn = None
 
     # It's a circle, it adds one until the top boundary of players_qty
     # Otherwise it beging with the first one

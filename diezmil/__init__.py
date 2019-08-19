@@ -1,3 +1,5 @@
 SETUP = 'SETUP'
 GO = 'GO'
 WINNING_PLAY = 'WINNING_PLAY'
+PLAYING = 'Playing'
+FINSHED = 'Finished'
