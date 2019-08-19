@@ -149,7 +149,7 @@ class TestDiezMil(unittest.TestCase):
         turn.generate_play()
         self.assertEqual(len(turn.plays[-1].dices), 3)
 
-    def play_select_dice(self):
+    def test_play_select_dice(self):
         play = Play()
         play.dices = [1, 5, 6, 4, 2]
         dices_selected = play.choose_dices([1, 2])
@@ -161,6 +161,17 @@ class TestDiezMil(unittest.TestCase):
     def test_five_ones(self, dices, expected_result, expected_score):
         self.assertEqual(self.play.check_combination(dices), expected_result)
         self.assertEqual(self.play.play_score, expected_score)
+    def test_create_players(self):
+        PLAYER1_NAME = 'PLAYER1_NAME'
+        PLAYER2_NAME = 'PLAYER2_NAME'
+        player_names = [PLAYER1_NAME, PLAYER2_NAME]
+        with patch('builtins.input', side_effect=player_names):
+            self.game.create_players()
+        self.assertEqual(
+            [x.name for x in self.game.players],
+            player_names
+        )
+
     # USAR PARA EL TEST - NO BORRAR
     # @parameterized.expand([
     #     ('SELECT_DICES 1 3'),
