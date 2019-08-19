@@ -38,8 +38,7 @@ class CrapsGame:
             self.is_playing = False
             return 'Game Over'
         if user_input == 'Go':
-            self.turn.shoot()
-            self.money += self.turn.pay_bets()
+            self.money += self.turn.shoot()
             return self.turn.dice
         try:
             bet_type, amount, bet_values = \
