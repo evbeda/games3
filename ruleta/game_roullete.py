@@ -1,12 +1,15 @@
 from .bet import BetCreator
 from .croupier import Croupier
 from .player import Player
-from . import SUCCESS_MESSAGE, NOT_ENOUGH_CASH_MESSAGE \
-, INVALID_BET_MESSAGE \
-, INVALID_BET_TYPE_MESSAGE \
-, BYE_MESSAGE \
-, END_GAME_COMMAND \
-, GO_COMMAND \
+from . import (
+    SUCCESS_MESSAGE,
+    NOT_ENOUGH_CASH_MESSAGE,
+    INVALID_BET_MESSAGE,
+    INVALID_BET_TYPE_MESSAGE,
+    BYE_MESSAGE,
+    END_GAME_COMMAND,
+    GO_COMMAND
+)
 # Exceptions
 from .exceptions.out_of_cash_exception import OutOfCashException
 from .exceptions.invalid_bet_exception import InvalidBetException

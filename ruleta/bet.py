@@ -1,7 +1,8 @@
 from .exceptions.invalid_bet_exception import InvalidBetException
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
+from .board import board
 
-all_values = list(range(37))
+all_values = list(range(1, 37))
 
 
 class Bet:
@@ -10,7 +11,7 @@ class Bet:
     def __init__(self, bet_value, amount):
         self.validate(bet_value)
         self.target_numbers = \
-            self.transform_bet_values_to_target_values(bet_value)
+            sorted(self.transform_bet_values_to_target_values(bet_value))
         self.amount = amount
 
     def transform_bet_values_to_target_values(self, bet_value):
@@ -102,6 +103,23 @@ class LowHighBet(Bet):
             return low
         else:
             return list(set(all_values) - set(low))
+
+
+class StreetBet(Bet):
+    name = 'STREET_BET\n'
+    reward = 11
+
+    def __init__(self, bet_values, amount):
+        super().__init__(bet_values, amount)
+
+    def validate(self, bet_values):
+        ''' expect bet_value like "1" '''
+        bet_values.sort()
+        valid_bets = []
+        for index in range(1, 13):
+            valid_bets.append([row[index] for row in board])
+        if bet_values not in valid_bets:
+            raise InvalidBetException()
 
 
 bet_types = {
