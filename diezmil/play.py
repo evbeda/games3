@@ -1,4 +1,6 @@
 import random
+from .__init__ import WINNING_PLAY
+
 
 
 class Play(object):
@@ -44,6 +46,9 @@ class Play(object):
         return any(dices.count(x) >= 3 for x in dices)
 
     def check_combination(self, dices):
+        if dices == [1, 1, 1, 1, 1]:
+            self.play_score = 10000
+            return WINNING_PLAY
         if self.is_a_stair(dices):
             self.play_temp_score = 500
             return (dices, 500)
@@ -60,10 +65,7 @@ class Play(object):
                 qty = dices.count(dice)
                 score = dice
                 if (dice == 1):
-                    if qty == 5:
-                        return ([1]*qty, 10000)
-                    else:
-                        score *= 1000
+                    score *= 1000
                 else:
                     score *= 100
                 score *= 2 ** (qty-3)

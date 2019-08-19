@@ -1,4 +1,5 @@
 from .play import Play
+from .__init__ import WINNING_PLAY
 
 
 class Turn:
@@ -20,5 +21,11 @@ class Turn:
             self.plays.append(play)
             self.plays[-1].roll_dices(dices)
 
-    def calculate_acumulated_score():
-        pass
+    def calculate_acumulated_score(self):
+        for play in plays:
+            if play.play_score == WINNING_PLAY:
+                self.acumulated_score = 10000
+                break
+            else:
+                self.acumulated_score += play.play_score
+

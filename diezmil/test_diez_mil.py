@@ -1,5 +1,5 @@
 import unittest
-from .__init__ import SETUP, GO
+from .__init__ import SETUP, GO, WINNING_PLAY
 from unittest.mock import patch
 from parameterized import parameterized
 from .diez_mil import DiezMil
@@ -121,7 +121,6 @@ class TestDiezMil(unittest.TestCase):
         ([2, 3, 3, 4, 4], ([], 0)),  # no score
         ([1, 3, 3, 3, 3], ([3, 3, 3, 3], 600)),  # quadruple
         ([4, 1, 1, 1, 1], ([1, 1, 1, 1], 2000)),  # four_ones
-        ([1, 1, 1, 1, 1], ([1, 1, 1, 1, 1], 10000)),  # five_ones
         ([5, 5, 5, 5, 5], ([5, 5, 5, 5, 5], 2000)),  # five_fives
     ])
     def test_calculate_repeated(self, dices, expected_score):
@@ -134,7 +133,6 @@ class TestDiezMil(unittest.TestCase):
         ([1, 4, 3, 4, 5], ([1, 5], 150)),
         ([3, 3, 3, 4, 5], ([3, 3, 3], 300)),
         ([4, 4, 4, 4, 5], ([4, 4, 4, 4], 800)),
-        ([1, 1, 1, 1, 1], ([1, 1, 1, 1, 1], 10000)),
     ])
     def test_check_combination(self, dices, expected_result):
         self.assertEqual(self.play.check_combination(dices), expected_result)
@@ -156,6 +154,13 @@ class TestDiezMil(unittest.TestCase):
         play.dices = [1, 5, 6, 4, 2]
         dices_selected = play.choose_dices([1, 2])
         self.assertEqual(dices_selected, [5, 6])
+
+    @parameterized.expand([
+        ([1, 1, 1, 1, 1], WINNING_PLAY, 10000),
+    ])
+    def test_five_ones(self, dices, expected_result, expected_score):
+        self.assertEqual(self.play.check_combination(dices), expected_result)
+        self.assertEqual(self.play.play_score, expected_score)
     # USAR PARA EL TEST - NO BORRAR
     # @parameterized.expand([
     #     ('SELECT_DICES 1 3'),
