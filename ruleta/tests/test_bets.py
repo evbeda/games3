@@ -12,6 +12,7 @@ from ..bet import (
     StreetBet,
     SixLineBet,
     DoubleBet,
+    OneDozenBet
 )
 
 # Exceptions
@@ -33,6 +34,8 @@ bet_scenario = [
     (SixLineBet, [1, 4], 30, 0, 8, False),
     (DoubleBet, [1, 2], 50, 850, 2, True),
     (DoubleBet, [1, 2], 50, 0, 5, False),
+    (OneDozenBet, 1, 10, 20, 3, True),
+    (OneDozenBet, 1, 10, 0, 23, False)
 ]
 
 RED_CORRECT_VALUES = \
@@ -52,7 +55,8 @@ class TestBetsRoulette(TestCase):
         (StreetBet, [1, 2, 4], 100),
         (SixLineBet, [12, 13], 10),
         (DoubleBet, [0, 36], 100),
-        (DoubleBet, [0, 0], 50)
+        (DoubleBet, [0, 0], 50),
+        (OneDozenBet, 4, 50),
     ])
     def test_invalid_bets(self, bet, bet_value, ammount):
         with self.assertRaises(InvalidBetException):
@@ -73,7 +77,10 @@ class TestBetsRoulette(TestCase):
         (DoubleBet, [33, 36], [33, 36]),
         (DoubleBet, [1, 2], [1, 2]),
         (DoubleBet, [0, 3], [0, 3]),
-        (DoubleBet, [4, 7], [4, 7])
+        (DoubleBet, [4, 7], [4, 7]),
+        (OneDozenBet, 1, [x for x in range(1, 13)]),
+        (OneDozenBet, 2, [x for x in range(12, 25)]),
+        (OneDozenBet, 3, [x for x in range(24, 37)]),
     ])
     def test_valid_bets(self, bet, bet_value, expected_target_numbers):
         bet = bet(bet_value, 10)
@@ -113,6 +120,7 @@ class TestBetCreator(TestCase):
         ('STREET_BET', [16, 17, 18], 100, StreetBet),
         ('SIXLINE_BET', [16, 19], 10, SixLineBet),
         ('DOUBLE_BET', [23, 24], 30, DoubleBet),
+        ('ONEDOZEN_BET', 1, 20, OneDozenBet)
     ])
     def test_bet_creator(
             self, bet_type, bet_values, amount, expected_instance):

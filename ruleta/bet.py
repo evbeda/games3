@@ -164,6 +164,29 @@ class SixLineBet(Bet):
         return [n for n in range(bet_values[0], bet_values[1] + 3)]
 
 
+class OneDozenBet(Bet):
+    name = 'ONEDOZEN_BET\n'
+    reward = 2
+
+    def __init__(self, bet_values, amount):
+        super().__init__(bet_values, amount)
+
+    def validate(self, bet_value):
+        if bet_value not in list(range(1, 4)):
+            raise InvalidBetException()
+
+    def transform_bet_values_to_target_values(self, bet_value):
+        # For example: bet_value = 1
+        # low = 0
+        low = 12 * (bet_value - 1)
+        # high = 13
+        high = (12 * bet_value) + 1
+        possible_target_values = [n for n in range(low, high)]
+        if 0 in possible_target_values:
+            possible_target_values.remove(0)
+        return possible_target_values
+
+
 bet_types = {
     'STRAIGHT_BET': StraightBet,
     'COLOR_BET': ColorBet,
@@ -172,6 +195,7 @@ bet_types = {
     'STREET_BET': StreetBet,
     'SIXLINE_BET': SixLineBet,
     'DOUBLE_BET': DoubleBet,
+    'ONEDOZEN_BET': OneDozenBet
 }
 
 
