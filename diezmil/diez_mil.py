@@ -14,12 +14,11 @@ class DiezMil(object):
         self.base_score = 0
         self.players = []
         self.who_is_playing = 0
-        self.asking_ended = False
         self.actual_turn = []
 
     # It's a circle, it adds one until the top boundary of players_qty
     # Otherwise it beging with the first one
-    def next_turn(self):
+    def next_player(self):
         if self.state == SETUP:
             self.who_is_playing = 1
             self.state = GO
@@ -42,14 +41,12 @@ class DiezMil(object):
                 raise DifferentPlayerQuantityAndNamesException
         return self.players
 
-    def set_players_qty(self, players_qty):
-        self.players_qty = players_qty
-
     def check_players_qty(self, players_qty):
         return False if players_qty == 0 else True
 
     def ask_for_players_quantity(self):
-        while self.asking_ended is False:
+        asking_ended = False
+        while asking_ended is False:
             response = input("How many players?: (A number between 1 and 5) ")
             possible_quantity = 0
             try:
@@ -58,7 +55,7 @@ class DiezMil(object):
                 raise NotANumberException()
             if possible_quantity in list(range(1, 6)):
                 self.set_players_qty(possible_quantity)
-                self.asking_ended = True
+                asking_ended = True
             else:
                 raise NotCorrectPlayersQuantityException()
 
