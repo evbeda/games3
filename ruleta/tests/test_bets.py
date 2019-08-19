@@ -142,3 +142,17 @@ class TestBetCreator(TestCase):
     def test_invalid_type_bet(self):
         with self.assertRaises(InvalidBetTypeException):
             BetCreator.validate_bet_type('INVALID_BET')
+
+    @parameterized.expand([
+        (StraightBet([15], 10), "STRAIGHT_BET 15, bet $10"),
+        (DoubleBet([3, 6], 20), "DOUBLE_BET 3 6, bet $20"),
+        (ColorBet(['red'], 15), "COLOR_BET red, bet $15"),
+        # (EvenOddBet(), "EVEN_ODD_BET"),
+        # (LowHighBet(), "LOW_HIGH_BET"),
+        # (StreetBet(), "STREET_BET"),
+        # (SixLineBet(), "SIXLINE_BET"),
+        (OneDozenBet(1, 30), "ONEDOZEN_BET 1 dozen, bet $30"),
+        # (TwoDozenBet)
+    ])
+    def test_bet_to_string(self, bet, expected):
+        self.assertEqual(str(bet), expected)

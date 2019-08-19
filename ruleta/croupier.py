@@ -38,3 +38,9 @@ class Croupier:
         total_award = self.round.calculate_total_award(chosen_number)
         self.player.money += total_award
         return total_award
+
+    def show_player_money(self):
+        return "$" + str(self.player.money)
+
+    def show_placed_bets(self):
+        return self.round.show_bets()

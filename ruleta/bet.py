@@ -15,6 +15,18 @@ class Bet:
             sorted(self.transform_bet_values_to_target_values(bet_value))
         self.amount = amount
 
+    # called by str(bet)
+    # returns like "DOUBLE_BET 9 12, $5"
+    def __str__(self):
+        bet_str = self.name + " "
+        bet_target_numbers = [
+            str(target_number)
+            for target_number in self.target_numbers
+            ]
+        bet_str += " ".join(bet_target_numbers)
+        bet_str += ", bet $" + str(self.amount)
+        return bet_str
+
     def transform_bet_values_to_target_values(self, bet_value):
         return bet_value
 
@@ -33,6 +45,8 @@ class StraightBet(Bet):
     def __init__(self, bet_value, amount):
         super().__init__(bet_value, amount)
 
+    # Uses __str__ from Bet 
+
     def validate(self, bet_value):
         ''' expect bet_value like "1" '''
         if not (0 <= bet_value[0] <= 36):
@@ -45,6 +59,8 @@ class DoubleBet(Bet):
 
     def __init__(self, bet_values, amount):
         super().__init__(bet_values, amount)
+
+    # Uses __str__ from Bet 
 
     def validate(self, bet_values):
         row1 = 0
@@ -70,6 +86,29 @@ class ColorBet(Bet):
 
     def __init__(self, bet_value, amount):
         super().__init__(bet_value, amount)
+
+    # called by str(bet)
+    # returns like "COLOR_BET red, $15"
+    def __str__(self):
+        bet_str = self.name + " "
+        bet_str += str(self.get_color())
+        bet_str += ", bet $" + str(self.amount)
+        return bet_str
+
+    def get_color(self):
+        range_1 = [number for number in all_values if number in range(1, 11)
+                   and number % 2 == 1]
+        range_2 = [number for number in all_values if number in range(19, 29)
+                   and number % 2 == 1]
+        range_3 = [number for number in all_values if number in range(11, 19)
+                   and number % 2 == 0]
+        range_4 = [number for number in all_values if number in range(29, 37)
+                   and number % 2 == 0]
+        red = sorted(range_1 + range_2 + range_3 + range_4)
+        if self.target_numbers == red:
+            return 'red'
+        else:
+            return 'black'
 
     def transform_bet_values_to_target_values(self, bet_value):
         range_1 = [number for number in all_values if number in range(1, 11)
@@ -170,6 +209,14 @@ class OneDozenBet(Bet):
     def __init__(self, bet_values, amount):
         super().__init__(bet_values, amount)
 
+    # called by str(bet)
+    # returns like "ONEDOZEN_BET 1 dozen, $5"
+    def __str__(self):
+        bet_str = self.name + " "
+        bet_str += str(self.get_dozen()) + " dozen"
+        bet_str += ", bet $" + str(self.amount)
+        return bet_str
+
     def validate(self, bet_value):
         if bet_value not in list(range(1, 4)):
             raise InvalidBetException()
@@ -182,6 +229,9 @@ class OneDozenBet(Bet):
         possible_target_values = [n for n in range(low, high)]
         possible_target_values.pop(0)
         return possible_target_values
+
+    def get_dozen(self):
+        return int(max(self.target_numbers) / 12)
 
 
 class TwoDozenBet(Bet):
