@@ -7,23 +7,15 @@ from . import (
     REPEATED_ON_ROW,
     REPEATED_ON_REGION,
     EXAMPLE_BOARD,
+    FINISHED_EXAMPLE_BOARD,
+    EXAMPLE_SHOWN_BOARD,
 )
 
 
 class TestSudokuBoard(unittest.TestCase):
     def setUp(self):
         self.board = Board(EXAMPLE_BOARD)
-        self.finished_board = Board(
-            "261375894"
-            "537894162"
-            "948216357"
-            "694751238"
-            "825943671"
-            "713628945"
-            "356482719"
-            "489167523"
-            "172539486"
-        )
+        self.finished_board = Board(FINISHED_EXAMPLE_BOARD)
 
     def test_existing_numbers_are_not_modifiable(self):
         self.assertFalse(self.board.is_modifiable('A', 2))
@@ -157,9 +149,9 @@ class TestSudokuBoard(unittest.TestCase):
             self, coordinates, value, message):
 
         row, column = coordinates
-        with self.assertRaises(Exception) as cm:
+        with self.assertRaises(Exception) as raised:
             self.board.place(coordinates, value)
-        self.assertIn(message, str(cm.exception))
+        self.assertIn(message, str(raised.exception))
         self.assertEqual(self.board.board[row][column - 1]['val'], ' ')
 
     @parameterized.expand([
@@ -174,9 +166,9 @@ class TestSudokuBoard(unittest.TestCase):
     def test_place_number_already_set(self, coordinates, value):
         row, column = coordinates
         original_value = self.board.board[row][column - 1]['val']
-        with self.assertRaises(Exception) as cm:
+        with self.assertRaises(Exception) as raised:
             self.board.place(coordinates, value)
-        self.assertIn(NOT_MODIFIABLE, str(cm.exception))
+        self.assertIn(NOT_MODIFIABLE, str(raised.exception))
         self.assertEqual(
             self.board.board[row][column - 1]['val'],
             original_value)
@@ -189,9 +181,9 @@ class TestSudokuBoard(unittest.TestCase):
     ])
     def test_validate_invalid_number(
             self, coordinates, value, message):
-        with self.assertRaises(Exception) as cm:
+        with self.assertRaises(Exception) as raised:
             self.board.validate_number(coordinates, value)
-        self.assertIn(message, str(cm.exception))
+        self.assertIn(message, str(raised.exception))
 
     def test_is_finished_for_an_unfinished_board(self):
         self.assertFalse(self.board.is_finished())
@@ -199,3 +191,5 @@ class TestSudokuBoard(unittest.TestCase):
     def test_is_finished_for_a_finished_board(self):
         self.assertTrue(self.finished_board.is_finished())
 
+    def test_board(self):
+        self.assertEqual(EXAMPLE_SHOWN_BOARD, self.board.show_board())

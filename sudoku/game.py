@@ -33,13 +33,4 @@ class SudokuGame:
 
     @property
     def board(self):
-        ret = ""
-        for k, row in self.game_board.board.items():
-            for index, item in enumerate(row):
-                ret += item["val"] + " "
-                if index in [2, 5]:
-                    ret += "|"
-            ret += "\n"
-            if k in ['c', 'f']:
-                ret += "------+------+------\n"
-        return ret
+        return self.game_board.show_board()

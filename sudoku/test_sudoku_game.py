@@ -13,6 +13,7 @@ from . import (
     REPEATED_ON_ROW,
     REPEATED_ON_REGION,
     EXAMPLE_BOARD,
+    EXAMPLE_SHOWN_BOARD,
     API_BOARD,
 )
 
@@ -87,20 +88,9 @@ class TestSudokuGame(unittest.TestCase):
         self.assertEqual(game.game_board.board, Board(EXAMPLE_BOARD).board)
 
     @unittest.mock.patch('requests.get', side_effect=mocked_requests_get)
-    def test_play_with_fetched_board(self, mocked_requests_get):
+    def test_play_with_fetched_board(self, _):
         game = SudokuGame()
         self.assertEqual(game.game_board.board, Board(API_BOARD).board)
 
     def test_board(self):
-        expected = "  6   |3     |8   4 \n" \
-            "5 3 7 |  9   |      \n" \
-            "  4   |    6 |3   7 \n" \
-            "------+------+------\n" \
-            "  9   |  5 1 |2 3 8 \n" \
-            "      |      |      \n" \
-            "7 1 3 |6 2   |  4   \n" \
-            "------+------+------\n" \
-            "3   6 |4     |  1   \n" \
-            "      |  6   |5 2 3 \n" \
-            "1   2 |    9 |  8   \n"
-        self.assertEqual(expected, self.game.board)
+        self.assertEqual(EXAMPLE_SHOWN_BOARD, self.game.board)
