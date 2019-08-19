@@ -1,8 +1,9 @@
 
 class Player():
 
-    def __init__(self, stack):
-        self.cards_player = stack.generate_cards_player()
+    def __init__(self, cards_player):
+        self.cards_player = cards_player
+        self.is_turn = True
 
     def selected_card(self, index_card):
         for index, card in enumerate(self.cards_player):

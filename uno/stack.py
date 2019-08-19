@@ -70,4 +70,3 @@ class Stack():
             cards_player.append(self.stack_cards.pop())
             cards_qty += 1
         return cards_player
-
