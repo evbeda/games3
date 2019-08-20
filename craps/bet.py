@@ -11,7 +11,7 @@ from .constants import (
     DOUBLE_BET,
     SEVEN_BET,
     CRAPS_BET,
-    ONLY_START_BETS,
+    # ONLY_START_BETS,
     GAME_STARTED,
 )
 
@@ -190,8 +190,10 @@ class BetCreator:
 
     @staticmethod
     def validate_bet_turn(bet_type, turn):
-        if turn.state == GAME_STARTED:
-            if type(bet_type) not in ONLY_START_BETS:
+        pass
+        only_start_bets = [CrapsBet, PassBet, DoNotPassBet]
+        if turn.state != GAME_STARTED:
+            if type(bet_type) in only_start_bets:
                 raise InvalidBetTurnException
 
 #    @staticmethod

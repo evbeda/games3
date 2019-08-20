@@ -51,7 +51,8 @@ class TestBets(unittest.TestCase):
         ("SEVEN_BET", SevenBet)
     ])
     def test_bet_creator_returns_correct_type(self, type_string, bet_child):
-        bet = BetCreator.create(type_string, 2, (1, 2))
+        turn = Turn()
+        bet = BetCreator.create(type_string, 2, (1, 2), turn)
         self.assertIsInstance(bet, bet_child)
 
     def test_bet_creator_raises_invalid_type_exception(self):

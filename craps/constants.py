@@ -1,4 +1,4 @@
-from .bet import CrapsBet
+# from .bet import CrapsBet
 
 
 # Game states
@@ -29,4 +29,4 @@ SEVEN_BET = 'SEVEN_BET'
 CRAPS_BET = 'CRAPS_BET'
 
 # Bet
-ONLY_START_BETS = [CrapsBet]
+# ONLY_START_BETS = [CrapsBet]
