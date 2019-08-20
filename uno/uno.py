@@ -33,7 +33,8 @@ class Uno():
                 return self.player.cards_player.append(
                     self.stack.stack_cards.pop())
             else:
-                card = self.player.selected_card(command)
+                index_card = self.parse_command(command)
+                card = self.player.selected_card(index_card[0])
                 is_valid_card = card.is_valid(self.stack.discard_cards[-1])
                 if is_valid_card is False:
                     return "Your card is not valid"
@@ -69,3 +70,11 @@ class Uno():
             board += "\n"
         board += "The last card played is: \n" + str(last_card_played)
         return board
+
+    def parse_command(self, command):
+        color = None
+        split = command.split()
+        card_index = int(split[0]) - 1
+        if len(split) == 2:
+            color = split[1]
+        return (card_index, color)

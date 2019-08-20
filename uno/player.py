@@ -1,16 +1,15 @@
 from .card import DrawTwoCard, DrawFourCard
 
+
 class Player():
 
-    def __init__(self, cards_player, name = 'Player',):
+    def __init__(self, cards_player, name='Player',):
         self.name = name
         self.cards_player = cards_player
         self.loses_turn = False
 
     def selected_card(self, index_card):
-        for index, card in enumerate(self.cards_player):
-            if index == index_card - 1:
-                return card
+        return self.cards_player[index_card]
 
     def add_cards_to_hand(self, cards):
         for card in cards:
@@ -18,7 +17,8 @@ class Player():
 
     def auto_play(self, last_card):
         if isinstance(last_card, DrawTwoCard):
-            draw_two_cards = [card for card in self.cards_player if isinstance(card, DrawTwoCard)]
+            draw_two_cards = [card for card in self.cards_player
+                              if isinstance(card, DrawTwoCard)]
             if draw_two_cards != []:
                 card = draw_two_cards[0]
                 card = self.cards_player.pop(self.cards_player.index(card))
@@ -30,4 +30,3 @@ class Player():
                 card_selected = self.cards_player.pop(self.cards_player.index(card))
                 return card_selected
         return None
-
