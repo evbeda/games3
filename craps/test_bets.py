@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
 from .turn import Turn
-from .bet import Bet, BetCreator, PassBet, DoNotPassBet, SevenBet, DoubleBet
+from .bet import Bet, BetCreator, PassBet, DoNotPassBet, SevenBet, DoubleBet, CrapsBet
 from .game import CrapsGame
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 from .constants import (
@@ -36,6 +36,9 @@ BET_SCENARIO = [
         (DoubleBet(40, None), GAME_STARTED, (4, 3), False, 0),
         (SevenBet(40, None), GAME_STARTED, (4, 3), True, 160),
         (SevenBet(40, None), GAME_STARTED, (4, 4), False, 0),
+        (CrapsBet(10, None), GAME_IN_PROGRESS, (1, 1), True, 150),
+        (CrapsBet(10, None), GAME_IN_PROGRESS, (1, 2), True, 150),
+        (CrapsBet(10, None), GAME_IN_PROGRESS, (1, 4), False, 0)
     ]
 
 
@@ -55,7 +58,8 @@ class TestBets(unittest.TestCase):
         (PASS_BET, PassBet),
         (DO_NOT_PASS_BET, DoNotPassBet),
         (DOUBLE_BET, DoubleBet),
-        (SEVEN_BET, SevenBet)
+        (SEVEN_BET, SevenBet),
+        (CRAPS_BET, CrapsBet)
     ])
     def test_bet_creator_returns_correct_type(self, type_string, bet_child):
         turn = Turn()
