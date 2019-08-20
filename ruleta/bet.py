@@ -34,7 +34,7 @@ class Bet:
         return chosen_number in self.target_numbers
 
     def calculate_award(self, chosen_number):
-        return math.floor(self.reward * self.amount) \
+        return self.reward * self.amount \
             if self.is_winner(chosen_number) else 0
 
 
@@ -235,7 +235,7 @@ class OneDozenBet(Bet):
 
 
 class TwoDozenBet(Bet):
-    name = 'TWODOZEN_BET\n'
+    name = 'TWODOZEN_BET'
     reward = 1.5
 
     def __init__(self, bet_values, amount):
@@ -264,6 +264,36 @@ class TwoDozenBet(Bet):
         all_target_values = list(dict.fromkeys(all_target_values))
         return all_target_values
 
+    def calculate_award(self, chosen_number):
+        return math.floor(self.reward * self.amount) \
+            if self.is_winner(chosen_number) else 0
+
+
+class TrioBet(Bet):
+    name = 'TRIO_BET'
+    reward = 11
+
+    def __init__(self, bet_values, amount):
+        super().__init__(bet_values, amount)
+
+    def validate(self, bet_values):
+        if 0 not in bet_values:
+            if len(bet_values) == 2:
+                bet_values.sort()
+                if bet_values[0] in BOARD[0] and \
+                    bet_values[1] in BOARD[2] and \
+                        abs(bet_values[0] - bet_values[1]) == 2:
+                    pass
+                else:
+                    raise InvalidBetException()
+            else:
+                raise InvalidBetException()
+        else:
+            raise InvalidBetException()
+
+    def transform_bet_values_to_target_values(self, bet_values):
+        return list(range(bet_values[0], bet_values[1] + 1))
+
 
 bet_types = {
     'STRAIGHT_BET': StraightBet,
@@ -274,7 +304,8 @@ bet_types = {
     'SIXLINE_BET': SixLineBet,
     'DOUBLE_BET': DoubleBet,
     'ONEDOZEN_BET': OneDozenBet,
-    'TWODOZEN_BET': TwoDozenBet
+    'TWODOZEN_BET': TwoDozenBet,
+    'TRIO_BET': TrioBet,
 }
 
 
