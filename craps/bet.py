@@ -1,5 +1,4 @@
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
-from .exceptions.invalid_bet_turn_exception import InvalidBetTurnException
 from .constants import (
     PLAYER_WON,
     PLAYER_LOST,
@@ -11,10 +10,9 @@ from .constants import (
     DOUBLE_BET,
     SEVEN_BET,
     CRAPS_BET,
-    # ONLY_START_BETS,
     GAME_STARTED,
+    LOSING_SCORES
 )
-
 
 class Bet:
     def __init__(self, amount, selected_dices):
@@ -145,8 +143,10 @@ class CrapsBet(Bet):
         return ret
 
     def check(self, turn):
-        pass
-        # return sum(turn.dice) == 7
+        return(
+            sum(turn.dice) in LOSING_SCORES and
+            turn.state == GAME_STARTED
+        )
 
     def pay(self, turn):
         if self.check(turn):
@@ -158,18 +158,17 @@ class CrapsBet(Bet):
             self.state = BET_LOST
             return self.amount_payed
 
-# class ConcrentDiceBet(Bet):
-    # def __init__(self, amount):
-        # super().__init__(amount)
 
-
-BET_TYPES = {
+bet_types = {
     PASS_BET: PassBet,
     DO_NOT_PASS_BET: DoNotPassBet,
     DOUBLE_BET: DoubleBet,
     SEVEN_BET: SevenBet,
     CRAPS_BET: CrapsBet
 }
+
+# Bet
+ONLY_START_BETS = [CrapsBet, PassBet, DoNotPassBet]
 
 
 class BetCreator:
@@ -179,23 +178,22 @@ class BetCreator:
         BetCreator.validate_bet_type(bet_type)
         BetCreator.validate_bet_turn(bet_type, turn)
         bet = None
-        bet_class = BET_TYPES[bet_type]  # obtain bet Class from dictionary
+        bet_class = bet_types[bet_type]  # obtain bet Class from dictionary
         bet = bet_class(amount, bet_values)
         return bet
 
     @staticmethod
     def validate_bet_type(bet_type):
-        if bet_type not in BET_TYPES:
+        if bet_type not in bet_types:
             raise InvalidBetTypeException()
 
     @staticmethod
     def validate_bet_turn(bet_type, turn):
-        pass
-        only_start_bets = [CrapsBet, PassBet, DoNotPassBet]
         if turn.state != GAME_STARTED:
-            if type(bet_type) in only_start_bets:
-                raise InvalidBetTurnException
+            if type(bet_type) in ONLY_START_BETS:
+                raise InvalidBetTurnException()
 
+# @TODO: INTEGRATE LIST_BETS
 #    @staticmethod
 #    def list_bets():
 #        menu = ''

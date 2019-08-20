@@ -13,14 +13,16 @@ from .constants import (
     INVALID_BET_TYPE,
     OUT_OF_CASH,
     CAN_NOT_LEAVE,
-    INVALID_TURN_BET
+    INVALID_TURN_BET,
+    GO_COMMAND,
+    NO_COMMAND,
+    GAME_OVER
 )
 
 
 class CrapsGame:
 
     name = 'Craps Game'
-    # input_args = 1
 
     def __init__(self):
         self.turn = Turn()
@@ -35,24 +37,31 @@ class CrapsGame:
         return BET_MESSAGE
 
     def play(self, *user_input):
-        if user_input[0] == 'No':
+        # In case of the user wants to finish his turn
+        if user_input[0] == NO_COMMAND:
             if self.turn.state == PLAYER_LOST or self.turn.state == PLAYER_WON:
                 self.is_playing = False
-                return 'Game Over'
+                return GAME_OVER
             else:
                 return CAN_NOT_LEAVE + BET_MESSAGE
+        # If anybody has won or lost, the actual turn is done
+        # So we have to create a new one, otherwise we use the old one
         if self.turn.state == PLAYER_LOST or self.turn.state == PLAYER_WON:
             self.turn = Turn()
-        if user_input[0] == 'Go':
+        # The player wants to shoot the dices
+        # and determine if he has won or not
+        if user_input[0] == GO_COMMAND:
             self.money += self.turn.shoot()
             return self.turn.dice
+    # ------------------------------------------------------
+        # The player wants to add more bets
         try:
-            # bet_type, amount, bet_values = \
-            #     CrapsGame.resolve_command(user_input)
-            bet_type = user_input[0]
-            amount = user_input[1]
+            # Determine what the player wants to do
+            bet_type, amount = user_input[0], user_input[1]
             bet_values = user_input[2] if len(user_input) == 3 else None
-            bet = BetCreator.create(bet_type, amount, bet_values)
+            # Create the bet, decrease money
+            # Append the new bet to list of bets
+            bet = BetCreator.create(bet_type, amount, self.turn, bet_values)
             self.decrease_money(amount)
             self.turn.bets.append(bet)
             return BET_PLACED + bet_type
@@ -75,8 +84,8 @@ class CrapsGame:
         ret += 'Money: {}'.format(self.money)
         return ret
 
-    # command like
-    # BETNAME amount dice_options
+# command like
+# BETNAME amount dice_options
     @staticmethod
     def resolve_command(command):
         list_string = command.split()
