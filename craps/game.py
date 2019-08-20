@@ -32,8 +32,8 @@ class CrapsGame:
             return WON_MESSAGE
         return BET_MESSAGE
 
-    def play(self, user_input):
-        if user_input == 'No':
+    def play(self, *user_input):
+        if user_input[0] == 'No':
             if self.turn.state == PLAYER_LOST or self.turn.state == PLAYER_WON:
                 self.is_playing = False
                 return 'Game Over'
@@ -41,12 +41,15 @@ class CrapsGame:
                 return CAN_NOT_LEAVE + BET_MESSAGE
         if self.turn.state == PLAYER_LOST or self.turn.state == PLAYER_WON:
             self.turn = Turn()
-        if user_input == 'Go':
+        if user_input[0] == 'Go':
             self.money += self.turn.shoot()
             return self.turn.dice
         try:
-            bet_type, amount, bet_values = \
-                CrapsGame.resolve_command(user_input)
+            # bet_type, amount, bet_values = \
+            #     CrapsGame.resolve_command(user_input)
+            bet_type = user_input[0]
+            amount = user_input[1]
+            bet_values = user_input[2] if len(user_input) == 3 else None
             bet = BetCreator.create(bet_type, amount, bet_values)
             self.decrease_money(amount)
             self.turn.bets.append(bet)
