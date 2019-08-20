@@ -93,11 +93,13 @@ class TestCraps(unittest.TestCase):
         self.assertEqual(returned_play, INVALID_BET_TYPE)
 
     def test_craps_not_enough_cash(self):
-        returned_play = self.game.play("PASS_BET", 9999999)
+        turn = Turn()
+        returned_play = self.game.play("PASS_BET", 9999999, turn)
         self.assertEqual(returned_play, OUT_OF_CASH)
 
     def test_craps_play_decrase_money(self):
-        self.game.play("DO_NOT_PASS_BET", 300)
+        turn = Turn()
+        self.game.play("DO_NOT_PASS_BET", 300, turn)
         self.assertEqual(self.game.money, 700)
 
     def test_craps_decrease_money(self):
