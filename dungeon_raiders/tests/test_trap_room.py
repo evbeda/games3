@@ -40,4 +40,3 @@ class TestTrapRoom(RoomHelper):
         self.assertEqual(wound_values, [
             handA.player.wounds, handB.player.wounds, handC.player.wounds,
             handD.player.wounds])
-
