@@ -8,10 +8,10 @@ from . import (
     PLAYER_CHOOSING_DICE_MESSAGE,
     PLAYER_DONE_MESSAGE,
     PLAYERS_NAME_MESSAGE,
-    CHOOSING_DICE,
     NEXT_PLAYER_TURN_MESSAGE,
     QUANTITY_SET,
     INVALID_NUMBER,
+    PLAYERS_SET
 )
 from .exceptions.exceptions import (
     NotCorrectPlayersQuantityException,
@@ -30,21 +30,20 @@ class DiezMil(object):
     # It's a circle, it adds one until the top boundary of players_qty
     # Otherwise it beging with the first one
     def next_turn(self):
-        if self.state == SETUP and self.players_qty == 0:
+        if self.players_qty == 0:
             return PLAYERS_QUANTITY_MESSAGE
         elif self.state == SETUP and self.players_qty != 0:
             return PLAYERS_NAME_MESSAGE
         elif self.state == GO and self.actual_turn.state == PLAYING:
-            if self.actual_turn.plays[-1] == CHOOSING_DICE:
+            if self.actual_turn.plays[-1].is_playing:
                 return PLAYER_CHOOSING_DICE_MESSAGE
             else:
                 return PLAYER_DONE_MESSAGE
-        elif self.state == GO and self.actual_turn == FINISHED:
+        elif self.state == GO and self.actual_turn.state == FINISHED:
             return NEXT_PLAYER_TURN_MESSAGE
 
     def next_player(self):
         if self.state == SETUP:
-            self.who_is_playing = 1
             self.state = GO
         elif self.state == GO:
             self.who_is_playing = (self.who_is_playing + 1) \
@@ -62,18 +61,19 @@ class DiezMil(object):
             self.players.append(Player(name))
 
     def play(self, player_input):
-        if self.state == SETUP and self.players_qty == 0:
+        if self.players_qty == 0:
             try:
                 self.validate_qty(player_input)
             except NotCorrectPlayersQuantityException as e:
                 return str(e)
-            self.players_qty = player_input
+            self.players_qty = int(player_input)
             return QUANTITY_SET
         elif self.state == SETUP and self.players_qty != 0:
             names = player_input.split(',')
             self.create_players(names)
+            return PLAYERS_SET
 
     # Por cada jugador, mostrar su puntaje
-    @property
-    def board(self):
-        return str(self.played_numbers)
+    # @property
+    # def board(self):
+    #     return str(self.played_numbers)
