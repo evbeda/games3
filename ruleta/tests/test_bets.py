@@ -85,6 +85,7 @@ class TestBetsRoulette(TestCase):
         (TwoDozenBet, [1], 50),
         (TwoDozenBet, [1, 4], 50),
         (TrioBet, [0, 1, 3], 50),
+        (TrioBet, [0, 1], 50),
         (TrioBet, [0, 1, 4], 50),
         (TrioBet, [1, 2, 3], 50),
         (QuadrupleBet, [1, 3, 2, 6], 10),
