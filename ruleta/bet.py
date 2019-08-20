@@ -7,12 +7,13 @@ all_values = list(range(1, 37))
 
 
 class Bet:
-    # reward = 0
+    name = ''
+    reward = 0
 
-    def __init__(self, bet_value, amount):
-        self.validate(bet_value)
+    def __init__(self, bet_values, amount):
+        self.validate(bet_values)
         self.target_numbers = \
-            sorted(self.transform_bet_values_to_target_values(bet_value))
+            sorted(self.transform_bet_values_to_target_values(bet_values))
         self.amount = amount
 
     # called by str(bet)
@@ -27,8 +28,8 @@ class Bet:
         bet_str += ", bet $" + str(self.amount)
         return bet_str
 
-    def transform_bet_values_to_target_values(self, bet_value):
-        return bet_value
+    def transform_bet_values_to_target_values(self, bet_values):
+        return bet_values
 
     def is_winner(self, chosen_number):
         return chosen_number in self.target_numbers
@@ -42,11 +43,11 @@ class StraightBet(Bet):
     name = 'STRAIGHT_BET'
     reward = 35
 
-    # Uses __str__ from Bet 
+    # Uses __str__ from Bet
 
-    def validate(self, bet_value):
-        ''' expect bet_value like "1" '''
-        if not (0 <= bet_value[0] <= 36):
+    def validate(self, bet_values):
+        ''' expect bet_values like "1" '''
+        if not 0 <= bet_values[0] <= 36:
             raise InvalidBetException()
 
 
@@ -54,7 +55,7 @@ class DoubleBet(Bet):
     name = 'DOUBLE_BET'
     reward = 17
 
-    # Uses __str__ from Bet 
+    # Uses __str__ from Bet
 
     def validate(self, bet_values):
         row1 = 0
@@ -82,7 +83,7 @@ class ColorBet(Bet):
     # returns like "COLOR_BET red, $15"
     def __str__(self):
         bet_str = self.name + " "
-        bet_str += str(self.get_color())
+        bet_str += self.get_color()
         bet_str += ", bet $" + str(self.amount)
         return bet_str
 
@@ -101,7 +102,7 @@ class ColorBet(Bet):
         else:
             return 'black'
 
-    def transform_bet_values_to_target_values(self, bet_value):
+    def transform_bet_values_to_target_values(self, bet_values):
         range_1 = [number for number in all_values if number in range(1, 11)
                    and number % 2 == 1]
         range_2 = [number for number in all_values if number in range(19, 29)
@@ -111,13 +112,13 @@ class ColorBet(Bet):
         range_4 = [number for number in all_values if number in range(29, 37)
                    and number % 2 == 0]
         red = range_1 + range_2 + range_3 + range_4
-        if bet_value[0].lower() == 'red':
+        if bet_values[0].lower() == 'red':
             return red
         else:
             return list(set(all_values) - set(red))
 
-    def validate(self, bet_value):
-        if bet_value[0].lower() not in ['red', 'black']:
+    def validate(self, bet_values):
+        if bet_values[0].lower() not in ['red', 'black']:
             raise InvalidBetException()
 
 
@@ -125,13 +126,27 @@ class EvenOddBet(Bet):
     name = 'EVENODD_BET'
     reward = 2
 
-    def validate(self, bet_value):
-        if bet_value[0].lower() not in ['even', 'odd']:
+    # called by str(bet)
+    # returns like "EVENODD_BET even, $15"
+    def __str__(self):
+        bet_str = self.name + " "
+        bet_str += self.get_odd_or_even()
+        bet_str += ", bet $" + str(self.amount)
+        return bet_str
+
+    def get_odd_or_even(self):
+        if all(number % 2 == 1 for number in self.target_numbers):
+            return 'odd'
+        else:
+            return 'even'
+
+    def validate(self, bet_values):
+        if bet_values[0].lower() not in ['even', 'odd']:
             raise InvalidBetException()
 
-    def transform_bet_values_to_target_values(self, bet_value):
+    def transform_bet_values_to_target_values(self, bet_values):
         odd = [n for n in all_values if n % 2 == 1]
-        if bet_value[0].lower() == 'odd':
+        if bet_values[0].lower() == 'odd':
             return odd
         else:
             return list(set(all_values) - set(odd))
@@ -141,13 +156,27 @@ class LowHighBet(Bet):
     name = 'LOWHIGH_BET'
     reward = 2
 
-    def validate(self, bet_value):
-        if bet_value[0].lower() not in ['low', 'high']:
+    # called by str(bet)
+    # returns like "LOWHIGH_BET low, $15"
+    def __str__(self):
+        bet_str = self.name + " "
+        bet_str += self.get_low_or_high()
+        bet_str += ", bet $" + str(self.amount)
+        return bet_str
+
+    def get_low_or_high(self):
+        if max(self.target_numbers) == 18:
+            return 'low'
+        else:
+            return 'high'
+
+    def validate(self, bet_values):
+        if bet_values[0].lower() not in ['low', 'high']:
             raise InvalidBetException()
 
-    def transform_bet_values_to_target_values(self, bet_value):
+    def transform_bet_values_to_target_values(self, bet_values):
         low = [number for number in all_values if number in range(1, 19)]
-        if bet_value[0].lower() == 'low':
+        if bet_values[0].lower() == 'low':
             return low
         else:
             return list(set(all_values) - set(low))
@@ -157,8 +186,10 @@ class StreetBet(Bet):
     name = 'STREET_BET'
     reward = 11
 
+    # Uses __str__ from Bet
+
     def validate(self, bet_values):
-        ''' expect bet_value like "1" '''
+        ''' expect bet_values like "1" '''
         bet_values.sort()
         valid_bets = []
         for index in range(1, 13):
@@ -193,15 +224,15 @@ class OneDozenBet(Bet):
         bet_str += ", bet $" + str(self.amount)
         return bet_str
 
-    def validate(self, bet_value):
-        if bet_value not in list(range(1, 4)):
+    def validate(self, bet_values):
+        if not 1 <= bet_values[0] <= 3:
             raise InvalidBetException()
 
-    def transform_bet_values_to_target_values(self, bet_value):
-        # For example: bet_value = 1
+    def transform_bet_values_to_target_values(self, bet_values):
+        # For example: bet_values = 1
         # low = 0, high = 13
-        low = 12 * (bet_value - 1)
-        high = (12 * bet_value) + 1
+        low = 12 * (bet_values[0] - 1)
+        high = (12 * bet_values[0]) + 1
         possible_target_values = [n for n in range(low, high)]
         possible_target_values.pop(0)
         return possible_target_values
@@ -213,6 +244,19 @@ class OneDozenBet(Bet):
 class TwoDozenBet(Bet):
     name = 'TWODOZEN_BET'
     reward = 1.5
+
+    # called by str(bet)
+    # returns like "ONEDOZEN_BET 1 dozen, $5"
+    def __str__(self):
+        bet_str = self.name + " "
+        bet_str += ' '.join(str(dozen) for dozen in self.get_dozens())
+        bet_str += " dozens, bet $" + str(self.amount)
+        return bet_str
+
+    def get_dozens(self):
+        sorted_numbers = sorted(self.target_numbers)
+        return [int(sorted_numbers[11] / 12),
+                int(sorted_numbers[23] / 12)]
 
     def validate(self, bet_values):
         if len(bet_values) != 2:
@@ -309,12 +353,14 @@ bet_types = {
 
 class BetCreator:
 
+    @staticmethod
     def create(bet_type, bet_values, ammount):
         bet = None
         bet_class = bet_types[bet_type]  # obtain bet Class from dictionary
         bet = bet_class(bet_values, ammount)
         return bet
 
+    @staticmethod
     def validate_bet_type(bet_type):
         if bet_type not in bet_types:
             raise InvalidBetTypeException()
