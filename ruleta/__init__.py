@@ -5,5 +5,6 @@ INVALID_BET_TYPE_MESSAGE = 'Your bet type is invalid'
 BYE_MESSAGE = 'Bye'
 END_GAME_COMMAND = 'END_GAME'
 GO_COMMAND = 'GO'
+GO_END_COMMAND = '\n' + GO_COMMAND + ',\n' + END_GAME_COMMAND
 WON_MESSAGE = 'You won: '
 LOST_MESSAGE = 'You lost'

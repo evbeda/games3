@@ -9,7 +9,8 @@ from . import (
     INVALID_BET_TYPE_MESSAGE,
     BYE_MESSAGE,
     END_GAME_COMMAND,
-    GO_COMMAND
+    GO_COMMAND,
+    GO_END_COMMAND
 )
 
 # Exceptions
@@ -26,7 +27,7 @@ class GameRoulette:
         self.croupier = Croupier(Player(100))
 
     def next_turn(self):
-        return BetCreator.list_bets() + '\nGO,\nEND_GAME'
+        return BetCreator.list_bets() + GO_END_COMMAND
 
     def play(self, command):
         '''
