@@ -291,12 +291,14 @@ class TrioBet(Bet):
     reward = 11
 
     def validate(self, bet_values):
-        if 0 not in bet_values:
-            if len(bet_values) == 2:
+        if 0 in bet_values:
+            if len(bet_values) == 3:
                 bet_values.sort()
-                if bet_values[0] in BOARD[0] and \
-                    bet_values[1] in BOARD[2] and \
-                        abs(bet_values[0] - bet_values[1]) == 2:
+                first_line_condition = \
+                    all(elem in list(range(1, 4)) for elem in bet_values[1:])
+                adyacent_line_condition = \
+                    abs(bet_values[1:][0] - bet_values[1:][1]) == 1
+                if first_line_condition and adyacent_line_condition:
                     pass
                 else:
                     raise InvalidBetException()
@@ -306,7 +308,7 @@ class TrioBet(Bet):
             raise InvalidBetException()
 
     def transform_bet_values_to_target_values(self, bet_values):
-        return list(range(bet_values[0], bet_values[1] + 1))
+        return sorted(bet_values)
 
 
 class QuadrupleBet(Bet):
