@@ -1,13 +1,9 @@
 import unittest
-from parameterized import parameterized
 from .player import Player
+from .uno import Uno
 from .card import (
     NumberCard,
-    ReverseCard,
     WildCard,
-    SkipCard,
-    DrawFourCard,
-    DrawTwoCard,
 )
 from .const import GREEN, RED, BLUE
 
@@ -28,3 +24,12 @@ class TestPlayerUno(unittest.TestCase):
         cards = [card1, card2, card3]
         player.add_cards_to_hand(cards)
         self.assertTrue(all(card in player.cards_player for card in cards))
+
+    def test_auto_play(self):
+        uno = Uno()
+        wildcard = WildCard()
+        uno.stack.discard_cards.append(NumberCard(GREEN, 4))
+        uno.computer_player.cards_player.pop(0)
+        uno.computer_player.cards_player.append(wildcard)
+        card = uno.computer_player.auto_play(uno.stack.discard_cards[-1])
+        self.assertTrue(card.is_valid(uno.stack.discard_cards[-1]))
