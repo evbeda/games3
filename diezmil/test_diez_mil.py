@@ -93,17 +93,10 @@ class TestDiezMil(unittest.TestCase):
 
     # Test calculate repeated
     @parameterized.expand([
-<<<<<<< HEAD
-        ([2, 3, 3, 4, 4], ([], 0)),  # no score
-        ([1, 3, 3, 3, 3], ([3, 3, 3, 3], 600)),
-        ([4, 1, 1, 1, 1], ([1, 1, 1, 1], 2000)),
-        ([5, 5, 5, 5, 5], ([5, 5, 5, 5, 5], 2000)),
-=======
         ([2, 3, 3, 4, 4], ([], 0)),  #no score
         ([1, 3, 3, 3, 3], ([3, 3, 3, 3], 600)),  #quadruple
         ([4, 1, 1, 1, 1], ([1, 1, 1, 1], 2000)),  #four_ones
         ([5, 5, 5, 5, 5], ([5, 5, 5, 5, 5], 2000)),  #five_fives
->>>>>>> fix check combination now returns total score
     ])
     def test_calculate_repeated(self, dices, expected_score):
         self.assertEqual(self.play.calculate_repeated(dices), expected_score)
@@ -165,8 +158,6 @@ class TestDiezMil(unittest.TestCase):
             turn.generate_play()
         turn.calculate_acumulated_score()
         self.assertEqual(turn.player.actual_score, 10000)
-<<<<<<< HEAD
-=======
 
 
 # USAR PARA EL TEST - NO BORRAR
@@ -182,4 +173,4 @@ class TestDiezMil(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
->>>>>>> fix check combination now returns total score
+    
