@@ -291,19 +291,9 @@ class TrioBet(Bet):
     reward = 11
 
     def validate(self, bet_values):
-        if 0 in bet_values:
-            if len(bet_values) == 3:
-                bet_values.sort()
-                first_line_condition = \
-                    all(elem in list(range(1, 4)) for elem in bet_values[1:])
-                adyacent_line_condition = \
-                    abs(bet_values[1:][0] - bet_values[1:][1]) == 1
-                if first_line_condition and adyacent_line_condition:
-                    pass
-                else:
-                    raise InvalidBetException()
-            else:
-                raise InvalidBetException()
+        bet_values.sort()
+        if bet_values == [0, 1, 2] or bet_values == [0, 2, 3]:
+            pass
         else:
             raise InvalidBetException()
 
