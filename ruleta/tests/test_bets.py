@@ -190,6 +190,8 @@ class TestBetCreator(TestCase):
         (SixLineBet([1, 4], 40), "SIXLINE_BET 1 2 3 4 5 6, bet $40"),
         (OneDozenBet([1], 30), "ONEDOZEN_BET 1 dozen, bet $30"),
         (TwoDozenBet([2, 3], 40), "TWODOZEN_BET 2 3 dozens, bet $40"),
+        (TrioBet([1, 2, 0], 5), "TRIO_BET 0 1 2, bet $5"),
+        (QuadrupleBet([7, 8, 10, 11], 50), "QUADRUPLE_BET 7 8 10 11, bet $50")
     ])
     def test_bet_to_string(self, bet, expected):
         self.assertEqual(str(bet), expected)
