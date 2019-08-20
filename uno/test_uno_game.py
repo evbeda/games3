@@ -1,5 +1,5 @@
 import unittest
-from .const import GREEN, RED, BLUE, YELLOW
+from .const import GREEN, RED, BLUE, YELLOW, DRAW_CARD_INPUT
 # from parameterized import parameterized
 from .uno import Uno
 from .card import (
@@ -35,12 +35,12 @@ class TestUnoGame(unittest.TestCase):
     # testing initial play take a card conditions
     def test_initial_take_card_stack_length(self):
         uno = Uno()
-        uno.play('0')
+        uno.play(DRAW_CARD_INPUT)
         self.assertEqual(len(uno.stack.stack_cards), 96)
 
     def test_initial_take_card_cards_player_length(self):
         uno = Uno()
-        uno.play('0')
+        uno.play(DRAW_CARD_INPUT)
         self.assertEqual(len(uno.player.cards_player), 8)
 
     # test playing a card

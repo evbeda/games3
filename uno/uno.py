@@ -1,3 +1,4 @@
+from .const import DRAW_CARD_INPUT
 from .stack import Stack
 from .player import Player
 
@@ -18,7 +19,7 @@ class Uno():
             if command == 'END GAME':
                 self.is_playing = False
                 return 'Bye'
-            elif command == '0':
+            elif command == DRAW_CARD_INPUT:
                 return self.player.cards_player.append(
                     self.stack.stack_cards.pop())
             else:
