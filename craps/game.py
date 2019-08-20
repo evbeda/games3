@@ -2,6 +2,7 @@ from .turn import Turn
 from .bet import BetCreator
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 from .exceptions.out_of_cash_exception import OutOfCashException
+from .exceptions.invalid_bet_turn_exception import InvalidBetTurnException
 from .constants import (
     PLAYER_LOST,
     PLAYER_WON,
@@ -12,6 +13,7 @@ from .constants import (
     INVALID_BET_TYPE,
     OUT_OF_CASH,
     CAN_NOT_LEAVE,
+    INVALID_TURN_BET
 )
 
 
@@ -58,6 +60,8 @@ class CrapsGame:
             return INVALID_BET_TYPE
         except OutOfCashException:
             return OUT_OF_CASH
+        except InvalidBetTurnException:
+            return INVALID_TURN_BET
 
     def decrease_money(self, amount):
         if amount >= self.money:
