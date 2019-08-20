@@ -1,6 +1,6 @@
 import unittest
 from .const import GREEN, RED, BLUE, YELLOW, DRAW_CARD_INPUT, EXIT
-# from parameterized import parameterized
+from parameterized import parameterized
 from .uno import Uno
 from .card import (
     NumberCard,
@@ -58,7 +58,7 @@ class TestUnoGame(unittest.TestCase):
             SkipCard(RED),
             DrawTwoCard(RED),
         ]
-        play_card = uno.play(1)
+        play_card = uno.play('1')
         self.assertEqual(play_card, "Your card is not valid")
         # check player_cards length same
         self.assertEqual(len(uno.player.cards_player), 6)
@@ -75,7 +75,7 @@ class TestUnoGame(unittest.TestCase):
             DrawTwoCard(RED),
         ]
         last_played_card = uno.player.cards_player[0]
-        uno.play(1)
+        uno.play('1')
         # check player_cards length reduced
         self.assertEqual(len(uno.player.cards_player), 5)
         # chek played_card equal to last discard_card
@@ -85,7 +85,7 @@ class TestUnoGame(unittest.TestCase):
         uno = Uno()
         uno.stack.discard_cards = [NumberCard(RED, '7')]
         uno.player.cards_player = [NumberCard(GREEN, '7')]
-        self.assertEqual(uno.play(1), 'You WON')
+        self.assertEqual(uno.play('1'), 'You WON')
 
     def test_computer_player_winner(self):
         uno = Uno()
@@ -116,3 +116,20 @@ class TestUnoGame(unittest.TestCase):
             "6 - blue"
         self.assertEqual(board, expected_board)
 
+    def test_validate_draw_card_input(self):
+        uno = Uno()
+        uno.play('')
+        self.assertEqual(len(uno.player.cards_player), 8)
+
+    @parameterized.expand([
+        ('1 red', (0, 'red')),
+        # ('2 blue', (1, 'blue')),
+        # ('3 green', (2, 'green')),
+        # ('4 yellow', (3, 'yellow')),
+        # ('1', (0, None)),
+        # ('2', (1, None)),
+        # ('3', (2, None)),
+    ])
+    def test_validate_play_card_input(self, user_input, index_in_hand):
+        uno = Uno()
+        self.assertEqual(uno.parse_command(user_input), index_in_hand)

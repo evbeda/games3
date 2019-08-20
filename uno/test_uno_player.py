@@ -63,4 +63,4 @@ class TestPlayerUno(unittest.TestCase):
         card3 = NumberCard(BLUE, 5)
         cards = [card1, card2, card3]
         player = Player(cards)
-        self.assertTrue(player.selected_card(3) == card3)
+        self.assertTrue(player.selected_card(2) == card3)
