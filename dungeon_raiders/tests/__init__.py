@@ -12,6 +12,12 @@ Caballero, wounds:1, gold:1
 Exploradora, wounds:3, gold:2
 Guerrero, wounds:2, gold:0'''
 
+NEXT_TURN_WOUNDROOM_EXAMPLE = '''Room name: Trampa de pinchos
+Card: 5 Wound: 2
+Card: 4 Wound: 2
+Card: 3 Wound: 1
+'''
+
 ROOMS_EXAMPLE = [
     MonsterRoom((11, 3, 'Esqueleto')),
     Treasure((4, 2)),

@@ -48,7 +48,12 @@ class Game:
                 if player.gold == max_gold_value]
 
     def next_turn(self):
-        pass
+        msg = ''
+        if self.is_playing is True:
+            msg += f"{self.current_level.actual_room.__str__()}"
+        else:
+            pass
+        return msg
 
     def play(self, *command):
         if command[0] == EXIT:

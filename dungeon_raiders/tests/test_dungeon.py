@@ -7,9 +7,11 @@ from ..model.exceptions.exceptions import UnplayableCardException
 from ..model.hand_player import HandPlayer
 from ..model.game import Game
 from ..model.player import Player
+from ..model.rooms.wound_room import WoundRoom
 # Messages
 from . import BOARD_EXAMPLE
 from . import ROOMS_EXAMPLE
+from . import NEXT_TURN_WOUNDROOM_EXAMPLE
 from . import PLAYERS_EXAMPLE
 
 
@@ -88,3 +90,9 @@ class TestDungeon(unittest.TestCase):
     def test_board(self, mocked_rooms, mocked_players):
         game = Game()
         self.assertEqual(BOARD_EXAMPLE, game.board)
+
+    def test_next_turn_wound_room(self):
+        game = Game()
+        game.current_level.actual_room = WoundRoom(
+            ['Trampa de pinchos', [(5, 2), (4, 2), (3, 1)]])
+        self.assertEqual(NEXT_TURN_WOUNDROOM_EXAMPLE, game.next_turn())

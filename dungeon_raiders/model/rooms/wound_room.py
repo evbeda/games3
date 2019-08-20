@@ -6,6 +6,15 @@ class WoundRoom(Trap):
     def __init__(self, characteristics):
         super().__init__(characteristics[0], characteristics[1])
 
+    def __str__(self):
+        msg = ''
+        for effect in self.effects:
+            card = effect[0]
+            msg += f'Card: {card} '
+            wound = effect[1]
+            msg += f'Wound: {wound}\n'
+        return f'Room name: {self.name}\n{msg}'
+
     def determine_affected_players(self, hands):
         affected_players = []
         players = [hand.player for hand in hands]

@@ -8,6 +8,9 @@ class MonsterRoom(Room):
         self.life = characteristics[0]
         self.damage = characteristics[1]
 
+    def __str__(self):
+        return f'Room name: {self.name}\nLife: {self.life}\nDamage: {self.damage}'
+
     def resolve_room(self, hands):
         # Determine played cards
         played_cards = [hand.last_card_played for hand in hands]
