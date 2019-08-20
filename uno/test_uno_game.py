@@ -79,11 +79,18 @@ class TestUnoGame(unittest.TestCase):
         # chek played_card equal to last discard_card
         self.assertEqual(last_played_card, uno.stack.discard_cards[-1])
 
-    def test_winner(self):
+    def test_player_winner(self):
         uno = Uno()
         uno.stack.discard_cards = [NumberCard(RED, '7')]
         uno.player.cards_player = [NumberCard(GREEN, '7')]
         self.assertEqual(uno.play(1), 'You WON')
+
+    def test_computer_player_winner(self):
+        uno = Uno()
+        uno.player.loses_turn = True
+        uno.stack.discard_cards = [NumberCard(BLUE, '5')]
+        uno.computer_player.cards_player = [NumberCard(YELLOW, '5')]
+        self.assertEqual(uno.play(1), 'Computer WON')
 
     def test_board(self):
         game = Uno()
@@ -106,3 +113,4 @@ class TestUnoGame(unittest.TestCase):
             "The last card played is: \n" +\
             "6 - blue"
         self.assertEqual(board, expected_board)
+
