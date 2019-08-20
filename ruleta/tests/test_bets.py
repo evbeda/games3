@@ -25,13 +25,13 @@ from ..exceptions.invalid_bet_type_exception import InvalidBetTypeException
 # Const
 bet_scenario = [
     # tipo de apuesta, tipo_input, amount, prize, number chosen, won/lose
-    (StraightBet, [36], 25, 875, 36, True),
+    (StraightBet, ['36'], 25, 875, 36, True),
     (ColorBet, ['Red'], 300, 600, 36, True),
     (ColorBet, ['Black'], 300, 600, 29, True),
     (ColorBet, ['Red'], 300, 0, 29, False),
     (ColorBet, ['Black'], 300, 0, 36, False),
     (EvenOddBet, ['ODD'], 30, 0, 36, False),
-    (StraightBet, [36], 25, 0, 35, False),
+    (StraightBet, ['36'], 25, 0, 35, False),
     (ColorBet, ['Red'], 300, 0, 35, False),
     (EvenOddBet, ['ODD'], 30, 60, 35, True),
     (StreetBet, [13, 14, 15], 10, 110, 14, True),
@@ -69,7 +69,7 @@ LIST_OF_BETS = \
 class TestBetsRoulette(TestCase):
     # Test for the bets
     @parameterized.expand([
-        (StraightBet, [40], 17),
+        (StraightBet, ['40'], 17),
         (ColorBet, ['Reds'], 300),
         (ColorBet, ['Blacks'], 300),
         (EvenOddBet, ['ODDs'], 30),
@@ -159,17 +159,17 @@ class TestBetsRoulette(TestCase):
 class TestBetCreator(TestCase):
     # Tests for the bet creator
     @parameterized.expand([
-        ('STRAIGHT_BET', [15], 17, StraightBet),
-        ('COLOR_BET', ['Red'], 300, ColorBet),
-        ('EVENODD_BET', ['ODD'], 30, EvenOddBet),
-        ('LOWHIGH_BET', ['Low'], 11, LowHighBet),
-        ('STREET_BET', [16, 17, 18], 100, StreetBet),
-        ('SIXLINE_BET', [16, 19], 10, SixLineBet),
-        ('DOUBLE_BET', [23, 24], 30, DoubleBet),
-        ('ONEDOZEN_BET', [1], 20, OneDozenBet),
-        ('TWODOZEN_BET', [1, 2], 20, TwoDozenBet),
-        ('TRIO_BET', [0, 2, 3], 20, TrioBet),
-        ('QUADRUPLE_BET', [1, 2, 4, 5], 20, QuadrupleBet)
+        ('STRAIGHT_BET', '15', 17, StraightBet),
+        ('COLOR_BET', 'Red', 300, ColorBet),
+        ('EVENODD_BET', 'ODD', 30, EvenOddBet),
+        ('LOWHIGH_BET', 'Low', 11, LowHighBet),
+        ('STREET_BET', '16_17_18', 100, StreetBet),
+        ('SIXLINE_BET', '16_19', 10, SixLineBet),
+        ('DOUBLE_BET', '23_24', 30, DoubleBet),
+        ('ONEDOZEN_BET', '1', 20, OneDozenBet),
+        ('TWODOZEN_BET', '1_2', 20, TwoDozenBet),
+        ('TRIO_BET', '0_2_3', 20, TrioBet),
+        ('QUADRUPLE_BET', '1_2_4_5', 20, QuadrupleBet)
     ])
     def test_bet_creator(
             self, bet_type, bet_values, amount, expected_instance):

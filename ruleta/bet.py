@@ -29,7 +29,7 @@ class Bet:
         return bet_str
 
     def transform_bet_values_to_target_values(self, bet_values):
-        return bet_values
+        return [int(value) for value in bet_values]
 
     def is_winner(self, chosen_number):
         return chosen_number in self.target_numbers
@@ -38,6 +38,9 @@ class Bet:
         return self.reward * self.amount \
             if self.is_winner(chosen_number) else 0
 
+    def to_int(self, bet_values):
+        return [int(value) for value in bet_values]
+
 
 class StraightBet(Bet):
     name = 'STRAIGHT_BET'
@@ -45,10 +48,10 @@ class StraightBet(Bet):
 
     # Uses __str__ from Bet
 
-    def validate(self, bet_values):
-        ''' expect bet_values like "1" '''
-        if not 0 <= bet_values[0] <= 36:
-            raise InvalidBetException()
+    def validate(self, bet_value):
+        ''' expect bet_value like "1" '''
+        if not (0 <= int(bet_value[0]) <= 36):
+            raise InvalidBetException
 
 
 class DoubleBet(Bet):
@@ -58,6 +61,7 @@ class DoubleBet(Bet):
     # Uses __str__ from Bet
 
     def validate(self, bet_values):
+        bet_values = self.to_int(bet_values)
         row1 = 0
         row2 = 0
         for row in BOARD:
@@ -189,7 +193,7 @@ class StreetBet(Bet):
     # Uses __str__ from Bet
 
     def validate(self, bet_values):
-        ''' expect bet_values like "1" '''
+        bet_values = self.to_int(bet_values)
         bet_values.sort()
         valid_bets = []
         for index in range(1, 13):
@@ -203,13 +207,14 @@ class SixLineBet(Bet):
     reward = 5
 
     def validate(self, bet_values):
+        bet_values = self.to_int(bet_values)
         bet_values.sort()
         valid_numbers = [[n, n+3] for n in range(1, 37, 3) if n != 34]
         if bet_values not in valid_numbers:
             raise InvalidBetException
 
     def transform_bet_values_to_target_values(self, bet_values):
-        return [n for n in range(bet_values[0], bet_values[1] + 3)]
+        return [n for n in range(int(bet_values[0]), int(bet_values[1]) + 3)]
 
 
 class OneDozenBet(Bet):
@@ -224,13 +229,14 @@ class OneDozenBet(Bet):
         bet_str += ", bet $" + str(self.amount)
         return bet_str
 
-    def validate(self, bet_values):
-        if not 1 <= bet_values[0] <= 3:
+    def validate(self, bet_value):
+        if int(bet_value[0]) not in list(range(1, 4)):
             raise InvalidBetException()
 
     def transform_bet_values_to_target_values(self, bet_values):
         # For example: bet_values = 1
         # low = 0, high = 13
+        bet_values = self.to_int(bet_values)
         low = 12 * (bet_values[0] - 1)
         high = (12 * bet_values[0]) + 1
         possible_target_values = [n for n in range(low, high)]
@@ -259,6 +265,7 @@ class TwoDozenBet(Bet):
                 int(sorted_numbers[23] / 12)]
 
     def validate(self, bet_values):
+        bet_values = self.to_int(bet_values)
         if len(bet_values) != 2:
             raise InvalidBetException()
         # It verifies that both values are between 1 and 3 and aren't equal
@@ -267,10 +274,11 @@ class TwoDozenBet(Bet):
                 bet_values[0] != bet_values[1]:
             pass
         else:
-            raise InvalidBetException()
+            raise InvalidBetException(bet_values[0] + bet_values[1])
 
     def transform_bet_values_to_target_values(self, bet_values):
         all_target_values = []
+        bet_values = self.to_int(bet_values)
         for bet_value in bet_values:
             low = 12 * (bet_value - 1)
             high = (12 * bet_value) + 1
@@ -291,6 +299,7 @@ class TrioBet(Bet):
     reward = 11
 
     def validate(self, bet_values):
+        bet_values = self.to_int(bet_values)
         bet_values.sort()
         if bet_values == [0, 1, 2] or bet_values == [0, 2, 3]:
             pass
@@ -306,6 +315,7 @@ class QuadrupleBet(Bet):
     reward = 8
 
     def validate(self, bet_values):
+        bet_values = self.to_int(bet_values)
         if 0 not in bet_values:
             if len(bet_values) == 4:
                 bet_values.sort()
@@ -348,8 +358,10 @@ class BetCreator:
     @staticmethod
     def create(bet_type, bet_values, ammount):
         bet = None
+        BetCreator.validate_bet_type(bet_type)
+        list_bet_values = bet_values.split('_')
         bet_class = bet_types[bet_type]  # obtain bet Class from dictionary
-        bet = bet_class(bet_values, ammount)
+        bet = bet_class(list_bet_values, ammount)
         return bet
 
     @staticmethod

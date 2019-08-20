@@ -43,6 +43,7 @@ class TestGame(unittest.TestCase):
             'Select Game\n'
             '0: Guess Number Game\n'
             '1: Sudoku Game\n'
+            '2: Roulette\n'
             '9: to quit\n'
         )
 
@@ -111,6 +112,44 @@ class TestGame(unittest.TestCase):
             self.output_collector.output_collector,
             [ALMOST_FINISHED_SHOWN_BOARD, YOU_WIN, FINISHED_SHOWN_BOARD],
          )
+
+    def test_play_roulette(self):
+
+        class ControlInputValues(object):
+            def __init__(self, *args, **kwargs):
+                self.played = False
+                self.play_count = -1
+                self.plays = [
+                    'COLOR_BET RED 40',
+                    'GO GO GO',
+                    'END_GAME END_GAME END_GAME'
+                ]
+
+            def __call__(self, console_output):
+                if 'Select Game' in console_output:
+                    if self.played:
+                        return '9'
+                    self.played = True
+                    return '2'
+                self.play_count += 1
+                return self.plays[self.play_count]
+
+        with \
+                patch(
+                    'game.Game.get_input', side_effect=ControlInputValues()
+                    ), \
+                patch('game.Game.output', side_effect=self.output_collector), \
+                patch(
+                    'sudoku.game.fetch_board',
+                    return_value=ALMOST_FINISHED_EXAMPLE_BOARD,
+                ):
+            self.game.play()
+
+        # expected output history
+        # self.assertEqual(
+        #    self.output_collector.output_collector,
+        #    [],
+        # )
 
 
 if __name__ == "__main__":

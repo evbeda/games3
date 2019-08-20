@@ -42,31 +42,39 @@ class IntegrationTest(TestCase):
         self.assertEqual(('STRAIGHT_BET', [14], 100), result)
 
     @parameterized.expand([
-        (END_GAME_COMMAND, BYE_MESSAGE),
-        ('STRAIGHT_BET 10 15', SUCCESS_MESSAGE),
-        ('STRAIGHT_BET 40 10', INVALID_BET_MESSAGE),
-        ('INVALID_BET 10 15', INVALID_BET_TYPE_MESSAGE),
-        ('STRAIGHT_BET 20 200', NOT_ENOUGH_CASH_MESSAGE)
+        (END_GAME_COMMAND, '', '', BYE_MESSAGE),
+        ('STRAIGHT_BET', '10', 15, SUCCESS_MESSAGE),
+        ('STREET_BET', '1_2_3', 10, SUCCESS_MESSAGE),
+        ('STRAIGHT_BET', '40', 10, INVALID_BET_MESSAGE),
+        ('INVALID_BET', '10', 15, INVALID_BET_TYPE_MESSAGE),
+        ('STRAIGHT_BET', '20', 200, NOT_ENOUGH_CASH_MESSAGE)
     ])
-    def test_user_typing_return_message(self, input, expected_message):
-        self.assertEqual(expected_message, self.game.play(input))
+    def test_user_typing_return_message(
+            self, bet_type, bet_value, amount, expected_message):
+        self.assertEqual(expected_message, self.game.play(
+            bet_type, bet_value, amount))
 
     @patch('ruleta.roulette.randint', return_value=30)
     def test_play_round_win(self, mock_randint):
         self.player = Player(50)
         self.game.croupier.add_bet(StraightBet([30], 25))
-        self.assertEqual(WON_MESSAGE + '875 chips', self.game.play(GO_COMMAND))
+        self.assertEqual(
+            WON_MESSAGE + '875 chips\nRANDOM NUMBER: 30',
+            self.game.play(GO_COMMAND)
+            )
 
     @patch('ruleta.roulette.randint', return_value=31)
     def test_play_round_lost(self, mock_randint):
         self.player = Player(50)
         self.game.croupier.add_bet(StraightBet([30], 25))
-        self.assertEqual(LOST_MESSAGE, self.game.play(GO_COMMAND))
-    
+        self.assertEqual(
+            LOST_MESSAGE + '\nRANDOM NUMBER: 31', self.game.play(GO_COMMAND))
+
     def test_next_turn(self):
         self.assertEqual(
             'STRAIGHT_BET, COLOR_BET, EVENODD_BET, LOWHIGH_BET, STREET_BET, '
-            'SIXLINE_BET, DOUBLE_BET, ONEDOZEN_BET, TWODOZEN_BET, TRIO_BET, QUADRUPLE_BET\n'
+            'SIXLINE_BET, DOUBLE_BET, ONEDOZEN_BET, TWODOZEN_BET, TRIO_BET, '
+            'QUADRUPLE_BET\n'
             'GO,\n'
             'END_GAME',
             self.game.next_turn(),

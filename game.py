@@ -1,5 +1,6 @@
 from guess_number_game.guess_number_game import GuessNumberGame
 from sudoku.game import SudokuGame
+from ruleta.game_roullete import GameRoulette
 
 
 class Game(object):
@@ -9,6 +10,7 @@ class Game(object):
         self.games = [
             GuessNumberGame,
             SudokuGame,
+            GameRoulette
         ]
 
     def output(self, text):
