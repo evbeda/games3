@@ -93,23 +93,30 @@ class TestDiezMil(unittest.TestCase):
 
     # Test calculate repeated
     @parameterized.expand([
+<<<<<<< HEAD
         ([2, 3, 3, 4, 4], ([], 0)),  # no score
         ([1, 3, 3, 3, 3], ([3, 3, 3, 3], 600)),
         ([4, 1, 1, 1, 1], ([1, 1, 1, 1], 2000)),
         ([5, 5, 5, 5, 5], ([5, 5, 5, 5, 5], 2000)),
+=======
+        ([2, 3, 3, 4, 4], ([], 0)),  #no score
+        ([1, 3, 3, 3, 3], ([3, 3, 3, 3], 600)),  #quadruple
+        ([4, 1, 1, 1, 1], ([1, 1, 1, 1], 2000)),  #four_ones
+        ([5, 5, 5, 5, 5], ([5, 5, 5, 5, 5], 2000)),  #five_fives
+>>>>>>> fix check combination now returns total score
     ])
     def test_calculate_repeated(self, dices, expected_score):
         self.assertEqual(self.play.calculate_repeated(dices), expected_score)
 
     @parameterized.expand([
-        ([1, 1, 1, 4, 5], ([1, 1, 1], 1000)),
-        ([1, 1, 1, 1, 5], ([1, 1, 1, 1], 2000)),
-        ([1, 1, 1, 1, 1], ([1, 1, 1, 1, 1], WINNING_PLAY)),
-        ([1, 4, 3, 4, 5], ([1, 5], 150)),
-        ([3, 3, 3, 4, 5], ([3, 3, 3], 300)),
-        ([1, 2, 3, 4, 5], ([1, 2, 3, 4, 5], 500)),
-        ([2, 3, 4, 5, 6], ([2, 3, 4, 5, 6], 500)),
-        ([4, 4, 4, 4, 5], ([4, 4, 4, 4], 800)),
+        ([1, 1, 1, 4, 5], 1050),
+        ([1, 1, 1, 1, 5], 2050),
+        ([1, 1, 1, 1, 1], WINNING_PLAY),
+        ([1, 4, 3, 4, 5], 150),
+        ([3, 3, 3, 4, 5], 350),
+        ([1, 2, 3, 4, 5], 500),
+        ([2, 3, 4, 5, 6], 500),
+        ([4, 4, 4, 4, 5], 850),
     ])
     def test_check_combination(self, dices, expected_result):
         self.assertEqual(self.play.check_combination(dices), expected_result)
@@ -158,3 +165,21 @@ class TestDiezMil(unittest.TestCase):
             turn.generate_play()
         turn.calculate_acumulated_score()
         self.assertEqual(turn.player.actual_score, 10000)
+<<<<<<< HEAD
+=======
+
+
+# USAR PARA EL TEST - NO BORRAR
+# @parameterized.expand([
+#     ('SELECT_DICES 1 3'),
+#     ('PLAY_AGAIN'),
+#     ('NO_MORE_GAMING')
+# ])
+# def test_play(self, state):
+#     self.game.state = state
+#     self.game.play()
+
+
+if __name__ == '__main__':
+    unittest.main()
+>>>>>>> fix check combination now returns total score

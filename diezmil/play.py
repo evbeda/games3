@@ -16,7 +16,7 @@ class Play(object):
         for j in range(dice_qty):
             self.dices.append(random.randint(1, 6))
         self.dices.sort()
-        self.play_score = self.check_combination(self.dices)[1]
+        self.play_score = self.check_combination(self.dices)
 
     def choose_dices(self, selected_dices_positions):
         return [
@@ -27,7 +27,7 @@ class Play(object):
 
     def select_dices(self, selected_dices_positions):
         self.dices = self.choose_dices(selected_dices_positions)
-        self.play_score = self.check_combination(self.selected_dices)[1]
+        self.play_score = self.check_combination(self.selected_dices)
         self.is_playing = False
 
     def calculate_individual_values(self, dices):
@@ -45,16 +45,21 @@ class Play(object):
         return any(dices.count(x) >= 3 for x in dices)
 
     def check_combination(self, dices):
+        total_score = 0
         if dices == [1, 1, 1, 1, 1]:
-            return (dices, WINNING_PLAY)
+            return WINNING_PLAY
         if self.is_a_stair(dices):
-            return (dices, 500)
+            return 500
         elif self.is_repeated(dices):
-            self.play_temp_score = self.calculate_repeated(dices)[1]
-            return self.calculate_repeated(dices)
-        else:
-            self.play_temp_score = self.calculate_individual_values(dices)[1]
-            return self.calculate_individual_values(dices)
+            total_score = self.calculate_repeated(dices)[1]
+            dices = [
+                dice for dice in dices
+                if dice not in self.calculate_repeated(dices)[0]
+            ]
+            total_score += self.calculate_individual_values(dices)[1]
+            return total_score
+        total_score = self.calculate_individual_values(dices)[1]
+        return total_score
 
     def calculate_repeated(self, dices):
         for dice in set(dices):
