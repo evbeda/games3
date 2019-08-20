@@ -77,24 +77,27 @@ class TestCraps(unittest.TestCase):
         self.assertEqual(self.game.resolve_command(input), result)
 
     def test_craps_game_input_bet_placed_message(self):
-        returned_play = self.game.play("PASS_BET 10")
+        returned_play = self.game.play("PASS_BET", 10)
         self.assertEqual(returned_play, BET_PLACED + "PASS_BET")
 
     def test_craps_game_bet_added_to_bets_list(self):
-        self.game.play("PASS_BET 10")
-        self.game.play("DO_NOT_PASS_BET 20")
+        # self.game.play("PASS_BET 10")
+        # self.game.play("DO_NOT_PASS_BET 20")
+        self.game.play("PASS_BET", 10)
+        self.game.play("DO_NOT_PASS_BET", 20)
         self.assertEqual(len(self.game.turn.bets), 2)
 
     def test_craps_game_invalid_bet_type(self):
-        returned_play = self.game.play("INVALIDBET 5678")
+        # returned_play = self.game.play("INVALIDBET 5678")
+        returned_play = self.game.play("INVALIDBET", 5678)
         self.assertEqual(returned_play, INVALID_BET_TYPE)
 
     def test_craps_not_enough_cash(self):
-        returned_play = self.game.play("PASS_BET 9999999")
+        returned_play = self.game.play("PASS_BET", 9999999)
         self.assertEqual(returned_play, OUT_OF_CASH)
 
     def test_craps_play_decrase_money(self):
-        self.game.play("DO_NOT_PASS_BET 300")
+        self.game.play("DO_NOT_PASS_BET", 300)
         self.assertEqual(self.game.money, 700)
 
     def test_craps_decrease_money(self):
@@ -112,8 +115,8 @@ class TestCraps(unittest.TestCase):
         # loses (because of the patch), so wins 200
         # 1050 money remaining
         expected_money = 1050
-        self.game.play("PASS_BET 50")
-        self.game.play("DO_NOT_PASS_BET 100")
+        self.game.play("PASS_BET", 50)
+        self.game.play("DO_NOT_PASS_BET", 100)
         self.game.play("Go")
         self.assertEqual(self.game.money, expected_money)
 
