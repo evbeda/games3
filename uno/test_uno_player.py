@@ -33,3 +33,11 @@ class TestPlayerUno(unittest.TestCase):
         uno.computer_player.cards_player.append(wildcard)
         card = uno.computer_player.auto_play(uno.stack.discard_cards[-1])
         self.assertTrue(card.is_valid(uno.stack.discard_cards[-1]))
+
+    def test_selected_card(self):
+        card1 = NumberCard(GREEN, 3)
+        card2 = NumberCard(RED, 4)
+        card3 = NumberCard(BLUE, 5)
+        cards = [card1, card2, card3]
+        player = Player(cards)
+        self.assertTrue(player.selected_card(3) == card3)

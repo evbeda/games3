@@ -7,7 +7,10 @@ class Uno():
         self.is_playing = True
         self.stack = Stack()
         self.player = Player(self.stack.generate_cards_player())
-        self.computer_player = Player(self.stack.generate_cards_player(), 'Computer_player')
+        self.computer_player = Player(
+            self.stack.generate_cards_player(),
+            'Computer_player'
+            )
         self.stack.put_card_in_discard()
 
     def play(self, command):
@@ -33,7 +36,7 @@ class Uno():
                     return self.winner(self.player)
         if not self.computer_player.loses_turn:
             card = self.computer_player.auto_play(self.stack.discard_cards[-1])
-            if card != None:
+            if card is not None:
                 self.stack.put_card_in_discard(card)
                 return self.winner(self.computer_player)
             else:
@@ -49,8 +52,8 @@ class Uno():
         board = "Your cards are: \n"
         player_cards = self.player.cards_player
         last_card_played = self.stack.discard_cards[-1]
-        for card in player_cards:
-            board += card
+        for index, card in enumerate(player_cards):
+            board += str(index + 1) + ': ' + str(card)
             board += "\n"
-        board += "The last card played is: \n" + last_card_played
+        board += "The last card played is: \n" + str(last_card_played)
         return board

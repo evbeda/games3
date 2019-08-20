@@ -85,12 +85,24 @@ class TestUnoGame(unittest.TestCase):
         uno.player.cards_player = [NumberCard(GREEN, '7')]
         self.assertEqual(uno.play(1), 'You WON')
 
-    # def test_computer(self):
-    #     uno = Uno()
-    #     draw_two_blue = DrawTwoCard(BLUE)
-    #     draw_two_red = DrawTwoCard(RED)
-    #     uno.stack.discard_cards.append(draw_two)
-    #     uno.computer_player.cards_player.append(draw_two_red)
-        # uno.computer_player.auto_play()
+    def test_board(self):
+        game = Uno()
 
+        # Override cards
+        card1 = NumberCard(GREEN, 3)
+        card2 = NumberCard(RED, 4)
+        card3 = NumberCard(BLUE, 5)
+        card4 = NumberCard(BLUE, 6)
+        cards = [card1, card2, card3]
+        game.player.cards_player = cards
+        game.stack.discard_cards.append(card4)
 
+        # Test
+        board = game.build_board()
+        expected_board = "Your cards are: \n" +\
+            "1: 3 - green\n" +\
+            "2: 4 - red\n" +\
+            "3: 5 - blue\n" +\
+            "The last card played is: \n" +\
+            "6 - blue"
+        self.assertEqual(board, expected_board)
