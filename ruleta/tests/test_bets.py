@@ -196,3 +196,40 @@ class TestBetCreator(TestCase):
 
     def test_list_of_bets(self):
         self.assertEqual(LIST_OF_BETS, BetCreator.list_bets())
+
+    @parameterized.expand([
+        (ColorBet(['red'], 5), 'red'),
+        (ColorBet(['black'], 5), 'black')
+    ])
+    def test_get_color(self, bet, expected):
+        self.assertEqual(bet.get_color(), expected)
+
+    @parameterized.expand([
+        (EvenOddBet(['even'], 5), 'even'),
+        (EvenOddBet(['odd'], 5), 'odd')
+    ])
+    def test_get_odd_or_even(self, bet, expected):
+        self.assertEqual(bet.get_odd_or_even(), expected)
+
+    @parameterized.expand([
+        (LowHighBet(['low'], 5), 'low'),
+        (LowHighBet(['high'], 5), 'high')
+    ])
+    def test_get_low_or_high(self, bet, expected):
+        self.assertEqual(bet.get_low_or_high(), expected)
+
+    @parameterized.expand([
+        (OneDozenBet([1], 5), 1),
+        (OneDozenBet([2], 5), 2),
+        (OneDozenBet([3], 5), 3),
+    ])
+    def test_get_dozen(self, bet, expected):
+        self.assertEqual(bet.get_dozen(), expected)
+
+    @parameterized.expand([
+        (TwoDozenBet([1, 2], 5), [1, 2]),
+        (TwoDozenBet([2, 3], 5), [2, 3]),
+        (TwoDozenBet([1, 3], 5), [1, 3]),
+    ])
+    def test_get_dozens(self, bet, expected):
+        self.assertEqual(bet.get_dozens(), expected)
