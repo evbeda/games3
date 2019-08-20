@@ -7,6 +7,12 @@ from sudoku import (
     FINISHED_SHOWN_BOARD,
     YOU_WIN
     )
+from uno.const import (
+    UNO_FINAL_LAST_PLAYED_CARD,
+    UNO_FINAL_PLAYER_CARD,
+    UNO_ALMOST_FINISHED_BOARD,
+    UNO_FINISHED_BOARD,
+    )
 from game import Game
 
 
@@ -151,6 +157,44 @@ class TestGame(unittest.TestCase):
         #    self.output_collector.output_collector,
         #    [],
         # )
+
+    def test_play_uno(self):
+
+        class ControlInputValues(object):
+            def __init__(self, *args, **kwargs):
+                self.played = False
+                self.play_count = 0
+                self.plays = [
+                    '1',
+                ]
+
+            def __call__(self, console_output):
+                if 'Select Game' in console_output:
+                    if self.played:
+                        return '9'
+                    self.played = True
+                    return '3'
+                # self.play_count += 1
+                return self.plays[self.play_count]
+
+        with \
+                patch(
+                    'game.Game.get_input', side_effect=ControlInputValues()
+                    ), \
+                patch('game.Game.output', side_effect=self.output_collector), \
+                patch(
+                    'uno.stack.Stack.generate_cards',
+                    return_value=[UNO_FINAL_LAST_PLAYED_CARD]
+                ), \
+                patch(
+                    'uno.stack.Stack.generate_cards_player',
+                    return_value=[UNO_FINAL_PLAYER_CARD]
+                ):
+            self.game.play()
+        self.assertEqual(
+            self.output_collector.output_collector,
+            [UNO_ALMOST_FINISHED_BOARD, "You WON", UNO_FINISHED_BOARD],
+         )
 
 
 if __name__ == "__main__":
