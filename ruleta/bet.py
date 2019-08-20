@@ -42,9 +42,6 @@ class StraightBet(Bet):
     name = 'STRAIGHT_BET'
     reward = 35
 
-    def __init__(self, bet_value, amount):
-        super().__init__(bet_value, amount)
-
     # Uses __str__ from Bet 
 
     def validate(self, bet_value):
@@ -56,9 +53,6 @@ class StraightBet(Bet):
 class DoubleBet(Bet):
     name = 'DOUBLE_BET'
     reward = 17
-
-    def __init__(self, bet_values, amount):
-        super().__init__(bet_values, amount)
 
     # Uses __str__ from Bet 
 
@@ -83,9 +77,6 @@ class DoubleBet(Bet):
 class ColorBet(Bet):
     name = 'COLOR_BET'
     reward = 2
-
-    def __init__(self, bet_value, amount):
-        super().__init__(bet_value, amount)
 
     # called by str(bet)
     # returns like "COLOR_BET red, $15"
@@ -134,9 +125,6 @@ class EvenOddBet(Bet):
     name = 'EVENODD_BET'
     reward = 2
 
-    def __init__(self, bet_value, amount):
-        super().__init__(bet_value, amount)
-
     def validate(self, bet_value):
         if bet_value[0].lower() not in ['even', 'odd']:
             raise InvalidBetException()
@@ -152,9 +140,6 @@ class EvenOddBet(Bet):
 class LowHighBet(Bet):
     name = 'LOWHIGH_BET'
     reward = 2
-
-    def __init__(self, bet_value, amount):
-        super().__init__(bet_value, amount)
 
     def validate(self, bet_value):
         if bet_value[0].lower() not in ['low', 'high']:
@@ -172,9 +157,6 @@ class StreetBet(Bet):
     name = 'STREET_BET'
     reward = 11
 
-    def __init__(self, bet_values, amount):
-        super().__init__(bet_values, amount)
-
     def validate(self, bet_values):
         ''' expect bet_value like "1" '''
         bet_values.sort()
@@ -189,9 +171,6 @@ class SixLineBet(Bet):
     name = 'SIXLINE_BET'
     reward = 5
 
-    def __init__(self, bet_values, amount):
-        super().__init__(bet_values, amount)
-
     def validate(self, bet_values):
         bet_values.sort()
         valid_numbers = [[n, n+3] for n in range(1, 37, 3) if n != 34]
@@ -205,9 +184,6 @@ class SixLineBet(Bet):
 class OneDozenBet(Bet):
     name = 'ONEDOZEN_BET'
     reward = 2
-
-    def __init__(self, bet_values, amount):
-        super().__init__(bet_values, amount)
 
     # called by str(bet)
     # returns like "ONEDOZEN_BET 1 dozen, $5"
@@ -237,9 +213,6 @@ class OneDozenBet(Bet):
 class TwoDozenBet(Bet):
     name = 'TWODOZEN_BET'
     reward = 1.5
-
-    def __init__(self, bet_values, amount):
-        super().__init__(bet_values, amount)
 
     def validate(self, bet_values):
         if len(bet_values) != 2:
@@ -273,9 +246,6 @@ class TrioBet(Bet):
     name = 'TRIO_BET'
     reward = 11
 
-    def __init__(self, bet_values, amount):
-        super().__init__(bet_values, amount)
-
     def validate(self, bet_values):
         if 0 not in bet_values:
             if len(bet_values) == 2:
@@ -295,6 +265,33 @@ class TrioBet(Bet):
         return list(range(bet_values[0], bet_values[1] + 1))
 
 
+class QuadrupleBet(Bet):
+    name = 'QUADRUPLE_BET'
+    reward = 8
+
+    def validate(self, bet_values):
+        if 0 not in bet_values:
+            if len(bet_values) == 4:
+                bet_values.sort()
+                # Same Line Condition
+                same_linecond = abs(bet_values[0] - bet_values[1]) == 1 and \
+                    abs(bet_values[2] - bet_values[3]) == 1
+                # Adyacent Line Condition
+                ady_linecond = abs(bet_values[0] - bet_values[2]) == 3 and \
+                    abs(bet_values[1] - bet_values[3]) == 3
+                if same_linecond and ady_linecond:
+                    pass
+                else:
+                    raise InvalidBetException()
+            else:
+                raise InvalidBetException()
+        else:
+            raise InvalidBetException()
+
+    def transform_bet_values_to_target_values(self, bet_values):
+        return sorted(bet_values)
+
+
 bet_types = {
     'STRAIGHT_BET': StraightBet,
     'COLOR_BET': ColorBet,
@@ -306,6 +303,7 @@ bet_types = {
     'ONEDOZEN_BET': OneDozenBet,
     'TWODOZEN_BET': TwoDozenBet,
     'TRIO_BET': TrioBet,
+    'QUADRUPLE_BET': QuadrupleBet
 }
 
 
