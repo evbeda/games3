@@ -12,8 +12,15 @@ from .constants import (
     BET_IN_PROGRESS,
     BET_LOST,
     BET_PAYED,
+    PASS_BET,
+    DO_NOT_PASS_BET,
+    DOUBLE_SEVEN,
+    DOUBLE_BET,
+    SEVEN_BET,
+    CRAPS_BET
 )
 
+# type_bet, game_state, dice, win/lost, amount
 BET_SCENARIO = [
         (PassBet(10, None), PLAYER_WON, (1, 1), True, 20),
         (PassBet(20, None), PLAYER_LOST, (1, 1), False, 0),
@@ -45,19 +52,19 @@ class TestBets(unittest.TestCase):
             Bet(10, None).pay(self.game.turn)
 
     @parameterized.expand([
-        ("PASS_BET", PassBet),
-        ("DO_NOT_PASS_BET", DoNotPassBet),
-        ("DOUBLE_BET", DoubleBet),
-        ("SEVEN_BET", SevenBet)
+        (PASS_BET, PassBet),
+        (DO_NOT_PASS_BET, DoNotPassBet),
+        (DOUBLE_BET, DoubleBet),
+        (SEVEN_BET, SevenBet)
     ])
     def test_bet_creator_returns_correct_type(self, type_string, bet_child):
         turn = Turn()
-        bet = BetCreator.create(type_string, 2, (1, 2), turn)
+        bet = BetCreator.create(type_string, 2, turn, (1, 2))
         self.assertIsInstance(bet, bet_child)
 
     def test_bet_creator_raises_invalid_type_exception(self):
         with self.assertRaises(InvalidBetTypeException):
-            BetCreator.create("sadkjagskjdg", 2, (1, 2))
+            BetCreator.create("ASDF", 2, '', (1, 2))
 
     @parameterized.expand(BET_SCENARIO)
     def test_bet_check_true(self, bet, state, dice,
@@ -76,7 +83,7 @@ class TestBets(unittest.TestCase):
 
     def test_bet_states_in_progress_initial_state(self):
         turn = Turn()
-        bet = BetCreator.create("PASS_BET", 20, turn)
+        bet = BetCreator.create(PASS_BET, 20, turn)
         self.assertEqual(bet.state, BET_IN_PROGRESS)
 
     @parameterized.expand([

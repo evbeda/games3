@@ -7,6 +7,7 @@ from .turn import Turn
 from .constants import (
     PLAYER_LOST,
     PLAYER_WON,
+    GAME_OVER,
     GAME_STARTED,
     GAME_IN_PROGRESS,
     WON_MESSAGE,
@@ -16,6 +17,10 @@ from .constants import (
     INVALID_BET_TYPE,
     OUT_OF_CASH,
     CAN_NOT_LEAVE,
+    PASS_BET,
+    DO_NOT_PASS_BET,
+    GO_COMMAND,
+    NO_COMMAND
 )
 
 
@@ -49,11 +54,12 @@ class TestCraps(unittest.TestCase):
     ])
     def test_craps_player_wants_to_quit_allowed(self, state):
         self.game.turn.state = state
-        self.assertEqual(self.game.play('No'), 'Game Over')
+        self.assertEqual(self.game.play(NO_COMMAND), GAME_OVER)
 
     def test_craps_player_wants_to_quit_not_allowed(self):
         self.game.turn.state = GAME_IN_PROGRESS
-        self.assertEqual(self.game.play('No'), CAN_NOT_LEAVE + BET_MESSAGE)
+        message = CAN_NOT_LEAVE + BET_MESSAGE
+        self.assertEqual(self.game.play(NO_COMMAND), message)
 
     @parameterized.expand([
         ((2, 2),),
@@ -65,41 +71,38 @@ class TestCraps(unittest.TestCase):
     ])
     def test_craps_play_returns_score(self, dice):
         with patch('random.sample', return_value=dice):
-            self.assertEqual(self.game.play('Go'), dice)
+            self.assertEqual(self.game.play(GO_COMMAND), dice)
 
     @parameterized.expand([
-        ("PASS_BET 10", ("PASS_BET", 10, [])),
-        ("PASS_BET 100 5", ("PASS_BET", 100, [5])),
-        ("DO_NOT_PASS_BET 10 2 4", ("DO_NOT_PASS_BET", 10, [2, 4])),
-        ("PASS_BET 10 3 4 1 5", ("PASS_BET", 10, [3, 4]))
+        (PASS_BET + " 10", (PASS_BET, 10, [])),
+        (PASS_BET + " 100 5", (PASS_BET, 100, [5])),
+        (DO_NOT_PASS_BET + " 10 2 4", (DO_NOT_PASS_BET, 10, [2, 4])),
+        (PASS_BET + " 10 3 4 1 5", (PASS_BET, 10, [3, 4]))
     ])
     def test_craps_game_input_commands(self, input, result):
         self.assertEqual(self.game.resolve_command(input), result)
 
     def test_craps_game_input_bet_placed_message(self):
-        returned_play = self.game.play("PASS_BET", 10)
-        self.assertEqual(returned_play, BET_PLACED + "PASS_BET")
+        returned_play = self.game.play(PASS_BET, 10)
+        self.assertEqual(returned_play, BET_PLACED + PASS_BET)
 
     def test_craps_game_bet_added_to_bets_list(self):
-        # self.game.play("PASS_BET 10")
-        # self.game.play("DO_NOT_PASS_BET 20")
-        self.game.play("PASS_BET", 10)
-        self.game.play("DO_NOT_PASS_BET", 20)
+        self.game.play(PASS_BET, 10)
+        self.game.play(DO_NOT_PASS_BET, 20)
         self.assertEqual(len(self.game.turn.bets), 2)
 
     def test_craps_game_invalid_bet_type(self):
-        # returned_play = self.game.play("INVALIDBET 5678")
-        returned_play = self.game.play("INVALIDBET", 5678)
+        returned_play = self.game.play("ASDF", 5678)
         self.assertEqual(returned_play, INVALID_BET_TYPE)
 
     def test_craps_not_enough_cash(self):
         turn = Turn()
-        returned_play = self.game.play("PASS_BET", 9999999, turn)
+        returned_play = self.game.play(PASS_BET, 9999999, turn)
         self.assertEqual(returned_play, OUT_OF_CASH)
 
     def test_craps_play_decrase_money(self):
         turn = Turn()
-        self.game.play("DO_NOT_PASS_BET", 300, turn)
+        self.game.play(DO_NOT_PASS_BET, 300, turn)
         self.assertEqual(self.game.money, 700)
 
     def test_craps_decrease_money(self):
@@ -117,9 +120,9 @@ class TestCraps(unittest.TestCase):
         # loses (because of the patch), so wins 200
         # 1050 money remaining
         expected_money = 1050
-        self.game.play("PASS_BET", 50)
-        self.game.play("DO_NOT_PASS_BET", 100)
-        self.game.play("Go")
+        self.game.play(PASS_BET, 50)
+        self.game.play(DO_NOT_PASS_BET, 100)
+        self.game.play(GO_COMMAND)
         self.assertEqual(self.game.money, expected_money)
 
     @parameterized.expand([
@@ -130,6 +133,6 @@ class TestCraps(unittest.TestCase):
     def test_craps_compare_turn_after_state(self, state, expected):
         self.game.turn.state = state
         first_turn = self.game.turn
-        self.game.play('Go')
+        self.game.play(GO_COMMAND)
         is_same_turn = self.game.turn == first_turn
         self.assertEqual(is_same_turn, expected)
