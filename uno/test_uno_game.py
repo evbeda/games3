@@ -105,7 +105,7 @@ class TestUnoGame(unittest.TestCase):
         game.stack.discard_cards.append(card4)
 
         # Test
-        board = game.build_board()
+        board = game.board
         expected_board = "Your cards are: \n" +\
             "1: 3 - green\n" +\
             "2: 4 - red\n" +\
