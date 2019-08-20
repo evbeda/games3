@@ -19,9 +19,6 @@ class Croupier:
             raise OutOfCashException()
         self.player.money -= ammount
 
-    def new_round(self):
-        self.round = Round()
-
     def add_bet(self, bet):
         self.discount_money_from_player(bet.amount)
         self.round.add_bet(bet)
