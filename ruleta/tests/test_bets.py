@@ -34,7 +34,7 @@ bet_scenario = [
     (SixLineBet, [1, 4], 30, 150, 6, True),
     (SixLineBet, [1, 4], 30, 0, 8, False),
     (DoubleBet, [1, 2], 50, 850, 2, True),
-    (DoubleBet, [1, 2], 50, 0, 5, False),
+    (DoubleBet, [0, 2], 50, 0, 5, False),
     (OneDozenBet, 1, 10, 20, 3, True),
     (OneDozenBet, 1, 10, 0, 23, False),
     (TwoDozenBet, [1, 2], 10, 15, 3, True),
@@ -48,6 +48,11 @@ RED_CORRECT_VALUES = \
 BLACK_CORRECT_VALUES = \
     [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
 
+LIST_OF_BETS = \
+    'STRAIGHT_BET, COLOR_BET, EVENODD_BET, ' + \
+    'LOWHIGH_BET, STREET_BET, SIXLINE_BET, ' + \
+    'DOUBLE_BET, ONEDOZEN_BET, TWODOZEN_BET\n'
+
 
 class TestBetsRoulette(TestCase):
     # Test for the bets
@@ -60,6 +65,8 @@ class TestBetsRoulette(TestCase):
         (SixLineBet, [12, 13], 10),
         (DoubleBet, [0, 36], 100),
         (DoubleBet, [0, 0], 50),
+        (DoubleBet, [19, 18], 50),
+        (DoubleBet, [5, 7], 50),
         (OneDozenBet, 4, 50),
         (TwoDozenBet, [1, 1], 50),
         (TwoDozenBet, [1], 50),
@@ -156,3 +163,6 @@ class TestBetCreator(TestCase):
     ])
     def test_bet_to_string(self, bet, expected):
         self.assertEqual(str(bet), expected)
+
+    def test_list_of_bets(self):
+        self.assertEqual(LIST_OF_BETS, BetCreator.list_bets())   
