@@ -3,7 +3,8 @@ from .room import Room
 
 class Trap(Room):
 
-    def __init__(self, effects):
+    def __init__(self, name, effects):
+        self.name = name
         self.effects = effects
 
     def determine_affected_players(self):
