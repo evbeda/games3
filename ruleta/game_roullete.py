@@ -26,7 +26,7 @@ class GameRoulette:
         self.croupier = Croupier(Player(100))
 
     def next_turn(self):
-        return BetCreator.list_bets() + 'GO, END_GAME'
+        return BetCreator.list_bets() + '\nGO,\nEND_GAME'
 
     def play(self, command):
         '''

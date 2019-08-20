@@ -13,7 +13,8 @@ from ..bet import (
     SixLineBet,
     DoubleBet,
     OneDozenBet,
-    TwoDozenBet
+    TwoDozenBet,
+    TrioBet
 )
 
 # Exceptions
@@ -40,6 +41,8 @@ bet_scenario = [
     (TwoDozenBet, [1, 2], 10, 15, 3, True),
     (TwoDozenBet, [2, 3], 10, 15, 18, True),
     (TwoDozenBet, [2, 3], 10, 0, 2, False),
+    (TrioBet, [1, 3], 10, 110, 2, True),
+    (TrioBet, [1, 3], 10, 0, 5, False)
 ]
 
 RED_CORRECT_VALUES = \
@@ -51,7 +54,8 @@ BLACK_CORRECT_VALUES = \
 LIST_OF_BETS = \
     'STRAIGHT_BET, COLOR_BET, EVENODD_BET, ' + \
     'LOWHIGH_BET, STREET_BET, SIXLINE_BET, ' + \
-    'DOUBLE_BET, ONEDOZEN_BET, TWODOZEN_BET\n'
+    'DOUBLE_BET, ONEDOZEN_BET, TWODOZEN_BET, ' + \
+    'TRIO_BET'
 
 
 class TestBetsRoulette(TestCase):
@@ -71,6 +75,9 @@ class TestBetsRoulette(TestCase):
         (TwoDozenBet, [1, 1], 50),
         (TwoDozenBet, [1], 50),
         (TwoDozenBet, [1, 4], 50),
+        (TrioBet, [1, 4], 50),
+        (TrioBet, [1, 6], 50),
+        (TrioBet, [0, 3], 50)
     ])
     def test_invalid_bets(self, bet, bet_value, ammount):
         with self.assertRaises(InvalidBetException):
@@ -99,6 +106,8 @@ class TestBetsRoulette(TestCase):
         (TwoDozenBet, [2, 3], [x for x in range(13, 37)]),
         (TwoDozenBet, [1, 3], [x for x in range(1, 13)] +
             [x for x in range(25, 37)]),
+        (TrioBet, [1, 3], [1, 2, 3]),
+        (TrioBet, [13, 15], [13, 14, 15]),
     ])
     def test_valid_bets(self, bet, bet_value, expected_target_numbers):
         bet = bet(bet_value, 10)
@@ -140,6 +149,7 @@ class TestBetCreator(TestCase):
         ('DOUBLE_BET', [23, 24], 30, DoubleBet),
         ('ONEDOZEN_BET', 1, 20, OneDozenBet),
         ('TWODOZEN_BET', [1, 2], 20, TwoDozenBet),
+        ('TRIO_BET', [1, 3], 20, TrioBet)
     ])
     def test_bet_creator(
             self, bet_type, bet_values, amount, expected_instance):
