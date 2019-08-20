@@ -6,12 +6,12 @@ from uno.test_uno_player import TestPlayerUno
 from craps.test_craps import TestCraps
 from craps.test_turn import TestTurn
 from craps.test_bets import TestBets
-from dungeon_raiders.test_dungeon import TestDungeon
-from dungeon_raiders.test_dungeon import TestMonsterRoom
-from dungeon_raiders.test_dungeon import TestTrapRoom
-from dungeon_raiders.test_dungeon import TestTreasure
-from dungeon_raiders.test_dungeon import TestLevel
-from dungeon_raiders.test_dungeon import TestPlayer
+from dungeon_raiders.tests.test_dungeon import TestDungeon
+from dungeon_raiders.tests.test_monster_room import TestMonsterRoom
+from dungeon_raiders.tests.test_trap_room import TestTrapRoom
+from dungeon_raiders.tests.test_treasure import TestTreasure
+from dungeon_raiders.tests.test_level import TestLevel
+from dungeon_raiders.tests.test_player import TestPlayer
 from guess_number_game.test_guess_number_game import TestGuessNumberGame
 from ruleta.tests.test_ruleta import (
     TestRoulette,
