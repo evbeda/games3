@@ -11,8 +11,10 @@ from .constants import (
     SEVEN_BET,
     CRAPS_BET,
     GAME_STARTED,
-    LOSING_SCORES
+    LOSING_SCORES,
+    GAME_IN_PROGRESS
 )
+
 
 class Bet:
     def __init__(self, amount, selected_dices):
@@ -145,18 +147,16 @@ class CrapsBet(Bet):
     def check(self, turn):
         return(
             sum(turn.dice) in LOSING_SCORES and
-            turn.state == GAME_STARTED
+            turn.state == GAME_IN_PROGRESS
         )
 
     def pay(self, turn):
         if self.check(turn):
-            self.amount_payed = 15 * self.amount
             self.state = BET_PAYED
-            return self.amount_payed
+            return 15 * self.amount
         else:
-            self.amount_payed = 0
             self.state = BET_LOST
-            return self.amount_payed
+            return 0
 
 
 bet_types = {
