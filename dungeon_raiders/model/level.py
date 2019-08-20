@@ -1,10 +1,9 @@
-from random import sample
-from . import ROOMS
 from .hand_player import HandPlayer
 
 
 class Level:
-    def __init__(self, players, number_level):
+    def __init__(self, players, number_level, deck):
+        self.deck = deck
         self.number_level = number_level
         self.rooms = self.select_rooms()
         self.hands = self.create_hands_for_level(players)
@@ -18,4 +17,4 @@ class Level:
         return [HandPlayer(player) for player in players]
 
     def select_rooms(self):
-        return sample(ROOMS, k=5)
+        return [self.deck.pop() for i in range(5)]

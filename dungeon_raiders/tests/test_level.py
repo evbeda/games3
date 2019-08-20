@@ -1,6 +1,7 @@
 import unittest
 from ..model.level import Level
 from ..model.player import Player
+from ..model import ROOMS
 
 
 class TestLevel(unittest.TestCase):
@@ -10,7 +11,8 @@ class TestLevel(unittest.TestCase):
             Player('B'),
             Player('C'),
         ]
-        self.level = Level(self.players, 1)
+        self.deck = ROOMS.copy()
+        self.level = Level(self.players, 1, self.deck)
 
     def test_check_if_each_levels_has_five_rooms(self):
         self.assertEqual(5, len(self.level.rooms))
