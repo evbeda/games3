@@ -1,5 +1,5 @@
 import unittest
-from .const import GREEN, RED, BLUE, YELLOW, DRAW_CARD_INPUT
+from .const import GREEN, RED, BLUE, YELLOW, DRAW_CARD_INPUT, EXIT
 # from parameterized import parameterized
 from .uno import Uno
 from .card import (
@@ -19,6 +19,8 @@ class TestUnoGame(unittest.TestCase):
     def test_is_playing(self):
         uno = Uno()
         self.assertEqual(uno.is_playing, True)
+        uno.play(EXIT)
+        self.assertEqual(uno.is_playing, False)
 
     def test_remaining_initial_stack_length(self):
         uno = Uno()
