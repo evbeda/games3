@@ -5,6 +5,8 @@ import random
 
 
 class Game:
+    input_args = 1
+
     def __init__(self):
         self.is_playing = True
         self.players = self.create_players()
@@ -12,7 +14,7 @@ class Game:
         self.current_level = self.levels[0]
 
     def create_levels(self):
-        return [Level(self.players) for i in range(5)]
+        return [Level(self.players, i+1) for i in range(5)]
 
     def create_players(self):
         players = [Player(character=c) for c in random.sample(CHARACTER, k=3)]
@@ -46,10 +48,17 @@ class Game:
     def next_turn(self):
         pass
 
-    def play(self, command):
-        if command == EXIT:
+    def play(self, *command):
+        if command[0] == EXIT:
             self.is_playing = False
+        else:
+            pass
 
     @property
     def board(self):
-        pass
+        msg = f"{self.current_level.__str__()}\n"
+        msg += '\n'.join(
+            [f'{player.character}, wounds:{player.wounds}, gold:{player.gold}'
+                for player in self.players]
+            )
+        return msg

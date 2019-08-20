@@ -1,9 +1,16 @@
+# Modules
 import unittest
+from unittest.mock import patch
 from parameterized import parameterized
+# Model
 from ..model.exceptions.exceptions import UnplayableCardException
 from ..model.hand_player import HandPlayer
 from ..model.game import Game
 from ..model.player import Player
+# Messages
+from . import BOARD_EXAMPLE
+from . import ROOMS_EXAMPLE
+from . import PLAYERS_EXAMPLE
 
 
 class TestDungeon(unittest.TestCase):
@@ -69,3 +76,15 @@ class TestDungeon(unittest.TestCase):
         # winner/winner
         winners = game.resolve_game()
         self.assertEqual(winners, expected_winners)
+
+    @patch(
+        'dungeon_raiders.model.level.Level.select_rooms',
+        return_value=ROOMS_EXAMPLE
+        )
+    @patch(
+        'dungeon_raiders.model.game.Game.create_players',
+        return_value=PLAYERS_EXAMPLE
+        )
+    def test_board(self, mocked_rooms, mocked_players):
+        game = Game()
+        self.assertEqual(BOARD_EXAMPLE, game.board)

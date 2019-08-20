@@ -43,7 +43,7 @@ class TestPlayer(unittest.TestCase):
     def test_game_is_playing(self):
         game = Game()
         self.assertTrue(game.is_playing)
-        game.play(command=EXIT)
+        game.play(EXIT)
         self.assertFalse(game.is_playing)
 
     def test_game_levels(self):

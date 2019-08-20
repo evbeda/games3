@@ -1,6 +1,29 @@
 import unittest
 from ..model.player import Player
 from ..model.hand_player import HandPlayer
+from ..model.rooms.monster_room import MonsterRoom
+from ..model.rooms.treasure import Treasure
+from ..model.rooms.gold_room import GoldRoom
+
+
+BOARD_EXAMPLE = '''Level:1
+Rooms: Esqueleto, Treasure, Caldero de lava, Dragon, Treasure
+Caballero, wounds:1, gold:1
+Exploradora, wounds:3, gold:2
+Guerrero, wounds:2, gold:0'''
+ROOMS_EXAMPLE = [
+    MonsterRoom((11, 3, 'Esqueleto')),
+    Treasure((4, 2)),
+    GoldRoom(['Caldero de lava', [(5, 3), (4, 2), (3, 1)]]),
+    MonsterRoom((14, 3, 'Dragon')),
+    Treasure((3, 2)),
+]
+
+PLAYERS_EXAMPLE = [
+    Player(character=['Caballero', 1, 1]),
+    Player(character=['Exploradora', 3, 2]),
+    Player(character=['Guerrero', 2, 0]),
+]
 
 
 class RoomHelper(unittest.TestCase):
