@@ -85,11 +85,17 @@ class TestUnoGame(unittest.TestCase):
         uno.player.cards_player = [NumberCard(GREEN, '7')]
         self.assertEqual(uno.play(1), 'You WON')
 
-    def verify_first_turn_computer_player():
+    def test_auto_play(self):
         uno = Uno()
-        uno.computer_player.auto_play()
-        discard_cards_qty = len(uno.stack.discard_cards)
-        self.assertEqual(len(uno.computer_player.cards_player), 6)
-        self.assertEqual(len(uno.stack.discard_cards), discard_cards_qty + 1)
+        card = uno.computer_player.auto_play(uno.stack.discard_cards[-1])
+        self.assertTrue(card.is_valid(uno.stack.discard_cards[-1]))
+
+    # def test_computer(self):
+    #     uno = Uno()
+    #     draw_two_blue = DrawTwoCard(BLUE)
+    #     draw_two_red = DrawTwoCard(RED)
+    #     uno.stack.discard_cards.append(draw_two)
+    #     uno.computer_player.cards_player.append(draw_two_red)
+        # uno.computer_player.auto_play()
 
 

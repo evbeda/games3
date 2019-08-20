@@ -1,7 +1,9 @@
+from .card import DrawTwoCard, DrawFourCard
 
 class Player():
 
-    def __init__(self, cards_player):
+    def __init__(self, cards_player, name = 'Player',):
+        self.name = name
         self.cards_player = cards_player
         self.loses_turn = False
 
@@ -14,14 +16,18 @@ class Player():
         for card in cards:
             self.cards_player.append(card)
 
-    def auto_play(self):
-        last_card = stack.discard_cards[-1]
-        for card in self.computer_player.cards_player:
-            if card.is_valid(self.stack.last_card):
-                self.computer_player.cards_player.remove(card)
-                self.stack.put_card_in_discard(card)
-
-        if last_card == stack.discard_cards[-1]:
-            return self.player.cards_player.append(
-                self.stack.stack_cards.pop())
+    def auto_play(self, last_card):
+        if isinstance(last_card, DrawTwoCard):
+            draw_two_cards = [card for card in self.cards_player if isinstance(card, DrawTwoCard)]
+            if draw_two_cards != []:
+                card = draw_two_cards[0]
+                card = self.cards_player.pop(self.cards_player.index(card))
+                return card
+            else:
+                return None
+        for card in self.cards_player:
+            if card.is_valid(last_card):
+                card_selected = self.cards_player.pop(self.cards_player.index(card))
+                return card_selected
+        return None
 

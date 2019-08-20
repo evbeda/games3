@@ -7,7 +7,7 @@ class Uno():
         self.is_playing = True
         self.stack = Stack()
         self.player = Player(self.stack.generate_cards_player())
-        self.computer_player = Player(self.stack.generate_cards_player())
+        self.computer_player = Player(self.stack.generate_cards_player(), 'Computer_player')
         self.stack.put_card_in_discard()
 
     def play(self, command):
@@ -30,14 +30,20 @@ class Uno():
                     lose_turn, cards_to_pick = card.get_action()
                     if lose_turn:
                         self.computer_player.loses_turn = True
-                    return self.winner()
+                    return self.winner(self.player)
         if not self.computer_player.loses_turn:
-            self.computer_player.auto_play()
+            card = self.computer_player.auto_play(self.stack.discard_cards[-1])
+            if card != None:
+                self.stack.put_card_in_discard(card)
+                return self.winner(self.computer_player)
+            else:
+                return self.computer_player.cards_player.append(
+                    self.stack.stack_cards.pop())
 
-    def winner(self):
-        if self.player.cards_player == []:
+    def winner(self, player):
+        if player.cards_player == []:
             self.is_playing = False
-            return "You WON"
+            return "You WON" if player.name == 'Player' else 'Computer WON'
 
     def build_board(self):
         board = "Your cards are: \n"
