@@ -27,6 +27,9 @@ bet_scenario = [
     # tipo de apuesta, tipo_input, amount, prize, number chosen, won/lose
     (StraightBet, [36], 25, 875, 36, True),
     (ColorBet, ['Red'], 300, 600, 36, True),
+    (ColorBet, ['Black'], 300, 600, 29, True),
+    (ColorBet, ['Red'], 300, 0, 29, False),
+    (ColorBet, ['Black'], 300, 0, 36, False),
     (EvenOddBet, ['ODD'], 30, 0, 36, False),
     (StraightBet, [36], 25, 0, 35, False),
     (ColorBet, ['Red'], 300, 0, 35, False),
@@ -42,8 +45,10 @@ bet_scenario = [
     (TwoDozenBet, [1, 2], 10, 15, 3, True),
     (TwoDozenBet, [2, 3], 10, 15, 18, True),
     (TwoDozenBet, [2, 3], 10, 0, 2, False),
-    (TrioBet, [1, 3], 10, 110, 2, True),
-    (TrioBet, [1, 3], 10, 0, 5, False),
+    (TrioBet, [0, 2, 3], 10, 110, 2, True),
+    (TrioBet, [0, 1, 2], 10, 110, 2, True),
+    (TrioBet, [0, 2, 3], 10, 0, 5, False),
+    (TrioBet, [0, 1, 2], 10, 0, 5, False),
     (QuadrupleBet, [1, 2, 4, 5], 10, 80, 2, True),
     (QuadrupleBet, [1, 2, 4, 5], 10, 0, 10, False),
 ]
@@ -66,6 +71,7 @@ class TestBetsRoulette(TestCase):
     @parameterized.expand([
         (StraightBet, [40], 17),
         (ColorBet, ['Reds'], 300),
+        (ColorBet, ['Blacks'], 300),
         (EvenOddBet, ['ODDs'], 30),
         (LowHighBet, ['Lower'], 11),
         (StreetBet, [1, 2, 4], 100),
@@ -78,13 +84,15 @@ class TestBetsRoulette(TestCase):
         (TwoDozenBet, [1, 1], 50),
         (TwoDozenBet, [1], 50),
         (TwoDozenBet, [1, 4], 50),
-        (TrioBet, [1, 4], 50),
-        (TrioBet, [1, 6], 50),
-        (TrioBet, [0, 3], 50),
+        (TrioBet, [0, 1, 3], 50),
+        (TrioBet, [0, 1, 4], 50),
+        (TrioBet, [1, 2, 3], 50),
         (QuadrupleBet, [1, 3, 2, 6], 10),
         (QuadrupleBet, [0, 1, 2, 3], 10),
         (QuadrupleBet, [1, 2, 7, 8], 10),
-        (QuadrupleBet, [1, 2, 7, 9], 10)
+        (QuadrupleBet, [1, 2, 7, 9], 10),
+        (QuadrupleBet, [1, 2, 3], 10),
+        (QuadrupleBet, [1, 2, 4, 5, 7], 10)
     ])
     def test_invalid_bets(self, bet, bet_value, ammount):
         with self.assertRaises(InvalidBetException):
@@ -113,8 +121,9 @@ class TestBetsRoulette(TestCase):
         (TwoDozenBet, [2, 3], [x for x in range(13, 37)]),
         (TwoDozenBet, [1, 3], [x for x in range(1, 13)] +
             [x for x in range(25, 37)]),
-        (TrioBet, [1, 3], [1, 2, 3]),
-        (TrioBet, [13, 15], [13, 14, 15]),
+        (TrioBet, [0, 1, 2], [0, 1, 2]),
+        (TrioBet, [0, 2, 3], [0, 2, 3]),
+        (TrioBet, [2, 3, 0], [0, 2, 3]),
         (QuadrupleBet, [1, 2, 4, 5], [1, 2, 4, 5]),
         (QuadrupleBet, [1, 2, 5, 4], [1, 2, 4, 5])
     ])
@@ -158,7 +167,7 @@ class TestBetCreator(TestCase):
         ('DOUBLE_BET', [23, 24], 30, DoubleBet),
         ('ONEDOZEN_BET', [1], 20, OneDozenBet),
         ('TWODOZEN_BET', [1, 2], 20, TwoDozenBet),
-        ('TRIO_BET', [1, 3], 20, TrioBet),
+        ('TRIO_BET', [0, 2, 3], 20, TrioBet),
         ('QUADRUPLE_BET', [1, 2, 4, 5], 20, QuadrupleBet)
     ])
     def test_bet_creator(
