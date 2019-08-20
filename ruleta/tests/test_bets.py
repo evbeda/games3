@@ -37,8 +37,8 @@ bet_scenario = [
     (SixLineBet, [1, 4], 30, 0, 8, False),
     (DoubleBet, [1, 2], 50, 850, 2, True),
     (DoubleBet, [0, 2], 50, 0, 5, False),
-    (OneDozenBet, 1, 10, 20, 3, True),
-    (OneDozenBet, 1, 10, 0, 23, False),
+    (OneDozenBet, [1], 10, 20, 3, True),
+    (OneDozenBet, [1], 10, 0, 23, False),
     (TwoDozenBet, [1, 2], 10, 15, 3, True),
     (TwoDozenBet, [2, 3], 10, 15, 18, True),
     (TwoDozenBet, [2, 3], 10, 0, 2, False),
@@ -74,7 +74,7 @@ class TestBetsRoulette(TestCase):
         (DoubleBet, [0, 0], 50),
         (DoubleBet, [19, 18], 50),
         (DoubleBet, [5, 7], 50),
-        (OneDozenBet, 4, 50),
+        (OneDozenBet, [4], 50),
         (TwoDozenBet, [1, 1], 50),
         (TwoDozenBet, [1], 50),
         (TwoDozenBet, [1, 4], 50),
@@ -106,9 +106,9 @@ class TestBetsRoulette(TestCase):
         (DoubleBet, [1, 2], [1, 2]),
         (DoubleBet, [0, 3], [0, 3]),
         (DoubleBet, [4, 7], [4, 7]),
-        (OneDozenBet, 1, [x for x in range(1, 13)]),
-        (OneDozenBet, 2, [x for x in range(13, 25)]),
-        (OneDozenBet, 3, [x for x in range(25, 37)]),
+        (OneDozenBet, [1], [x for x in range(1, 13)]),
+        (OneDozenBet, [2], [x for x in range(13, 25)]),
+        (OneDozenBet, [3], [x for x in range(25, 37)]),
         (TwoDozenBet, [1, 2], [x for x in range(1, 25)]),
         (TwoDozenBet, [2, 3], [x for x in range(13, 37)]),
         (TwoDozenBet, [1, 3], [x for x in range(1, 13)] +
@@ -156,7 +156,7 @@ class TestBetCreator(TestCase):
         ('STREET_BET', [16, 17, 18], 100, StreetBet),
         ('SIXLINE_BET', [16, 19], 10, SixLineBet),
         ('DOUBLE_BET', [23, 24], 30, DoubleBet),
-        ('ONEDOZEN_BET', 1, 20, OneDozenBet),
+        ('ONEDOZEN_BET', [1], 20, OneDozenBet),
         ('TWODOZEN_BET', [1, 2], 20, TwoDozenBet),
         ('TRIO_BET', [1, 3], 20, TrioBet),
         ('QUADRUPLE_BET', [1, 2, 4, 5], 20, QuadrupleBet)
@@ -174,15 +174,15 @@ class TestBetCreator(TestCase):
         (StraightBet([15], 10), "STRAIGHT_BET 15, bet $10"),
         (DoubleBet([3, 6], 20), "DOUBLE_BET 3 6, bet $20"),
         (ColorBet(['red'], 15), "COLOR_BET red, bet $15"),
-        # (EvenOddBet(), "EVEN_ODD_BET"),
-        # (LowHighBet(), "LOW_HIGH_BET"),
-        # (StreetBet(), "STREET_BET"),
-        # (SixLineBet(), "SIXLINE_BET"),
-        (OneDozenBet(1, 30), "ONEDOZEN_BET 1 dozen, bet $30"),
-        # (TwoDozenBet)
+        (EvenOddBet(['odd'], 30), "EVENODD_BET odd, bet $30"),
+        (LowHighBet(['high'], 25), "LOWHIGH_BET high, bet $25"),
+        (StreetBet([1, 2, 3], 35), "STREET_BET 1 2 3, bet $35"),
+        (SixLineBet([1, 4], 40), "SIXLINE_BET 1 2 3 4 5 6, bet $40"),
+        (OneDozenBet([1], 30), "ONEDOZEN_BET 1 dozen, bet $30"),
+        (TwoDozenBet([2, 3], 40), "TWODOZEN_BET 2 3 dozens, bet $40"),
     ])
     def test_bet_to_string(self, bet, expected):
         self.assertEqual(str(bet), expected)
 
     def test_list_of_bets(self):
-        self.assertEqual(LIST_OF_BETS, BetCreator.list_bets())   
+        self.assertEqual(LIST_OF_BETS, BetCreator.list_bets())
