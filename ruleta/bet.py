@@ -131,7 +131,7 @@ class ColorBet(Bet):
 
 
 class EvenOddBet(Bet):
-    name = 'EVEN_ODD_BET'
+    name = 'EVENODD_BET'
     reward = 2
 
     def __init__(self, bet_value, amount):
@@ -150,7 +150,7 @@ class EvenOddBet(Bet):
 
 
 class LowHighBet(Bet):
-    name = 'LOW_HIGH_BET'
+    name = 'LOWHIGH_BET'
     reward = 2
 
     def __init__(self, bet_value, amount):
@@ -273,7 +273,7 @@ bet_types = {
     'STREET_BET': StreetBet,
     'SIXLINE_BET': SixLineBet,
     'DOUBLE_BET': DoubleBet,
-    'ONEDOZEN_BET': OneDozenBet, 
+    'ONEDOZEN_BET': OneDozenBet,
     'TWODOZEN_BET': TwoDozenBet
 }
 
