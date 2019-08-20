@@ -1,30 +1,33 @@
 from .play import Play
-from . import WINNING_PLAY, PLAYING
+from . import WINNING_PLAY
 
 
 class Turn:
 
     def __init__(self, player):
-        self.acumulated_score = 0
         self.player = player
         self.plays = []
-        self.state = PLAYING
+        self._generate_play(5)
 
-    def generate_play(self, dices=5):
-        if not self.plays:
-            play = Play()
-            play.roll_dices(dices)
-            self.plays.append(play)
-        elif not self.plays[-1].is_playing:
-            dices = 5 - len(self.plays[-1].dices)
-            play = Play()
-            self.plays.append(play)
-            self.plays[-1].roll_dices(dices)
+    def _generate_play(self, dices=5):
+        play = Play()
+        play.roll_dices(dices)
+        self.plays.append(play)
+
+    def select_dices(self, selected_dices_positions):
+        reminders = self.plays[-1].select_dices(selected_dices_positions)
+        self._generate_play(reminders or 5)
 
     def calculate_acumulated_score(self):
+        acumulated_score = 0
         for play in self.plays:
             if play.play_score == WINNING_PLAY:
                 self.player.actual_score = 10000
+                acumulated_score = 0
                 break
             else:
-                self.acumulated_score += play.play_score
+                acumulated_score += play.play_score
+        self.player.actual_score += acumulated_score
+
+    def is_playing(self):
+        return self.plays[-1].is_playing

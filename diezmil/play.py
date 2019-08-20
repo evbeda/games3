@@ -26,9 +26,11 @@ class Play(object):
         ]
 
     def select_dices(self, selected_dices_positions):
+        reminders = len(self.dices) - len(selected_dices_positions)
         self.dices = self.choose_dices(selected_dices_positions)
         self.play_score = self.check_combination(self.selected_dices)
         self.is_playing = False
+        return reminders
 
     def calculate_individual_values(self, dices):
         total_score = 0

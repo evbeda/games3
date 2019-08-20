@@ -6,19 +6,10 @@ from .diez_mil import DiezMil
 from .play import Play
 from .turn import Turn
 from .player import Player
-from .exceptions.exceptions import (
-    NotCorrectPlayersQuantityException,
-)
 from . import (
-    PLAYERS_QUANTITY_MESSAGE,
-    PLAYING,
-    FINISHED,
     PLAYER_CHOOSING_DICE_MESSAGE,
-    PLAYER_DONE_MESSAGE,
     PLAYERS_NAME_MESSAGE,
     NEXT_PLAYER_TURN_MESSAGE,
-    QUANTITY_SET,
-    INVALID_NUMBER,
     PLAYERS_SET,
 )
 
@@ -28,32 +19,23 @@ class TestDiezMil(unittest.TestCase):
         self.game = DiezMil()
         self.play = Play()
         self.game.players_qty = 2
-        self.game.baseScore = 450
+        self.game.base_score = 450
 
     def test_check_players_qty(self):
         self.assertEqual(self.game.check_players_qty(0), False)
 
     @parameterized.expand([
-        ('-1', NotCorrectPlayersQuantityException),
-        ('0', NotCorrectPlayersQuantityException),
+        (1, 3, 2,),
+        (1, 5, 2,),
+        (2, 5, 3,),
+        (3, 5, 4,),
+        (4, 5, 5,),
+        (5, 5, 1,),
     ])
-    def test_validate_players_quantity(self, players_quantity, exc):
-        with patch('builtins.input', return_value=players_quantity):
-            with self.assertRaises(exc):
-                self.game.validate_qty(players_quantity)
-
-    @parameterized.expand([
-        (1, 3, 1, SETUP),
-        (1, 5, 2, GO),
-        (2, 5, 3, GO),
-        (3, 5, 4, GO),
-        (4, 5, 5, GO),
-        (5, 5, 1, GO),
-    ])
-    def test_next_player(self, who_is_playing, players_qty, expected, state):
-        self.game.players_qty = players_qty
-        self.game.state = state
+    def test_next_player(self, who_is_playing, players_qty, expected):
         self.game.who_is_playing = who_is_playing
+        self.game.players_qty = players_qty
+        self.game.players = [Player(str(i)) for i in range(players_qty)]
         self.game.next_player()
         self.assertEqual(expected, self.game.who_is_playing)
 
@@ -105,10 +87,10 @@ class TestDiezMil(unittest.TestCase):
 
     # Test calculate repeated
     @parameterized.expand([
-        ([2, 3, 3, 4, 4], ([], 0)),  #no score
-        ([1, 3, 3, 3, 3], ([3, 3, 3, 3], 600)),  #quadruple
-        ([4, 1, 1, 1, 1], ([1, 1, 1, 1], 2000)),  #four_ones
-        ([5, 5, 5, 5, 5], ([5, 5, 5, 5, 5], 2000)),  #five_fives
+        ([2, 3, 3, 4, 4], ([], 0)),  # no score
+        ([1, 3, 3, 3, 3], ([3, 3, 3, 3], 600)),  # quadruple
+        ([4, 1, 1, 1, 1], ([1, 1, 1, 1], 2000)),  # four_ones
+        ([5, 5, 5, 5, 5], ([5, 5, 5, 5, 5], 2000)),  # five_fives
     ])
     def test_calculate_repeated(self, dices, expected_score):
         self.assertEqual(self.play.calculate_repeated(dices), expected_score)
@@ -129,16 +111,15 @@ class TestDiezMil(unittest.TestCase):
     def test_first_play_of_the_turn_five_dices_number_of_dices(self):
         player = Player('TEST_PLAYER')
         turn = Turn(player)
-        turn.generate_play()
+        turn._generate_play()
         self.assertEqual(len(turn.plays[-1].dices), 5)
 
     def test_after_plays_of_the_same_turn_number_of_dices(self):
         player = Player('TEST_PLAYER')
         turn = Turn(player)
-        turn.generate_play()
+        turn._generate_play()
         turn.plays[-1].select_dices([0, 1])
-        turn.generate_play()
-        self.assertEqual(len(turn.plays[-1].dices), 3)
+        self.assertEqual(len(turn.plays[-1].dices), 2)
 
     def test_play_select_dice(self):
         play = Play()
@@ -156,70 +137,46 @@ class TestDiezMil(unittest.TestCase):
             player_names
         )
 
+    # to do parameterize with different plays
     def test_calculate_acumulated_score(self):
         player = Player('TEST_PLAYER')
         turn = Turn(player)
         turn.plays = []
+        previous_score = player.actual_score
         turn.calculate_acumulated_score()
-        self.assertEqual(turn.acumulated_score, 0)
+        new_score = player.actual_score
+        self.assertEqual(previous_score - new_score, 0)
 
     def test_five_ones_win(self):
         player = Player('TEST_PLAYER')
         turn = Turn(player)
         with patch('random.randint', side_effect=[1, 1, 1, 1, 1]):
-            turn.generate_play()
+            turn._generate_play()
         turn.calculate_acumulated_score()
         self.assertEqual(turn.player.actual_score, 10000)
 
     def test_diezmil_next_turn_in_first_turn(self):
         game = DiezMil()
-        self.assertEqual(game.next_turn(), PLAYERS_QUANTITY_MESSAGE)
-
-    def test_diezmil_next_turn_in_first_turn_with_qty_set(self):
-        self.assertEqual(self.game.next_turn(), PLAYERS_NAME_MESSAGE)
+        self.assertEqual(game.next_turn(), PLAYERS_NAME_MESSAGE)
 
     def test_diezmil_next_turn_state_go(self):
         self.game.players = [Player('a'), Player('b')]
         self.game.state = GO
         self.game.actual_turn = Turn(self.game.players[0])
-        self.game.actual_turn.state = FINISHED
+        self.game.actual_turn.plays[-1].is_playing = False
         self.assertEqual(self.game.next_turn(), NEXT_PLAYER_TURN_MESSAGE)
 
     @parameterized.expand([
         (True, PLAYER_CHOOSING_DICE_MESSAGE),
-        (False, PLAYER_DONE_MESSAGE),
+        (False, NEXT_PLAYER_TURN_MESSAGE),
     ])
     def test_diezmil_next_turn_state_go_playing(self, state, message):
         self.game.players = [Player('a'), Player('b')]
         self.game.state = GO
         self.game.actual_turn = Turn(self.game.players[0])
-        self.game.actual_turn.state = PLAYING
         self.game.actual_turn.plays.append(self.play)
         self.game.actual_turn.plays[-1].is_playing = state
         self.assertEqual(self.game.next_turn(), message)
-
-    @parameterized.expand([
-        ('7', ),
-        ('0', ),
-        ('10', ),
-        ('-1', ),
-        ('a', ),
-    ])
-    def test_diezmil_play_with_invalid_input(self, input):
-        game = DiezMil()
-        self.assertEqual(game.play(input), INVALID_NUMBER)
-
-    @parameterized.expand([
-        (1, ),
-        (2, ),
-        (3, ),
-        (4, ),
-        (5, ),
-    ])
-    def test_diezmil_play_with_valid_input_for_qty(self, input):
-        game = DiezMil()
-        self.assertEqual(game.play(input), QUANTITY_SET)
-        self.assertEqual(game.players_qty, input)
 
     @parameterized.expand([
         ('Juan, Julian', ),
