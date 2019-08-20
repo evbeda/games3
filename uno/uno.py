@@ -26,6 +26,10 @@ class Uno():
                 else:
                     self.player.cards_player.remove(card)
                     self.stack.put_card_in_discard(card)
+                    # Get card action. Maybe put in other function
+                    lose_turn, cards_to_pick = card.get_action()
+                    if lose_turn:
+                        self.computer_player.loses_turn = True
                     return self.winner()
         if not self.computer_player.loses_turn:
             self.computer_player.auto_play()

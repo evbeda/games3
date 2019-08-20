@@ -10,6 +10,10 @@ class Player():
             if index == index_card - 1:
                 return card
 
+    def add_cards_to_hand(self, cards):
+        for card in cards:
+            self.cards_player.append(card)
+
     def auto_play(self):
         last_card = stack.discard_cards[-1]
         for card in self.computer_player.cards_player:
