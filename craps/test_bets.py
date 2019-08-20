@@ -1,5 +1,6 @@
 import unittest
 from parameterized import parameterized
+from .turn import Turn
 from .bet import Bet, BetCreator, PassBet, DoNotPassBet, SevenBet, DoubleBet
 from .game import CrapsGame
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
@@ -73,7 +74,8 @@ class TestBets(unittest.TestCase):
         self.assertEqual(bet.pay(turn), expected_payment)
 
     def test_bet_states_in_progress_initial_state(self):
-        bet = BetCreator.create("PASS_BET", 20)
+        turn = Turn()
+        bet = BetCreator.create("PASS_BET", 20, turn)
         self.assertEqual(bet.state, BET_IN_PROGRESS)
 
     @parameterized.expand([
