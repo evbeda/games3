@@ -4,9 +4,7 @@ from .trap import Trap
 class GoldRoom(Trap):
 
     def __init__(self, characteristics):
-        self.name = characteristics[0]
-        self.effects = characteristics[1]
-        super().__init__(self.effects)
+        super().__init__(characteristics[0], characteristics[1])
 
     def determine_affected_players(self, hands):
         affected_players = []

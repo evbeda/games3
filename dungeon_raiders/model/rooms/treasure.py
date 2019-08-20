@@ -3,6 +3,8 @@ from .room import Room
 
 class Treasure(Room):
 
+    name = 'Treasure'
+
     def __init__(self, values):
         self.values = values
 
