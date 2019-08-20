@@ -28,4 +28,3 @@ class Turn:
                 break
             else:
                 self.acumulated_score += play.play_score
-
