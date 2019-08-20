@@ -1,9 +1,14 @@
-from .const import DRAW_CARD_INPUT
+from .const import DRAW_CARD_INPUT, EXIT
 from .stack import Stack
 from .player import Player
+from .const import ASK_FOR_INPUT
 
 
 class Uno():
+
+    name = 'Uno Game'
+    input_args = 1
+
     def __init__(self):
         self.is_playing = True
         self.stack = Stack()
@@ -14,9 +19,14 @@ class Uno():
             )
         self.stack.put_card_in_discard()
 
+    def next_turn(self):
+        if self.is_playing:
+            return ASK_FOR_INPUT
+        return 'Game Over, See you next time'
+
     def play(self, command):
         if not self.player.loses_turn:
-            if command == 'END GAME':
+            if command == EXIT:
                 self.is_playing = False
                 return 'Bye'
             elif command == DRAW_CARD_INPUT:
@@ -49,7 +59,8 @@ class Uno():
             self.is_playing = False
             return "You WON" if player.name == 'Player' else 'Computer WON'
 
-    def build_board(self):
+    @property
+    def board(self):
         board = "Your cards are: \n"
         player_cards = self.player.cards_player
         last_card_played = self.stack.discard_cards[-1]
