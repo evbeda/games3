@@ -10,7 +10,7 @@ class TestLevel(unittest.TestCase):
             Player('B'),
             Player('C'),
         ]
-        self.level = Level(self.players)
+        self.level = Level(self.players, 1)
 
     def test_check_if_each_levels_has_five_rooms(self):
         self.assertEqual(5, len(self.level.rooms))
