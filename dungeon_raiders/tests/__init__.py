@@ -11,6 +11,7 @@ Rooms: Esqueleto, Treasure, Caldero de lava, Dragon, Treasure
 Caballero, wounds:1, gold:1
 Exploradora, wounds:3, gold:2
 Guerrero, wounds:2, gold:0'''
+
 ROOMS_EXAMPLE = [
     MonsterRoom((11, 3, 'Esqueleto')),
     Treasure((4, 2)),
@@ -20,13 +21,20 @@ ROOMS_EXAMPLE = [
 ]
 
 PLAYERS_EXAMPLE = [
-    Player(character=['Caballero', 1, 1]),
-    Player(character=['Exploradora', 3, 2]),
-    Player(character=['Guerrero', 2, 0]),
-]
+            Player(character=['Caballero', 1, 1]),
+            Player(character=['Exploradora', 3, 2]),
+            Player(character=['Guerrero', 2, 0]),
+        ]
 
-
+        
 class RoomHelper(unittest.TestCase):
+    def _get_players_example(self):
+        return[
+            Player(character=['Caballero', 1, 1]),
+            Player(character=['Exploradora', 3, 2]),
+            Player(character=['Guerrero', 2, 0]),
+        ]
+
     def _get_hands(self):
 
         player_a = Player('A')

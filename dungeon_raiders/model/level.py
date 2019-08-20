@@ -6,6 +6,8 @@ class Level:
         self.deck = deck
         self.number_level = number_level
         self.rooms = self.select_rooms()
+        self.iter_rooms = iter(self.rooms)
+        self.actual_room = next(self.iter_rooms)
         self.hands = self.create_hands_for_level(players)
 
     def __str__(self):
@@ -18,3 +20,9 @@ class Level:
 
     def select_rooms(self):
         return [self.deck.pop() for i in range(5)]
+
+    def execute_level(self, power_cards_played):
+        [hand.play(power_cards_played[index])
+            for index, hand in enumerate(self.hands)]
+        self.actual_room.resolve_room(self.hands)
+        self.actual_room = next(self.iter_rooms)

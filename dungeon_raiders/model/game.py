@@ -53,8 +53,11 @@ class Game:
     def play(self, *command):
         if command[0] == EXIT:
             self.is_playing = False
+            return 'bye'
         else:
             pass
+            # number_played = command[0]
+            # self.actual_level.execute_level([number_played, random, random])
 
     @property
     def board(self):
