@@ -24,9 +24,6 @@ class TestGame(unittest.TestCase):
 
         self.output_collector = OutputCollector()
 
-    def tearDown(self):
-        pass
-
     @patch('game.Game.get_input', return_value='9')
     def test_quit_game(self, mock_input):
         with patch('game.Game.output', side_effect=self.output_collector):
