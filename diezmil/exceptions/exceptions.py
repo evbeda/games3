@@ -20,3 +20,7 @@ class NotCorrectPlayersQuantityException(ValueError):
 
 class NotANumberException(ValueError):
     pass
+
+
+class PlayRemainsWithNoScore(Exception):
+    pass

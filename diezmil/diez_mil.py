@@ -12,10 +12,12 @@ from . import (
     NEXT_PLAYER_TURN_MESSAGE,
     QUANTITY_SET,
     INVALID_NUMBER,
-    PLAYERS_SET
+    PLAYERS_SET,
+    CANT_SAVE_THOSE_DICES,
 )
 from .exceptions.exceptions import (
     NotCorrectPlayersQuantityException,
+    PlayRemainsWithNoScore
 )
 
 
@@ -79,7 +81,10 @@ class DiezMil(object):
             self.next_player()
         else:
             selected_dices = DiezMil.parse_input(player_input)
-            self.actual_turn.select_dices(selected_dices)
+            try:
+                self.actual_turn.select_dices(selected_dices)
+            except PlayRemainsWithNoScore:
+                return CANT_SAVE_THOSE_DICES
             # if self.actual_turn.lost_play:
             #     self.next_player()
             # else:

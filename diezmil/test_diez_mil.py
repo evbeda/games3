@@ -6,11 +6,13 @@ from .diez_mil import DiezMil
 from .play import Play
 from .turn import Turn
 from .player import Player
+from .exceptions.exceptions import PlayRemainsWithNoScore
 from . import (
     PLAYER_CHOOSING_DICE_MESSAGE,
     PLAYERS_NAME_MESSAGE,
     NEXT_PLAYER_TURN_MESSAGE,
     PLAYERS_SET,
+    CANT_SAVE_THOSE_DICES,
 )
 
 
@@ -117,7 +119,8 @@ class TestDiezMil(unittest.TestCase):
     def test_after_plays_of_the_same_turn_number_of_dices(self):
         player = Player('TEST_PLAYER')
         turn = Turn(player)
-        turn._generate_play()
+        with patch('random.randint', side_effect=[1, 1, 1, 1, 1]):
+            turn._generate_play()
         turn.plays[-1].select_dices([0, 1])
         self.assertEqual(len(turn.plays[-1].dices), 2)
 
@@ -189,6 +192,47 @@ class TestDiezMil(unittest.TestCase):
         self.assertEqual(self.game.play(input), PLAYERS_SET)
         for i in range(2):
             self.assertEqual(self.game.players[i].name, names[i])
-            
+
     def test_parse_input(self):
         self.assertEqual(DiezMil.parse_input("1,3,4"), [1, 3, 4])
+
+    @parameterized.expand([
+        ([1, 2, 3, 4, 5], [1, 2, 3]),
+        ([3, 3, 3], [0, 2]),
+        ([1, 2, 2, 3, 3], [(1, 2, 3, 4)]),
+        ([1, 1, 1, 1, 2], [4]),
+    ])
+    def test_play_cant_keep_dices_with_no_score(self, dices, keep):
+        self.play.dices = dices
+        with self.assertRaises(PlayRemainsWithNoScore):
+            self.play.select_dices(keep)
+
+    @parameterized.expand([
+        ([1],),
+        ([2],),
+        ([3],),
+        ([1, 2],),
+        ([1, 3],),
+        ([2, 3],),
+    ])
+    def test_turn_cant_keep_dices_with_no_score(self, keep):
+        player = Player('TEST_PLAYER')
+        turn = Turn(player)
+        with patch('random.randint', side_effect=[1, 2, 2, 2, 5]):
+            turn._generate_play()
+        with self.assertRaises(PlayRemainsWithNoScore):
+            turn.select_dices(keep)
+
+    @parameterized.expand([
+        ("1",),
+        ("2",),
+        ("3",),
+        ("1,2",),
+        ("1,3",),
+        ("2,3",),
+    ])
+    def test_game_cant_keep_dices_with_no_score(self, user_input):
+        with patch('random.randint', side_effect=[1, 2, 2, 2, 5]):
+            self.game.play("a")
+        returned = self.game.play(user_input)
+        self.assertEqual(returned, CANT_SAVE_THOSE_DICES)

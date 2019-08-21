@@ -1,5 +1,6 @@
 import random
 from . import WINNING_PLAY
+from .exceptions.exceptions import PlayRemainsWithNoScore
 
 
 class Play(object):
@@ -25,8 +26,13 @@ class Play(object):
 
     def select_dices(self, selected_dices_positions):
         reminders = len(self.dices) - len(selected_dices_positions)
-        self.dices = self.choose_dices(selected_dices_positions)
-        self.play_score = self.check_combination(self.dices)
+        choosen_dices = self.choose_dices(selected_dices_positions)
+        play_score = self.check_combination(choosen_dices)
+        # you can't keep dices with 0 points
+        if play_score == 0:
+            raise PlayRemainsWithNoScore
+        self.dices = choosen_dices
+        self.play_score = play_score
         self.is_playing = False
         return reminders
 
