@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch
 from parameterized import parameterized
 from .exceptions.out_of_cash_exception import OutOfCashException
+from .bet import PassBet
 from .game import CrapsGame
 from .turn import Turn
 from .bet import BetCreator
@@ -22,7 +23,6 @@ from .constants import (
     DO_NOT_PASS_BET,
     GO_COMMAND,
     NO_COMMAND,
-    BET_AGAIN_OR_GO,
     SHOOT_DICE_MESSAGE,
 )
 

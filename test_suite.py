@@ -6,6 +6,7 @@ from uno.test_uno_player import TestPlayerUno
 from craps.test_craps import TestCraps
 from craps.test_turn import TestTurn
 from craps.test_bets import TestBets
+from craps.test_integration import TestIntegration
 from dungeon_raiders.tests.test_dungeon import TestDungeon
 from dungeon_raiders.tests.test_monster_room import TestMonsterRoom
 from dungeon_raiders.tests.test_trap_room import TestTrapRoom
@@ -41,6 +42,7 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestCraps))
     test_suite.addTest(unittest.makeSuite(TestTurn))
     test_suite.addTest(unittest.makeSuite(TestBets))
+    test_suite.addTest(unittest.makeSuite(TestIntegration))
     # DUNGEON RAIDERS
     test_suite.addTest(unittest.makeSuite(TestDungeon))
     test_suite.addTest(unittest.makeSuite(TestMonsterRoom))
