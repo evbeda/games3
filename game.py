@@ -4,6 +4,7 @@ from ruleta.game_roullete import GameRoulette
 from uno.uno import Uno
 from diezmil.diez_mil import DiezMil
 from craps.game import CrapsGame
+from dungeon_raiders.model.game import Game as DungeonRaiders
 
 
 class Game(object):
@@ -16,7 +17,8 @@ class Game(object):
             GameRoulette,
             Uno,
             DiezMil,
-            CrapsGame
+            CrapsGame,
+            DungeonRaiders
         ]
 
     def output(self, text):
