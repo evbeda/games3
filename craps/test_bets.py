@@ -115,3 +115,11 @@ class TestBets(unittest.TestCase):
         ret += 'Amount payed: {}\n'.format(expected_payment)
         ret += 'Bet state: {}\n'.format(bet.state)
         self.assertEqual(str(bet), ret)
+
+    @parameterized.expand([
+        (GAME_STARTED, 'PASS_BET, DO_NOT_PASS_BET, CRAPS_BET'),
+        (GAME_IN_PROGRESS, 'PASS_BET, DO_NOT_PASS_BET, DOUBLE_BET, SEVEN_BET, CRAPS_BET')
+    ])
+    def test_list_bets(self, state, message):
+        self.game.turn.state = state
+        self.assertEqual(BetCreator.list_bets(self.game.turn.state), message)
