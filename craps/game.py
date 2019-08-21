@@ -42,7 +42,7 @@ class CrapsGame:
 
         if self.turn.state == GAME_STARTED:
             return BET_AGAIN_OR_GO if self.turn.bets \
-                else BetCreator.list_bets() + BET_MESSAGE
+                else BetCreator.list_bets(self.turn.state) + BET_MESSAGE
 
         if self.turn.state == GAME_IN_PROGRESS:
             return SHOOT_DICE_MESSAGE

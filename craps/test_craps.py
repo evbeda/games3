@@ -36,7 +36,7 @@ class TestCraps(unittest.TestCase):
         self.assertIsInstance(self.game.turn, Turn)
 
     @parameterized.expand([
-        (GAME_STARTED, [], BetCreator.list_bets() + BET_MESSAGE),
+        (GAME_STARTED, [], 'PASS_BET, DO_NOT_PASS_BET, CRAPS_BET' + BET_MESSAGE),
     ])
     def test_craps_game_started_asks_for_a_bet(self, state, bets, message):
         self.game.turn.state = state

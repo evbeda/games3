@@ -137,7 +137,11 @@ BET_TYPES = {
 }
 
 # Bet
-ONLY_START_BETS = [CrapsBet, PassBet, DoNotPassBet]
+ONLY_START_BETS = {
+    PASS_BET: PassBet,
+    DO_NOT_PASS_BET: DoNotPassBet,
+    CRAPS_BET: CrapsBet
+}
 
 
 class BetCreator:
@@ -163,6 +167,7 @@ class BetCreator:
                 raise InvalidBetTurnException()
 
     @staticmethod
-    def list_bets():
-        menu = [bet_type for bet_type in BET_TYPES]
+    def list_bets(state):
+        bets = ONLY_START_BETS if state == GAME_STARTED else BET_TYPES
+        menu = [bet_type for bet_type in bets]
         return ', '.join(menu)
