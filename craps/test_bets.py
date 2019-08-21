@@ -14,7 +14,6 @@ from .constants import (
     BET_PAYED,
     PASS_BET,
     DO_NOT_PASS_BET,
-    DOUBLE_SEVEN,
     DOUBLE_BET,
     SEVEN_BET,
     CRAPS_BET

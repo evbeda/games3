@@ -76,8 +76,6 @@ class CrapsGame:
             bet = BetCreator.create(bet_type, amount, self.turn, bet_values)
             self.decrease_money(amount)
             self.turn.bets.append(bet)
-            
-            
             return BET_PLACED + bet_type
         except InvalidBetTypeException:
             return INVALID_BET_TYPE
