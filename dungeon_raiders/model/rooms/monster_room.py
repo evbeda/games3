@@ -7,6 +7,7 @@ class MonsterRoom(Room):
         self.name = characteristics[2]
         self.life = characteristics[0]
         self.damage = characteristics[1]
+        self.long_name = self.name + f" (❤️ {characteristics[0]}, 🗡️️ {characteristics[1]})"
 
     def __str__(self):
         msg = f'Life: {self.life}\nDamage: {self.damage}\n'

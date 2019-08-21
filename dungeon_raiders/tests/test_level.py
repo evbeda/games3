@@ -4,9 +4,11 @@ from random import choice
 from unittest.mock import patch
 # Model
 from ..model.level import Level
-from ..model import ROOMS, LEVEL_CARDS
+from ..model import ROOMS, LEVEL_CARDS, MONSTERS, GOLDS, TREASURES, WOUNDS
 from ..model.rooms.monster_room import MonsterRoom
 from ..model.rooms.treasure import Treasure
+from ..model.rooms.gold_room import GoldRoom
+from ..model.rooms.wound_room import WoundRoom
 # Helpers
 from . import RoomHelper
 
@@ -61,7 +63,7 @@ class TestLevel(RoomHelper):
         level = Level(self.players, 1, ROOMS[:], choice(LEVEL_CARDS))
         level.actual_room = actual_room
         with patch(
-            'dungeon_raiders.model.hand_computer.choice', 
+            'dungeon_raiders.model.hand_computer.choice',
             side_effect=(cards_played[1], cards_played[2])
         ):
             level.execute_level(cards_played[0])
@@ -69,3 +71,22 @@ class TestLevel(RoomHelper):
                 getattr(self.players[player_affected], attribute_affected),
                 expected_effect
                 )
+
+    def test_level_to_string(self):
+        level = Level(self.players, 2, self.deck, LEVEL_CARDS[6])
+        level.rooms = [
+            MonsterRoom(MONSTERS[1]),
+            Treasure(TREASURES[3]),
+            WoundRoom(WOUNDS[0]),
+            MonsterRoom(MONSTERS[5]),
+            GoldRoom(GOLDS[0])
+            ]
+        level.index_actual_room = 2
+        expected = "Level: 2\n"
+        expected += "Rooms:\n"
+        expected += " * Esqueleto (❤️ 11, 🗡️️ 3)\n"
+        expected += " * Treasure (💰 3, 💰 2)\n"
+        expected += " * Trampa de pinchos <--\n"
+        expected += " * Hidden\n"
+        expected += " * Caldero de lava"
+        self.assertEqual(str(level), expected)

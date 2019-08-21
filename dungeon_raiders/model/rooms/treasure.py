@@ -7,6 +7,7 @@ class Treasure(Room):
 
     def __init__(self, values):
         self.values = values
+        self.long_name = self.name + f" (💰 {values[0]}, 💰 {values[1]})"
 
     def __str__(self):
         msg = f'First winner: {self.values[0]}\n'
