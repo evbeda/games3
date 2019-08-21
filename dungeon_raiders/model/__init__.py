@@ -3,7 +3,11 @@ from .rooms.treasure import Treasure
 from .rooms.gold_room import GoldRoom
 from .rooms.wound_room import WoundRoom
 
-EXIT = 'exit'
+EXIT = 'EXIT'
+BYE_MESSAGE = 'Bye'
+ROOM_MESSAGE = 'Room played succesfully'
+GAME_OVER = 'Game over'
+LEVEL_FINISHED_MESSAGE = 'Level finished succesfully'
 
 MONSTER_ROOM = 0
 TREASURE_ROOM = 1

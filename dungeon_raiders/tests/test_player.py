@@ -49,4 +49,3 @@ class TestPlayer(unittest.TestCase):
     def test_game_levels(self):
         game = Game()
         self.assertEqual(game.current_level, game.levels[0])
-

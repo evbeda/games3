@@ -1,6 +1,7 @@
 # Modules
 from parameterized import parameterized
 from random import choice
+from unittest.mock import patch
 # Model
 from ..model.level import Level
 from ..model import ROOMS, LEVEL_CARDS
@@ -54,10 +55,17 @@ class TestLevel(RoomHelper):
         ([3, 2, 3], 2, 'gold', Treasure((4, 2)), 2)
     ])
     def test_execute_level(
-        self, cards_played, player_affected, attribute_affected, actual_room, expected_effect
+            self, cards_played, player_affected,
+            attribute_affected, actual_room, expected_effect
             ):
         level = Level(self.players, 1, ROOMS[:], choice(LEVEL_CARDS))
         level.actual_room = actual_room
-        level.execute_level(cards_played)
-        self.assertEqual(
-            getattr(self.players[player_affected], attribute_affected), expected_effect)
+        with patch(
+            'dungeon_raiders.model.hand_computer.choice', 
+            side_effect=(cards_played[1], cards_played[2])
+        ):
+            level.execute_level(cards_played[0])
+            self.assertEqual(
+                getattr(self.players[player_affected], attribute_affected),
+                expected_effect
+                )
