@@ -6,9 +6,7 @@ class Play(object):
     def __init__(self):
         self.play_score = 0
         self.dices = []
-        self.selected_dices = []
         self.is_playing = True
-        self.play_temp_score = 0
 
     def roll_dices(self, dice_qty):
         if dice_qty > 5:
@@ -28,7 +26,7 @@ class Play(object):
     def select_dices(self, selected_dices_positions):
         reminders = len(self.dices) - len(selected_dices_positions)
         self.dices = self.choose_dices(selected_dices_positions)
-        self.play_score = self.check_combination(self.selected_dices)
+        self.play_score = self.check_combination(self.dices)
         self.is_playing = False
         return reminders
 
@@ -76,3 +74,9 @@ class Play(object):
                 return ([dice]*qty, score)
         else:
             return ([], 0)
+
+    def __str__(self):
+        ret = ''
+        ret += 'Dices: {}\n'.format(self.dices)
+        ret += 'Play score {}\n'.format(self.check_combination(self.dices))
+        return ret

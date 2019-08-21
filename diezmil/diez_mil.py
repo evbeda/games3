@@ -20,7 +20,12 @@ from .exceptions.exceptions import (
 
 
 class DiezMil(object):
+
+    name = 'Diezmil Game'
+    input_args = 1
+
     def __init__(self):
+        self.is_playing = True
         self.state = SETUP
         self.players_qty = 0
         self.base_score = 0
@@ -73,11 +78,23 @@ class DiezMil(object):
             self.actual_turn.calculate_acumulated_score()
             self.next_player()
         else:
-            self.actual_turn.select_dices(player_input)
-            if not self.actual_turn.is_playing():  # Loses the turn
-                self.next_player()
+            selected_dices = DiezMil.parse_input(player_input)
+            self.actual_turn.select_dices(selected_dices)
+            # if self.actual_turn.lost_play:
+            #     self.next_player()
+            # else:
+            #     self.actual_turn.calculate_acumulated_score()
+
+    @staticmethod
+    def parse_input(user_input):
+        parsed = user_input.split(",")
+        parsed = [int(x) for x in parsed]
+        return parsed
 
     # Por cada jugador, mostrar su puntaje
-    # @property
-    # def board(self):
-    #     return str(self.played_numbers)
+    @property
+    def board(self):
+        board = ""
+        if self.actual_turn:
+            board += self.actual_turn.build_board()
+        return board

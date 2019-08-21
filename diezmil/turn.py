@@ -31,3 +31,12 @@ class Turn:
 
     def is_playing(self):
         return self.plays[-1].is_playing
+
+    def build_board(self):
+        board = ''
+        board += 'Player: {}\n'.format(self.player.name)
+        board += 'Score: {}\n'.format(self.player.actual_score)
+        for play in self.plays:
+            board += '====================\n'
+            board += 'Play:\n{}'.format(play)
+        return board
