@@ -26,6 +26,7 @@ class Croupier:
     def play(self):
         chosen_number = self.roulette.generate_number()
         award = self.distribute_awards(chosen_number)
+        self.round = Round()
         if award > 0:
             return WON_MESSAGE + str(award) + ' chips' + \
                 '\nRANDOM NUMBER: ' + str(chosen_number)

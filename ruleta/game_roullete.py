@@ -21,7 +21,7 @@ from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 
 class GameRoulette:
     name = 'Roulette'
-    input_args = 3
+    input_args = (1, 3)
 
     def __init__(self):
         self.is_playing = True
@@ -43,7 +43,7 @@ class GameRoulette:
             return BYE_MESSAGE
         elif command[0] == GO_COMMAND:
             return self.croupier.play()
-        else:
+        elif 'BET' in command[0] and len(command) == 3:
             try:
                 bet_type, bet_values, amount = (
                     command[0], command[1], int(command[2]))
