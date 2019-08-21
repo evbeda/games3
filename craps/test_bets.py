@@ -32,7 +32,7 @@ BET_SCENARIO = [
         (DoNotPassBet(40, None), GAME_STARTED, (1, 1), False, 0),
         (DoubleBet(10, None), PLAYER_LOST, (1, 1), True, 300),
         (DoubleBet(20, None), PLAYER_WON, (2, 2), True, 160),
-        (DoubleBet(30, None), GAME_IN_PROGRESS, (3, 3), True, 300),
+        (DoubleBet(30, None), PLAYER_LOST, (3, 3), True, 300),
         (DoubleBet(40, None), GAME_STARTED, (4, 3), False, 0),
         (SevenBet(40, None), GAME_STARTED, (4, 3), True, 160),
         (SevenBet(40, None), GAME_STARTED, (4, 4), False, 0),
@@ -102,3 +102,16 @@ class TestBets(unittest.TestCase):
         turn.dice = dice
         bet.pay(turn)
         self.assertEqual(bet.state, bet_state)
+
+    @parameterized.expand(BET_SCENARIO)
+    def test_bet_to_string(self, bet, state, dice, _result, expected_payment):
+        turn = self.game.turn
+        turn.state = state
+        turn.dice = dice
+        bet.pay(turn)
+        ret = ''
+        ret += 'Bet type: {}\n'.format(type(bet).__name__)
+        ret += 'Amount bet: {}\n'.format(bet.amount)
+        ret += 'Amount payed: {}\n'.format(expected_payment)
+        ret += 'Bet state: {}\n'.format(bet.state)
+        self.assertEqual(str(bet), ret)
