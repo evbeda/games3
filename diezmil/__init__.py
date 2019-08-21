@@ -11,3 +11,4 @@ PLAYER_DONE_MESSAGE = 'Your turn is over'
 QUANTITY_SET = "Quantity has been set"
 INVALID_NUMBER = "Enter a NUMBER!!!!"
 PLAYERS_SET = "Players have been set"
+CANT_SAVE_THOSE_DICES = "You can't keep dices with 0 score"
