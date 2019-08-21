@@ -256,3 +256,60 @@ class TestDiezMil(unittest.TestCase):
             turn = Turn(Player('A'))
             turn._generate_play(5)
             self.assertEqual(turn.is_playing(), False)
+
+    # Show Tests
+
+    @parameterized.expand([
+        (5, [1, 2, 3, 3, 4], "Dices: [1, 2, 3, 3, 4]\n"
+                             "Play score 100\n"),
+        (5, [1, 2, 3, 4, 5], "Dices: [1, 2, 3, 4, 5]\n"
+                             "Play score 500\n"),
+        (2, [1, 1], "Dices: [1, 1]\n"
+                    "Play score 200\n"),
+    ])
+    def test_play_str(self, dices_qty, dices_outcome, expected):
+        with patch('random.randint', side_effect=dices_outcome):
+            self.play.roll_dices(dices_qty)
+        self.assertEqual(str(self.play), expected)
+
+    def test_turn_str(self):
+        player = Player('TEST_PLAYER')
+        with patch('random.randint', side_effect=[1, 2, 3, 3, 5]):
+            turn = Turn(player)
+        with patch('random.randint', side_effect=[4, 4, 4]):
+            turn.select_dices([0, 4])
+
+        expected = 'Player: TEST_PLAYER\n'
+        expected += 'Score: 0\n'
+        expected += '====================\n'
+        expected += 'Play:\n'
+        expected += 'Dices: [1, 5]\n'
+        expected += 'Play score 150\n'
+        expected += '====================\n'
+        expected += 'Play:\n'
+        expected += 'Dices: [4, 4, 4]\n'
+        expected += 'Play score 400\n'
+
+        self.assertEqual(turn.build_board(), expected)
+
+    def test_diez_mil_board_empty(self):
+        self.assertEqual(self.game.board, '')
+
+    def test_diez_mil_board_not_empty(self):
+        with patch('random.randint', side_effect=[1, 2, 3, 3, 5]):
+            self.game.play('TEST_PLAYER')
+        with patch('random.randint', side_effect=[4, 4, 4]):
+            self.game.play('0,4')
+
+        expected = 'Player: TEST_PLAYER\n'
+        expected += 'Score: 0\n'
+        expected += '====================\n'
+        expected += 'Play:\n'
+        expected += 'Dices: [1, 5]\n'
+        expected += 'Play score 150\n'
+        expected += '====================\n'
+        expected += 'Play:\n'
+        expected += 'Dices: [4, 4, 4]\n'
+        expected += 'Play score 400\n'
+
+        self.assertEqual(self.game.board, expected)
