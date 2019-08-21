@@ -29,7 +29,16 @@ class Turn:
                 break
             else:
                 acumulated_score += play.play_score
-        self.player.actual_score += acumulated_score
+        if self.player.actual_score + acumulated_score <= 10000:
+            self.player.actual_score += acumulated_score
+            return "New score: " + str(self.player.actual_score)
+        else:
+            return "Score overflow"
+
+    def is_player_win(self):
+        if self.player.actual_score == 10000:
+            return True
+        return False
 
     def is_playing(self):
         return self.plays[-1].is_playing

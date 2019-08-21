@@ -313,3 +313,13 @@ class TestDiezMil(unittest.TestCase):
         expected += 'Play score 400\n'
 
         self.assertEqual(self.game.board, expected)
+
+    @parameterized.expand([
+        (10000, True),
+        (11000, False),
+        (9000, False),
+    ])
+    def test_player_win(self, score, expected_value):
+        turn = Turn(Player('Test'))
+        turn.player.actual_score = score
+        self.assertEqual(turn.is_player_win(), expected_value)

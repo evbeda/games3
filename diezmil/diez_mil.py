@@ -71,8 +71,12 @@ class DiezMil(object):
             return PLAYERS_SET
         elif player_input == 'STAY':
             # asignar puntaje
-            self.actual_turn.calculate_acumulated_score()
+            ret = self.actual_turn.calculate_acumulated_score()
+            if self.actual_turn.is_player_win():
+                self.is_playing = False
+                return 'Player win: ' + self.actual_turn.player.name
             self.next_player()
+            return ret
         else:
             selected_dices = DiezMil.parse_input(player_input)
             try:
