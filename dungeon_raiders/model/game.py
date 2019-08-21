@@ -71,9 +71,21 @@ class Game:
 
     @property
     def board(self):
-        msg = f"{self.current_level.__str__()}\n"
-        msg += '\n'.join(
-            [f'{player.character}, wounds:{player.wounds}, gold:{player.gold}'
-                for player in self.players]
+        if self.is_playing is True:
+            msg = f"{self.current_level.__str__()}\n"
+            msg += '\n'.join(
+                [f'{player.character}, wounds:{player.wounds}, gold:{player.gold}'
+                    for player in self.players]
+                )
+        else:
+            msg = f'Game over\n'
+            winners = self.resolve_game()
+            if not winners:
+                msg += f'Anyone won the game'
+                return msg
+            msg += f'Winners:\n' if len(winners) > 1 else f'Winner:\n'
+            msg += '\n'.join(
+                [f'{winner.character}, wounds:{winner.wounds}, gold:{winner.gold}'
+                    for winner in winners]
             )
         return msg
