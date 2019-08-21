@@ -80,15 +80,6 @@ class TestCraps(unittest.TestCase):
         with patch('random.sample', return_value=dice):
             self.assertEqual(self.game.play(GO_COMMAND), dice)
 
-    @parameterized.expand([
-        (PASS_BET + " 10", (PASS_BET, 10, [])),
-        (PASS_BET + " 100 5", (PASS_BET, 100, [5])),
-        (DO_NOT_PASS_BET + " 10 2 4", (DO_NOT_PASS_BET, 10, [2, 4])),
-        (PASS_BET + " 10 3 4 1 5", (PASS_BET, 10, [3, 4]))
-    ])
-    def test_craps_game_input_commands(self, input, result):
-        self.assertEqual(self.game.resolve_command(input), result)
-
     def test_craps_game_input_bet_placed_message(self):
         returned_play = self.game.play(PASS_BET, 10)
         self.assertEqual(returned_play, BET_PLACED + PASS_BET)
