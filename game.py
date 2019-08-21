@@ -3,6 +3,7 @@ from sudoku.game import SudokuGame
 from ruleta.game_roullete import GameRoulette
 from uno.uno import Uno
 from diezmil.diez_mil import DiezMil
+from craps.game import CrapsGame
 
 
 class Game(object):
@@ -14,7 +15,8 @@ class Game(object):
             SudokuGame,
             GameRoulette,
             Uno,
-            DiezMil
+            DiezMil,
+            CrapsGame
         ]
 
     def output(self, text):

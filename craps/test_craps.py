@@ -4,6 +4,7 @@ from parameterized import parameterized
 from .exceptions.out_of_cash_exception import OutOfCashException
 from .game import CrapsGame
 from .turn import Turn
+from .bet import BetCreator
 from .constants import (
     PLAYER_LOST,
     PLAYER_WON,
@@ -20,7 +21,9 @@ from .constants import (
     PASS_BET,
     DO_NOT_PASS_BET,
     GO_COMMAND,
-    NO_COMMAND
+    NO_COMMAND,
+    BET_AGAIN_OR_GO,
+    SHOOT_DICE_MESSAGE,
 )
 
 
@@ -32,13 +35,17 @@ class TestCraps(unittest.TestCase):
         self.assertTrue(self.game.is_playing)
         self.assertIsInstance(self.game.turn, Turn)
 
-    def test_craps_game_started_asks_for_a_bet(self):
-        self.assertEqual(self.game.turn.state, GAME_STARTED)
-        self.assertEqual(self.game.next_turn(), BET_MESSAGE)
+    @parameterized.expand([
+        (GAME_STARTED, [], BetCreator.list_bets() + BET_MESSAGE),
+    ])
+    def test_craps_game_started_asks_for_a_bet(self, state, bets, message):
+        self.game.turn.state = state
+        self.game.turn.bets = bets
+        self.assertEqual(self.game.next_turn(), message)
 
     def test_craps_game_in_progress_asks_for_a_bet(self):
         self.game.turn.state = GAME_IN_PROGRESS
-        self.assertEqual(self.game.next_turn(), BET_MESSAGE)
+        self.assertEqual(self.game.next_turn(), SHOOT_DICE_MESSAGE)
 
     def test_craps_player_lost_aks_keep_playing(self):
         self.game.turn.state = PLAYER_LOST
