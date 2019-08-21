@@ -18,6 +18,22 @@ Card: 4 Wound: 2
 Card: 3 Wound: 1
 '''
 
+NEXT_TURN_TREASURE_EXAMPLE = '''Room name: Treasure
+First winner: 4
+Second winner: 2
+'''
+
+NEXT_TURN_GOLDROOM_EXAMPLE = '''Room name: Caldero de lava
+Max played: 5 Gold: 3
+Max played: 4 Gold: 2
+Max played: 3 Gold: 1
+'''
+
+NEXT_TURN_MONSTERROOM_EXAMPLE = '''Room name: Esqueleto
+Life: 11
+Damage: 3
+'''
+
 ROOMS_EXAMPLE = [
     MonsterRoom((11, 3, 'Esqueleto')),
     Treasure((4, 2)),
@@ -32,7 +48,7 @@ PLAYERS_EXAMPLE = [
             Player(character=['Guerrero', 2, 0]),
         ]
 
-        
+
 class RoomHelper(unittest.TestCase):
     def _get_players_example(self):
         return[

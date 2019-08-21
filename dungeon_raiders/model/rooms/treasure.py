@@ -9,7 +9,9 @@ class Treasure(Room):
         self.values = values
 
     def __str__(self):
-        return f'Room name: {self.name}\nFirst winner: {self.values[0]}\nSecond winner: {self.values[1]}'
+        msg = f'First winner: {self.values[0]}\n'
+        msg += f'Second winner: {self.values[1]}\n'
+        return f'Room name: {self.name}\n{msg}'
 
     # Determine winners
     def determine_winners(self, max_value, played_cards):

@@ -9,7 +9,8 @@ class MonsterRoom(Room):
         self.damage = characteristics[1]
 
     def __str__(self):
-        return f'Room name: {self.name}\nLife: {self.life}\nDamage: {self.damage}'
+        msg = f'Life: {self.life}\nDamage: {self.damage}\n'
+        return f'Room name: {self.name}\n{msg}'
 
     def resolve_room(self, hands):
         # Determine played cards
