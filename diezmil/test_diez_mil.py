@@ -76,7 +76,7 @@ class TestDiezMil(unittest.TestCase):
         ([1, 1, 5, 4, 4], False),
     ])
     def test_is_a_stair(self, dices, expected):
-        self.assertEqual(self.play.is_a_stair(dices), expected)
+        self.assertEqual(Play.is_a_stair(dices), expected)
 
     # Test is a repeated
     @parameterized.expand([

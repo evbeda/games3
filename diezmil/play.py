@@ -1,6 +1,6 @@
 import random
 from . import WINNING_PLAY
-from .exceptions.exceptions import PlayRemainsWithNoScore, InvalidSelectedDices
+from .exceptions.exceptions import PlayRemainsWithNoScore
 
 
 class Play(object):
@@ -46,10 +46,6 @@ class Play(object):
         fives = [i for i in dices if i == 5]
         return ones + fives, total_score
 
-    def is_a_stair(self, dices):
-        dices.sort()
-        return (dices == [1, 2, 3, 4, 5] or dices == [2, 3, 4, 5, 6])
-
     def is_repeated(self, dices):
         return any(dices.count(x) >= 3 for x in dices)
 
@@ -57,7 +53,7 @@ class Play(object):
         total_score = 0
         if dices == [1, 1, 1, 1, 1]:
             return WINNING_PLAY
-        if self.is_a_stair(dices):
+        if Play.is_a_stair(dices):
             return 500
         elif self.is_repeated(dices):
             total_score = self.calculate_repeated(dices)[1]
@@ -90,5 +86,11 @@ class Play(object):
         return ret
 
     @staticmethod
+    def is_a_stair(dices):
+        dices.sort()
+        return (dices == [1, 2, 3, 4, 5] or dices == [2, 3, 4, 5, 6])
+
+    @staticmethod
     def validate_selected_dices(dices):
-        return all(dice in [1, 5] or dices.count(dice) >= 3 for dice in dices)
+        return all(dice in [1, 5] or dices.count(dice) >= 3 for dice in dices)\
+            or Play.is_a_stair(dices)
