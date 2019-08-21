@@ -16,13 +16,18 @@ from .constants import (
     INVALID_TURN_BET,
     GO_COMMAND,
     NO_COMMAND,
-    GAME_OVER
+    GAME_OVER,
+    GAME_IN_PROGRESS,
+    GAME_STARTED,
+    SHOOT_DICE_MESSAGE,
+    BET_AGAIN_OR_GO,
 )
 
 
 class CrapsGame:
 
     name = 'Craps Game'
+    input_args = (1, 2, 3)
 
     def __init__(self):
         self.turn = Turn()
@@ -34,7 +39,13 @@ class CrapsGame:
             return LOST_MESSAGE
         if self.turn.state == PLAYER_WON:
             return WON_MESSAGE
-        return BET_MESSAGE
+
+        if self.turn.state == GAME_STARTED:
+            return BET_AGAIN_OR_GO if self.turn.bets \
+                else BetCreator.list_bets() + BET_MESSAGE
+
+        if self.turn.state == GAME_IN_PROGRESS:
+            return SHOOT_DICE_MESSAGE
 
     def play(self, *user_input):
         # In case of the user wants to finish his turn
@@ -53,17 +64,20 @@ class CrapsGame:
         if user_input[0] == GO_COMMAND:
             self.money += self.turn.shoot()
             return self.turn.dice
-    # ------------------------------------------------------
-        # The player wants to add more bets
+
         try:
-            # Determine what the player wants to do
-            bet_type, amount = user_input[0], user_input[1]
+            # bet_type, amount, bet_values = \
+            #     CrapsGame.resolve_command(user_input)
+            bet_type = user_input[0]
+            amount = int(user_input[1])
             bet_values = user_input[2] if len(user_input) == 3 else None
             # Create the bet, decrease money
             # Append the new bet to list of bets
             bet = BetCreator.create(bet_type, amount, self.turn, bet_values)
             self.decrease_money(amount)
             self.turn.bets.append(bet)
+            
+            
             return BET_PLACED + bet_type
         except InvalidBetTypeException:
             return INVALID_BET_TYPE

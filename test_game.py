@@ -43,6 +43,7 @@ class TestGame(unittest.TestCase):
             '2: Roulette\n'
             '3: Uno Game\n'
             '4: Diezmil Game\n'
+            '5: Craps Game\n'
             '9: to quit\n'
         )
 

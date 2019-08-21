@@ -159,7 +159,7 @@ class CrapsBet(Bet):
             return 0
 
 
-bet_types = {
+BET_TYPES = {
     PASS_BET: PassBet,
     DO_NOT_PASS_BET: DoNotPassBet,
     DOUBLE_BET: DoubleBet,
@@ -178,13 +178,13 @@ class BetCreator:
         BetCreator.validate_bet_type(bet_type)
         BetCreator.validate_bet_turn(bet_type, turn)
         bet = None
-        bet_class = bet_types[bet_type]  # obtain bet Class from dictionary
+        bet_class = BET_TYPES[bet_type]  # obtain bet Class from dictionary
         bet = bet_class(amount, bet_values)
         return bet
 
     @staticmethod
     def validate_bet_type(bet_type):
-        if bet_type not in bet_types:
+        if bet_type not in BET_TYPES:
             raise InvalidBetTypeException()
 
     @staticmethod
@@ -193,10 +193,7 @@ class BetCreator:
             if type(bet_type) in ONLY_START_BETS:
                 raise InvalidBetTurnException()
 
-# @TODO: INTEGRATE LIST_BETS
-#    @staticmethod
-#    def list_bets():
-#        menu = ''
-#        for bet in bet_types:
-#            menu += bet.type
-#        return menu
+    @staticmethod
+    def list_bets():
+        menu = [bet_type for bet_type in BET_TYPES]
+        return ', '.join(menu)

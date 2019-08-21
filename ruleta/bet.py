@@ -363,7 +363,7 @@ class BetCreator:
         bet_class = bet_types[bet_type]  # obtain bet Class from dictionary
         bet = bet_class(list_bet_values, ammount)
         return bet
-
+    
     @staticmethod
     def validate_bet_type(bet_type):
         if bet_type not in bet_types:

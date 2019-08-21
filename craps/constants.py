@@ -17,15 +17,17 @@ PLAYER_WON = 'PLAYER_WON'
 # Messages
 WON_MESSAGE = 'You won. Do you want to keep playing?'
 LOST_MESSAGE = 'You lost. Do you want to keep playing?'
-BET_MESSAGE = 'Place a bet'
+BET_MESSAGE = '\nEnter a bet type, amount of bet and value of bet(optional)'
 BET_PLACED = 'Your bet was placed successfully: '
 INVALID_BET_TYPE = 'Invalid bet type'
 OUT_OF_CASH = "You don't have enough money"
 CAN_NOT_LEAVE = "You can't leave until the turn ends. "
 INVALID_TURN_BET = "You can't make this bet in this turn"
+SHOOT_DICE_MESSAGE = 'Write Go to shoot the dice'
+BET_AGAIN_OR_GO = 'Bet again or go'
 
 # Bet States
-BET_IN_PROGRESS = 'In progress'
+BET_IN_PROGRESS = 'Bet in progress'
 BET_PAYED = 'Payed'
 BET_LOST = 'Lost'
 
