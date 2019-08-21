@@ -95,15 +95,3 @@ class CrapsGame:
         ret += self.turn.build_board()
         ret += 'Money: {}'.format(self.money)
         return ret
-
-# command like
-# BETNAME amount dice_options
-    @staticmethod
-    def resolve_command(command):
-        list_string = command.split()
-        bet_type = list_string[0]
-        amount = int(list_string[1])
-        bet_values = [int(number) for number in list_string[2:]]
-        if len(bet_values) > 2:
-            bet_values = bet_values[0:2]
-        return (bet_type, amount, bet_values)
