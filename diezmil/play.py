@@ -82,7 +82,6 @@ class Play(object):
             return ([], 0)
 
     def __str__(self):
-        ret = ''
-        ret += 'Dices: {}\n'.format(self.dices)
-        ret += 'Play score {}\n'.format(self.check_combination(self.dices))
+        ret = f'Dices: {self.dices}\n'
+        ret += f'Play score {self.play_score}\n'
         return ret
