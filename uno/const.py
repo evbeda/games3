@@ -16,3 +16,5 @@ UNO_ALMOST_FINISHED_BOARD = "Your cards are: \n" +\
             "The last card played is: \n" +\
             "7 - red"
 UNO_FINISHED_BOARD = 'Your cards are: \nThe last card played is: \n9 - red'
+
+INVALID_CARD_MESSAGE = "Invalid card."

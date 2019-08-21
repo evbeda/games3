@@ -1,5 +1,5 @@
 import unittest
-from .const import GREEN, RED, BLUE, YELLOW, DRAW_CARD_INPUT, EXIT
+from .const import GREEN, RED, BLUE, YELLOW, DRAW_CARD_INPUT, EXIT, INVALID_CARD_MESSAGE
 from parameterized import parameterized
 from .uno import Uno
 from .card import (
@@ -13,42 +13,57 @@ from .card import (
 
 
 class TestUnoGame(unittest.TestCase):
-
-    def set_up(self):
+    def setUp(self):
         self.game = Uno()
 
     def test_is_playing(self):
-        uno = Uno()
-        self.assertEqual(uno.is_playing, True)
-        uno.play(EXIT)
-        self.assertEqual(uno.is_playing, False)
+        self.assertEqual(self.game.is_playing, True)
+        self.game.play(EXIT)
+        self.assertEqual(self.game.is_playing, False)
+
+    def test_current_player(self):
+        self.assertEqual(self.game.current_player, self.game.player)
+
+    def test_player_draws(self):
+        initial_stack_size = len(self.game.stack.stack_cards)
+        initial_player_hand_size = len(self.game.current_player.cards_player)
+
+        self.game.player_draws(self.game.current_player)
+
+        stack_size = len(self.game.stack.stack_cards)
+        player_hand_size = len(self.game.current_player.cards_player)
+
+        self.assertEqual(stack_size, initial_stack_size - 1)
+        self.assertEqual(player_hand_size, initial_player_hand_size + 1)
+        
+    # def test_player_plays_card(self):
+        # initial_stack_size = len(self.game.stack.stack_cards)
+        # initial_player_hand_size = len(self.game.current_player.cards_player)
+
+        # self.game.player_plays_card(self.game.current_player, )
+
+        # stack_size = len(self.game.stack.stack_cards)
+        # player_hand_size = len(self.game.current_player.cards_player)
+
+        # self.assertEqual(stack_size, initial_stack_size - 1)
+        # self.assertEqual(player_hand_size, initial_player_hand_size + 1)
 
     def test_remaining_initial_stack_length(self):
-        uno = Uno()
-        self.assertEqual(len(uno.stack.stack_cards), 97)
+        self.assertEqual(len(self.game.stack.stack_cards), 97)
 
     def test_initial_cards_player_length(self):
-        uno = Uno()
-        self.assertEqual(len(uno.player.cards_player), 7)
+        self.assertEqual(len(self.game.player.cards_player), 7)
 
     def test_initial_discard_cards_length(self):
-        uno = Uno()
-        self.assertEqual(len(uno.stack.discard_cards), 1)
+        self.assertEqual(len(self.game.stack.discard_cards), 1)
 
-    # testing initial play take a card conditions
     def test_initial_take_card_stack_length(self):
         uno = Uno()
         uno.play(DRAW_CARD_INPUT)
         self.assertEqual(len(uno.stack.stack_cards), 96)
-
-    def test_initial_take_card_cards_player_length(self):
-        uno = Uno()
-        uno.play(DRAW_CARD_INPUT)
         self.assertEqual(len(uno.player.cards_player), 8)
 
-    # test playing a card
-
-    def test_play_a_invalid_car(self):
+    def test_play_invalid_card(self):
         uno = Uno()
         uno.stack.discard_cards = [NumberCard(GREEN, '5')]
         uno.player.cards_player = [
@@ -59,9 +74,9 @@ class TestUnoGame(unittest.TestCase):
             SkipCard(RED),
             DrawTwoCard(RED),
         ]
-        play_card = uno.play('1')
-        self.assertEqual(play_card, "Your card is not valid")
-        # check player_cards length same
+        result = uno.play('1')
+        expected = INVALID_CARD_MESSAGE
+        self.assertEqual(result, expected)
         self.assertEqual(len(uno.player.cards_player), 6)
 
     def test_play_a_valid_card(self):
@@ -79,43 +94,43 @@ class TestUnoGame(unittest.TestCase):
         uno.play('1')
         # check player_cards length reduced
         self.assertEqual(len(uno.player.cards_player), 5)
-        # chek played_card equal to last discard_card
+        # check played_card equal to last discard_card
         self.assertEqual(last_played_card, uno.stack.discard_cards[-1])
 
-    def test_player_winner(self):
-        uno = Uno()
-        uno.stack.discard_cards = [NumberCard(RED, '7')]
-        uno.player.cards_player = [NumberCard(GREEN, '7')]
-        self.assertEqual(uno.play('1'), 'You WON')
+    # def test_player_winner(self):
+        # uno = Uno()
+        # uno.stack.discard_cards = [NumberCard(RED, '7')]
+        # uno.player.cards_player = [NumberCard(GREEN, '7')]
+        # self.assertEqual(uno.play(1), 'You WON')
 
-    def test_computer_player_winner(self):
-        uno = Uno()
-        uno.player.loses_turn = True
-        uno.stack.discard_cards = [NumberCard(BLUE, '5')]
-        uno.computer_player.cards_player = [NumberCard(YELLOW, '5')]
-        self.assertEqual(uno.play(1), 'Computer WON')
+    # def test_computer_player_winner(self):
+        # uno = Uno()
+        # uno.player.loses_turn = True
+        # uno.stack.discard_cards = [NumberCard(BLUE, '5')]
+        # uno.computer_player.cards_player = [NumberCard(YELLOW, '5')]
+        # self.assertEqual(uno.play(1), 'Computer WON')
 
-    def test_board(self):
-        game = Uno()
+    # def test_board(self):
+        # game = Uno()
 
-        # Override cards
-        card1 = NumberCard(GREEN, 3)
-        card2 = NumberCard(RED, 4)
-        card3 = NumberCard(BLUE, 5)
-        card4 = NumberCard(BLUE, 6)
-        cards = [card1, card2, card3]
-        game.player.cards_player = cards
-        game.stack.discard_cards.append(card4)
+        # # Override cards
+        # card1 = NumberCard(GREEN, 3)
+        # card2 = NumberCard(RED, 4)
+        # card3 = NumberCard(BLUE, 5)
+        # card4 = NumberCard(BLUE, 6)
+        # cards = [card1, card2, card3]
+        # game.player.cards_player = cards
+        # game.stack.discard_cards.append(card4)
 
-        # Test
-        board = game.board
-        expected_board = "Your cards are: \n" +\
-            "1: 3 - green\n" +\
-            "2: 4 - red\n" +\
-            "3: 5 - blue\n" +\
-            "The last card played is: \n" +\
-            "6 - blue"
-        self.assertEqual(board, expected_board)
+        # # Test
+        # board = game.board
+        # expected_board = "Your cards are: \n" +\
+            # "1: 3 - green\n" +\
+            # "2: 4 - red\n" +\
+            # "3: 5 - blue\n" +\
+            # "The last card played is: \n" +\
+            # "6 - blue"
+        # self.assertEqual(board, expected_board)
 
     def test_validate_draw_card_input(self):
         uno = Uno()
