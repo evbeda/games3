@@ -24,4 +24,3 @@ class TestTreasure(RoomHelper):
             handB.player.gold,
             handC.player.gold,
             handD.player.gold])
-

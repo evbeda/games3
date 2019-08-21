@@ -1,17 +1,30 @@
-from .level import Level
-from . import CHARACTER, EXIT, ROOMS, LEVEL_CARDS
-from .player import Player
+# Modules
 import random
+# Model
+from .level import Level
+from .player import Player
+# Messages
+from . import (
+    CHARACTER,
+    EXIT,
+    ROOMS,
+    BYE_MESSAGE,
+    ROOM_MESSAGE,
+    GAME_OVER,
+    LEVEL_FINISHED_MESSAGE,
+    LEVEL_CARDS
+    )
 
 
 class Game:
     input_args = 1
 
     def __init__(self):
+        self.index_current_level = 0
         self.is_playing = True
         self.players = self.create_players()
         self.levels = self.create_levels()
-        self.current_level = self.levels[0]
+        self.current_level = self.levels[self.index_current_level]
 
     def create_levels(self):
         deck = ROOMS.copy()
@@ -63,11 +76,22 @@ class Game:
     def play(self, *command):
         if command[0] == EXIT:
             self.is_playing = False
-            return 'bye'
+            return BYE_MESSAGE
         else:
-            pass
-            # number_played = command[0]
-            # self.actual_level.execute_level([number_played, random, random])
+            try:
+                power_card_played = command[0]
+                self.current_level.execute_level(power_card_played)
+                if self.current_level.is_last_room():
+                    self.index_current_level += 1
+                    self.current_level = self.levels[self.index_current_level]
+                    return LEVEL_FINISHED_MESSAGE
+                self.current_level.next_room()
+                return ROOM_MESSAGE
+            except IndexError:
+                self.is_playing = False
+                return GAME_OVER
+            except Exception as e:
+                return str(e)
 
     @property
     def board(self):

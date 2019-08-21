@@ -94,7 +94,8 @@ class RoomHelper(unittest.TestCase):
         hands = self._get_hands()
 
         for hand in hands:
-            hand.play(plays[hands.index(hand)])
+            hand.chosen_card = plays[hands.index(hand)]
+            hand.play()
         return self._play(room, hands)
 
     def _play(self, room, hands):

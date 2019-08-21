@@ -12,6 +12,7 @@ from ..model.rooms.treasure import Treasure
 from ..model.rooms.gold_room import GoldRoom
 from ..model.rooms.monster_room import MonsterRoom
 # Messages
+from ..model import BYE_MESSAGE, EXIT, ROOM_MESSAGE, GAME_OVER
 from . import BOARD_EXAMPLE
 from . import BOARD_EXAMPLE_TWO_WINNERS
 from . import BOARD_EXAMPLE_WINNER
@@ -33,19 +34,24 @@ class TestDungeon(unittest.TestCase):
 
     def test_check_if_player_can_play_card_2(self):
         hand = HandPlayer(Player('A'))
-        hand.play(2)
-        hand.play(5)
+        hand.chosen_card = 2
+        hand.play()
+        hand.chosen_card = 5
+        hand.play()
         with self.assertRaises(UnplayableCardException):
-            hand.play(2)
+            hand.chosen_card = 2
+            hand.play()
 
     def test_check_actual_card(self):
         hand = HandPlayer(Player('A'))
-        hand.play(2)
+        hand.chosen_card = 2
+        hand.play()
         self.assertEqual(2, hand.last_card_played)
 
     def test_check_if_3_is_in_hand(self):
         hand = HandPlayer(Player('A'))
-        hand.play(3)
+        hand.chosen_card = 3
+        hand.play()
         self.assertTrue(3 not in hand.cards_to_play)
 
     """ -------------------- Game tests -------------------- """
@@ -135,3 +141,23 @@ class TestDungeon(unittest.TestCase):
         game = Game()
         game.current_level.actual_room = room
         self.assertEqual(example, game.next_turn())
+    
+    # Test for play method
+    def test_command_exit(self):
+        game = Game()
+        self.assertEqual(BYE_MESSAGE, game.play(EXIT))
+
+    def test_power_card_input(self):
+        game = Game()
+        self.assertEqual(ROOM_MESSAGE, game.play(3))
+
+    def test_you_cant_play_2_again(self):
+        game = Game()
+        game.play(2)
+        self.assertEqual('You can\'t play a 2 again', game.play(2))
+
+    def test_game_over(self):
+        game = Game()
+        game.index_current_level = 4
+        game.current_level.index_actual_room = 4
+        self.assertEqual(GAME_OVER, game.play(3))
