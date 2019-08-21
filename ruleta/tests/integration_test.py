@@ -81,4 +81,18 @@ class IntegrationTest(TestCase):
         )
 
     def test_show_board(self):
-        pass
+        self.game.croupier.add_bet(StraightBet(['19'], 25))
+        self.game.croupier.add_bet(EvenOddBet(['odd'], 10))
+        self.assertEqual(
+            "+--+--+--+--+--+--+--+--+--+--+--+--+--+\n" +\
+            "|00|03|06|09|12|15|18|21|24|27|30|33|36|\n" +\
+            "+--+--+--+--+--+--+--+--+--+--+--+--+--+\n" +\
+            "|00|02|05|08|11|14|17|20|23|26|29|32|35|\n" +\
+            "+--+--+--+--+--+--+--+--+--+--+--+--+--+\n" +\
+            "|00|01|04|07|10|13|16|19|22|25|28|31|34|\n" +\
+            "+--+--+--+--+--+--+--+--+--+--+--+--+--+\n" +\
+            "Player Money: $65\n" +\
+            "Placed Bets: \n" +\
+            "STRAIGHT_BET 19, bet $25\n" +\
+            "EVENODD_BET odd, bet $10", self.game.board)
+
