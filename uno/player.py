@@ -9,7 +9,7 @@ class Player():
         self.loses_turn = False
 
     def selected_card(self, index_card):
-        return self.cards_player[index_card]
+        return self.cards_player[int(index_card) - 1]
 
     def add_cards_to_hand(self, cards):
         for card in cards:

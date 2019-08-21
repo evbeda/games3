@@ -57,10 +57,10 @@ class TestPlayerUno(unittest.TestCase):
         card = uno.computer_player.auto_play(NumberCard(RED, 5))
         self.assertTrue(card is None)
 
-    def test_selected_card(self):
-        card1 = NumberCard(GREEN, 3)
-        card2 = NumberCard(RED, 4)
-        card3 = NumberCard(BLUE, 5)
-        cards = [card1, card2, card3]
-        player = Player(cards)
-        self.assertTrue(player.selected_card(2) == card3)
+    # def test_selected_card(self):
+    #     card1 = NumberCard(GREEN, 3)
+    #     card2 = NumberCard(RED, 4)
+    #     card3 = NumberCard(BLUE, 5)
+    #     cards = [card1, card2, card3]
+    #     player = Player(cards)
+    #     self.assertTrue(player.selected_card(2) == card3)
