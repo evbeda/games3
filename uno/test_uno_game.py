@@ -14,7 +14,8 @@ from .card import (
 
 class TestUnoGame(unittest.TestCase):
 
-    # testing initial conditions
+    def set_up(self):
+        self.game = Uno()
 
     def test_is_playing(self):
         uno = Uno()
@@ -133,3 +134,14 @@ class TestUnoGame(unittest.TestCase):
     def test_validate_play_card_input(self, user_input, index_in_hand):
         uno = Uno()
         self.assertEqual(uno.parse_command(user_input), index_in_hand)
+
+    def test_decide_whos_next_player(self):
+        uno = Uno()
+        self.assertEqual(uno.decide_whos_next(True), uno.player)
+        self.assertEqual(uno.decide_whos_next(False), uno.computer_player)
+
+    def test_decide_whos_next_computer_player(self):
+        uno = Uno()
+        uno.current_player = uno.computer_player
+        self.assertEqual(uno.decide_whos_next(True), uno.computer_player)
+        self.assertEqual(uno.decide_whos_next(False), uno.player)

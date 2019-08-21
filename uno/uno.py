@@ -18,6 +18,7 @@ class Uno():
             'Computer_player'
             )
         self.stack.put_card_in_discard()
+        self.current_player = self.player
 
     def next_turn(self):
         if self.is_playing:
@@ -78,3 +79,12 @@ class Uno():
         if len(split) == 2:
             color = split[1]
         return (card_index, color)
+
+    def decide_whos_next(self, loses_turn):
+        if not loses_turn:
+            if self.current_player == self.computer_player:
+                return self.player
+            else:
+                return self.computer_player
+        else:
+            return self.current_player
