@@ -7,6 +7,7 @@ from craps.test_craps import TestCraps
 from craps.test_turn import TestTurn
 from craps.test_bets import TestBets
 from dungeon_raiders.tests.test_suite_dungeon import suite as dr_suite
+from sudoku.tests.test_suite_sudoku import suite as sudoku_suite
 from guess_number_game.test_guess_number_game import TestGuessNumberGame
 from ruleta.tests.test_ruleta import (
     TestRoulette,
@@ -18,9 +19,6 @@ from ruleta.tests.test_bets import (
 )
 from ruleta.tests.test_croupier import TestCroupier
 from ruleta.tests.integration_test import IntegrationTest
-from sudoku.test_sudoku_board import TestSudokuBoard
-from sudoku.test_sudoku_game import TestSudokuGame
-from sudoku.test_api import TestSudokuApi
 from diezmil.test_diez_mil import TestDiezMil
 from test_game import TestGame
 
@@ -44,9 +42,9 @@ def suite():
     test_suite.addTest(unittest.makeSuite(IntegrationTest))
     test_suite.addTest(unittest.makeSuite(TestBoard))
     # SUDOKU
-    test_suite.addTest(unittest.makeSuite(TestSudokuBoard))
-    test_suite.addTest(unittest.makeSuite(TestSudokuGame))
-    test_suite.addTest(unittest.makeSuite(TestSudokuApi))
+    # test_suite.addTest(unittest.makeSuite(TestSudokuBoard))
+    # test_suite.addTest(unittest.makeSuite(TestSudokuGame))
+    # test_suite.addTest(unittest.makeSuite(TestSudokuApi))
     # DIEZ MIL
     test_suite.addTest(unittest.makeSuite(TestDiezMil))
     # GUESS NUMBER GAME
@@ -60,4 +58,5 @@ if __name__ == '__main__':
     alltests = unittest.TestSuite()
     alltests.addTest(suite())
     alltests.addTest(dr_suite())
+    alltests.addTest(sudoku_suite())
     unittest.TextTestRunner().run(alltests)

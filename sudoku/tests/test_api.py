@@ -3,10 +3,10 @@ import json
 from parameterized import parameterized
 from requests.exceptions import RequestException
 import sudoku
-from . import (
+from .. import (
     API_BOARD, API_URL, EXAMPLE_JSON, COLUMN_OUT_OF_RANGE, ROW_OUT_OF_RANGE,
     VALUE_OUT_OF_RANGE, RESPONSE_INVALID, SIZE_INVALID, NO_SQUARES)
-from .api import (
+from ..api import (
     fetch_board, parse_api_response, mocked_requests_get, validate_response)
 
 

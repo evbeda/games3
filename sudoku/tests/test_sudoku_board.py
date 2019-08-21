@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
-from .board import Board
-from . import (
+from ..board import Board
+from .. import (
     NOT_MODIFIABLE,
     REPEATED_ON_COLUMN,
     REPEATED_ON_ROW,

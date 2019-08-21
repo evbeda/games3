@@ -1,9 +1,9 @@
 import unittest
 from parameterized import parameterized
-from .game import SudokuGame
-from .board import Board
-from .api import mocked_requests_get
-from . import (
+from ..game import SudokuGame
+from ..board import Board
+from ..api import mocked_requests_get
+from .. import (
     NUMBER_ADDED,
     YOU_WIN,
     GAME_OVER,
@@ -19,7 +19,7 @@ from . import (
     INVALID_INPUT_ROW,
     INVALID_INPUT_VALUE,
 )
-from .invalid_input_exception import InvalidInputException
+from ..invalid_input_exception import InvalidInputException
 
 
 class TestSudokuGame(unittest.TestCase):
