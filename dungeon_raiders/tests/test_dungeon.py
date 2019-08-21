@@ -13,12 +13,15 @@ from ..model.rooms.gold_room import GoldRoom
 from ..model.rooms.monster_room import MonsterRoom
 # Messages
 from . import BOARD_EXAMPLE
+from . import BOARD_EXAMPLE_TWO_WINNERS
+from . import BOARD_EXAMPLE_WINNER
 from . import ROOMS_EXAMPLE
 from . import NEXT_TURN_WOUNDROOM_EXAMPLE
 from . import NEXT_TURN_TREASURE_EXAMPLE
 from . import NEXT_TURN_GOLDROOM_EXAMPLE
 from . import NEXT_TURN_MONSTERROOM_EXAMPLE
 from . import PLAYERS_EXAMPLE
+from . import PLAYERS_EXAMPLE_TWO_WINNERS
 
 
 class TestDungeon(unittest.TestCase):
@@ -96,6 +99,24 @@ class TestDungeon(unittest.TestCase):
     def test_board(self, mocked_rooms, mocked_players):
         game = Game()
         self.assertEqual(BOARD_EXAMPLE, game.board)
+
+    @patch(
+        'dungeon_raiders.model.game.Game.create_players',
+        return_value=PLAYERS_EXAMPLE
+        )
+    def test_board_is_game_over(self, _):
+        game = Game()
+        game.is_playing = False
+        self.assertEqual(BOARD_EXAMPLE_WINNER, game.board)
+
+    @patch(
+        'dungeon_raiders.model.game.Game.create_players',
+        return_value=PLAYERS_EXAMPLE_TWO_WINNERS
+        )
+    def test_board_is_game_over_two_winners(self, _):
+        game = Game()
+        game.is_playing = False
+        self.assertEqual(BOARD_EXAMPLE_TWO_WINNERS, game.board)
 
     def test_next_turn_monster_room(self):
         game = Game()

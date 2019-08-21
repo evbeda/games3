@@ -12,6 +12,15 @@ Caballero, wounds:1, gold:1
 Exploradora, wounds:3, gold:2
 Guerrero, wounds:2, gold:0'''
 
+BOARD_EXAMPLE_WINNER = '''Game over
+Winner:
+Caballero, wounds:1, gold:1'''
+
+BOARD_EXAMPLE_TWO_WINNERS = '''Game over
+Winners:
+Caballero, wounds:1, gold:5
+Exploradora, wounds:1, gold:5'''
+
 NEXT_TURN_WOUNDROOM_EXAMPLE = '''Room name: Trampa de pinchos
 Card: 5 Wound: 2
 Card: 4 Wound: 2
@@ -45,6 +54,12 @@ ROOMS_EXAMPLE = [
 PLAYERS_EXAMPLE = [
             Player(character=['Caballero', 1, 1]),
             Player(character=['Exploradora', 3, 2]),
+            Player(character=['Guerrero', 2, 0]),
+        ]
+
+PLAYERS_EXAMPLE_TWO_WINNERS = [
+            Player(character=['Caballero', 1, 5]),
+            Player(character=['Exploradora', 1, 5]),
             Player(character=['Guerrero', 2, 0]),
         ]
 
