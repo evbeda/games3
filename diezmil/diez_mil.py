@@ -11,7 +11,8 @@ from . import (
     CANT_SAVE_THOSE_DICES,
 )
 from .exceptions.exceptions import (
-    PlayRemainsWithNoScore
+    PlayRemainsWithNoScore,
+    InvalidSelectedDices
 )
 
 
@@ -83,7 +84,7 @@ class DiezMil(object):
                 self.actual_turn.select_dices(selected_dices)
                 if not self.actual_turn.is_playing():
                     self.next_player()
-            except PlayRemainsWithNoScore:
+            except (PlayRemainsWithNoScore):
                 return CANT_SAVE_THOSE_DICES
 
     @staticmethod

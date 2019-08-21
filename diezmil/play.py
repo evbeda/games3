@@ -1,6 +1,6 @@
 import random
 from . import WINNING_PLAY
-from .exceptions.exceptions import PlayRemainsWithNoScore
+from .exceptions.exceptions import PlayRemainsWithNoScore, InvalidSelectedDices
 
 
 class Play(object):
@@ -27,6 +27,9 @@ class Play(object):
     def select_dices(self, selected_dices_positions):
         reminders = len(self.dices) - len(selected_dices_positions)
         choosen_dices = self.choose_dices(selected_dices_positions)
+        # check if dices selected are valid
+        if not Play.validate_selected_dices(choosen_dices):
+            raise PlayRemainsWithNoScore
         play_score = self.check_combination(choosen_dices)
         # you can't keep dices with 0 points
         if play_score == 0:
@@ -85,3 +88,7 @@ class Play(object):
         ret = f'Dices: {self.dices}\n'
         ret += f'Play score {self.play_score}\n'
         return ret
+
+    @staticmethod
+    def validate_selected_dices(dices):
+        return all(dice in [1, 5] or dices.count(dice) >= 3 for dice in dices)
