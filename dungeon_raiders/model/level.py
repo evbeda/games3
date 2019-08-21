@@ -2,13 +2,13 @@ from .hand_player import HandPlayer
 
 
 class Level:
-    def __init__(self, players, number_level, deck):
-        self.deck = deck
+    def __init__(self, players, number_level, deck, level_card):
         self.number_level = number_level
-        self.rooms = self.select_rooms()
+        self.rooms = self.select_rooms(deck)
         self.iter_rooms = iter(self.rooms)
         self.actual_room = next(self.iter_rooms)
         self.hands = self.create_hands_for_level(players)
+        self.level_card = level_card
 
     def __str__(self):
         msg = ', '
@@ -18,8 +18,8 @@ class Level:
     def create_hands_for_level(self, players):
         return [HandPlayer(player) for player in players]
 
-    def select_rooms(self):
-        return [self.deck.pop() for i in range(5)]
+    def select_rooms(self, deck):
+        return [deck.pop() for i in range(5)]
 
     def execute_level(self, power_cards_played):
         [hand.play(power_cards_played[index])

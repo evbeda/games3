@@ -1,5 +1,5 @@
 from .level import Level
-from . import CHARACTER, EXIT, ROOMS
+from . import CHARACTER, EXIT, ROOMS, LEVEL_CARDS
 from .player import Player
 import random
 
@@ -15,8 +15,13 @@ class Game:
 
     def create_levels(self):
         deck = ROOMS.copy()
+        level_cards = LEVEL_CARDS.copy()
         random.shuffle(deck)
-        return [Level(self.players, i+1, deck) for i in range(5)]
+        random.shuffle(level_cards)
+        return [
+                Level(self.players, i+1, deck, random.choice(level_cards))
+                for i in range(5)
+        ]
 
     def create_players(self):
         players = [Player(character=c) for c in random.sample(CHARACTER, k=3)]
