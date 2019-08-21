@@ -1,4 +1,5 @@
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
+from .exceptions.invalid_bet_turn_exception import InvalidBetTurnException
 from .constants import (
     PLAYER_WON,
     PLAYER_LOST,

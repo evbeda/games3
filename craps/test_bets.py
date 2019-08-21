@@ -1,7 +1,9 @@
 import unittest
 from parameterized import parameterized
 from .turn import Turn
-from .bet import Bet, BetCreator, PassBet, DoNotPassBet, SevenBet, DoubleBet, CrapsBet
+from .bet import (
+    Bet, BetCreator, PassBet, DoNotPassBet, SevenBet, DoubleBet, CrapsBet
+)
 from .game import CrapsGame
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 from .constants import (
@@ -117,7 +119,8 @@ class TestBets(unittest.TestCase):
 
     @parameterized.expand([
         (GAME_STARTED, 'PASS_BET, DO_NOT_PASS_BET, CRAPS_BET'),
-        (GAME_IN_PROGRESS, 'PASS_BET, DO_NOT_PASS_BET, DOUBLE_BET, SEVEN_BET, CRAPS_BET')
+        (GAME_IN_PROGRESS,
+            'PASS_BET, DO_NOT_PASS_BET, DOUBLE_BET, SEVEN_BET, CRAPS_BET')
     ])
     def test_list_bets(self, state, message):
         self.game.turn.state = state
