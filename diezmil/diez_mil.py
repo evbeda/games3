@@ -12,7 +12,6 @@ from . import (
 )
 from .exceptions.exceptions import (
     PlayRemainsWithNoScore,
-    InvalidSelectedDices
 )
 
 
