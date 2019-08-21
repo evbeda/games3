@@ -189,3 +189,6 @@ class TestDiezMil(unittest.TestCase):
         self.assertEqual(self.game.play(input), PLAYERS_SET)
         for i in range(2):
             self.assertEqual(self.game.players[i].name, names[i])
+            
+    def test_parse_input(self):
+        self.assertEqual(DiezMil.parse_input("1,3,4"), [1, 3, 4])
