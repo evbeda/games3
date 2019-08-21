@@ -1,5 +1,5 @@
 import unittest
-from . import SETUP, GO, WINNING_PLAY
+from . import GO, WINNING_PLAY
 from unittest.mock import patch
 from parameterized import parameterized
 from .diez_mil import DiezMil
@@ -236,3 +236,23 @@ class TestDiezMil(unittest.TestCase):
             self.game.play("a")
         returned = self.game.play(user_input)
         self.assertEqual(returned, CANT_SAVE_THOSE_DICES)
+
+    def test_generate_play_if_score_cero(self):
+        class ControlRandomValues(object):
+            def __init__(self, *args, **kwargs):
+                self.values = [2, 2, 3, 3, 4]
+                self.play_count = -1
+
+            def __call__(self, *args):
+                self.play_count += 1
+                if self.play_count > 4:
+                    self.play_count = 0
+                return self.values[self.play_count]
+
+        with patch(
+            'diezmil.play.random.randint',
+                side_effect=ControlRandomValues()):
+
+            turn = Turn(Player('A'))
+            turn._generate_play(5)
+            self.assertEqual(turn.is_playing(), False)

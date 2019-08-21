@@ -13,6 +13,8 @@ class Turn:
         play = Play()
         play.roll_dices(dices)
         self.plays.append(play)
+        if play.play_score == 0:
+            play.is_playing = False
 
     def select_dices(self, selected_dices_positions):
         reminders = self.plays[-1].select_dices(selected_dices_positions)
