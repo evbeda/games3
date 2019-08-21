@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import patch
 from parameterized import parameterized
 from .exceptions.out_of_cash_exception import OutOfCashException
-from .bet import PassBet
 from .game import CrapsGame
 from .turn import Turn
 from .bet import BetCreator
@@ -134,3 +133,26 @@ class TestCraps(unittest.TestCase):
         self.game.play(GO_COMMAND)
         is_same_turn = self.game.turn == first_turn
         self.assertEqual(is_same_turn, expected)
+
+    @parameterized.expand([
+        (GAME_STARTED, None, [], None, "Point: None\nDice: None\nMoney: 1000"),
+        (GAME_STARTED, None, ['PASS_BET', 20, None], None, "Point: None\nDice: None\nBet:\nBet type: PassBet\nAmount bet: 20\nAmount payed: 0\nBet state: Bet in progress\nMoney: 980"),
+        (GAME_IN_PROGRESS, 9, ['PASS_BET', 20, None], (6, 3), "Point: 9\nDice: (6, 3)\nBet:\nBet type: PassBet\nAmount bet: 20\nAmount payed: 0\nBet state: Bet in progress\nMoney: 980"),
+        (PLAYER_LOST, 9, ['PASS_BET', 200, None], (5, 2), "Point: 9\nDice: (5, 2)\nBet:\nBet type: PassBet\nAmount bet: 200\nAmount payed: 0\nBet state: Bet in progress\nMoney: 800"),
+        # (PLAYER_WON, 6, ['PASS_BET', 200, None], (4, 2), "Point: 6\nDice: (4, 2)\nMoney: 1200"),
+    ])
+    def test_show(self, state, point, bets, dice, expected):
+        game = CrapsGame()
+        game.turn.state = state
+        game.turn.point = point
+        if bets:
+            bet = BetCreator.create(bets[0], bets[1], self.game.turn, bets[2])
+            game.turn.bets.append(bet)
+            game.decrease_money(bets[1])
+
+            if game.turn.state == PLAYER_WON:
+                bet.pay(state)
+        game.turn.dice = dice
+
+        boards = game.board
+        self.assertEqual(boards, expected)
