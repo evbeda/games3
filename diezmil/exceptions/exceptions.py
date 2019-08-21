@@ -18,7 +18,7 @@ class NotCorrectPlayersQuantityException(ValueError):
     pass
 
 
-class NotANumberException(ValueError):
+class InvalidSelectedDices(Exception):
     pass
 
 

@@ -323,3 +323,13 @@ class TestDiezMil(unittest.TestCase):
         turn = Turn(Player('Test'))
         turn.player.actual_score = score
         self.assertEqual(turn.is_player_win(), expected_value)
+
+    @parameterized.expand([
+        ([1, 1, 1], True),
+        ([1, 1, 1, 1, 1], True),
+        ([1, 1, 2], False),
+        ([2, 2], False),
+        ([3, 3, 3, 3, 3], True),
+    ])
+    def test_validate_selected_dices(self, dices, expected):
+        self.assertEqual(Play.validate_selected_dices(dices), expected)
