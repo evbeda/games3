@@ -13,6 +13,12 @@ from uno.const import (
     UNO_ALMOST_FINISHED_BOARD,
     UNO_FINISHED_BOARD,
     )
+from craps.constants import (
+    CRAPS_FIRST_BOARD,
+    CRAPS_YOU_WON,
+    BET_PLACED_SUCCESFULLY,
+    CRAPS_BET_PLACED,
+)
 from game import Game
 
 
@@ -195,6 +201,51 @@ class TestGame(unittest.TestCase):
     #         self.output_collector.output_collector,
     #         [UNO_ALMOST_FINISHED_BOARD, "You WON", UNO_FINISHED_BOARD],
     #      )
+
+    def test_play_craps(self):
+
+        class ControlInputValues(object):
+            def __init__(self, *args, **kwargs):
+                self.played = False
+                self.play_count = -1
+                self.plays = [
+                    'PASS_BET 200',
+                    'GO',
+                    'NO'
+                ]
+
+            def __call__(self, console_output):
+                if 'Select Game' in console_output:
+                    if self.played:
+                        return '9'
+                    self.played = True
+                    return '5'
+                self.play_count += 1
+                return self.plays[self.play_count]
+
+        with \
+                patch(
+                    'game.Game.get_input', side_effect=ControlInputValues()
+                    ), \
+                patch('game.Game.output', side_effect=self.output_collector), \
+                patch(
+                    'random.sample',
+                    return_value=[3, 4],
+                ):
+            self.game.play()
+
+        self.assertEqual(
+            self.output_collector.output_collector,
+            [
+                CRAPS_FIRST_BOARD,
+                BET_PLACED_SUCCESFULLY,
+                CRAPS_BET_PLACED,
+                (3, 4),
+                CRAPS_YOU_WON,
+                'Game Over',
+                CRAPS_YOU_WON,
+                   ],
+         )
 
 
 if __name__ == "__main__":
