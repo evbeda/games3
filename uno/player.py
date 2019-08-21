@@ -1,10 +1,10 @@
-from .card import DrawTwoCard, DrawFourCard
+from random import choice
+from .card import DrawTwoCard
 
 
 class Player():
 
-    def __init__(self, cards_player, name='Player',):
-        self.name = name
+    def __init__(self, cards_player):
         self.cards_player = cards_player
         self.loses_turn = False
 
@@ -15,7 +15,24 @@ class Player():
         for card in cards:
             self.cards_player.append(card)
 
-    def auto_play(self, last_card):
+
+class HumanPlayer(Player):
+    def __init__(self, cards_player):
+        super.__init__(cards_player)
+
+    def play(self, parsed_card, last_card):
+        # If is valid
+        if True:
+            return self.cards_player[parsed_card]
+        else:
+            return None
+
+
+class ComputerPlayer(Player):
+    def __init__(self, cards_player):
+        super.__init__(cards_player)
+
+    def play(self, parsed_card, last_card):
         if isinstance(last_card, DrawTwoCard):
             draw_two_cards = [card for card in self.cards_player
                               if isinstance(card, DrawTwoCard)]
@@ -25,8 +42,10 @@ class Player():
                 return card
             else:
                 return None
-        for card in self.cards_player:
-            if card.is_valid(last_card):
-                card_selected = self.cards_player.pop(self.cards_player.index(card))
-                return card_selected
-        return None
+        else:
+            possible_cards = [card for card in self.cards_player
+                              if card.is_valid(last_card)]
+            if possible_cards:
+                return None
+            else:
+                return choice(possible_cards)
