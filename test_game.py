@@ -23,12 +23,15 @@ from game import Game
 from ruleta import (
        EXAMPLE_SHOWN_BOARD_NO_BET,
        EXAMPLE_SHOWN_BOARD_BET,
-       EXAMPLE_SHOWN_BOARD_WON_BET
+       EXAMPLE_SHOWN_BOARD_WON_BET,
+       SUCCESS_MESSAGE,
+       WON_MESSAGE,
+       BYE_MESSAGE,
+       EXAMPLE_SHOW_BOARD_END_GAME
        )
 
 
 class TestGame(unittest.TestCase):
-
 
 
     def setUp(self):
@@ -164,15 +167,19 @@ class TestGame(unittest.TestCase):
                     return_value=20,
                 ):
             self.game.play()
-
         self.assertEqual(
            self.output_collector.output_collector,
-           [ \
-                EXAMPLE_SHOWN_BOARD_NO_BET, \
-                EXAMPLE_SHOWN_BOARD_BET, \
-                EXAMPLE_SHOWN_BOARD_WON_BET \
+           [
+                EXAMPLE_SHOWN_BOARD_NO_BET,
+                SUCCESS_MESSAGE,
+                EXAMPLE_SHOWN_BOARD_BET,
+                WON_MESSAGE + "1400 chips\nRANDOM NUMBER: 20",
+                EXAMPLE_SHOWN_BOARD_WON_BET,
+                BYE_MESSAGE,
+                EXAMPLE_SHOW_BOARD_END_GAME
             ],
         )
+        
 
     # def test_play_uno(self):
 
