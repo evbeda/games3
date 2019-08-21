@@ -52,7 +52,7 @@ class Game:
         if self.is_playing is True:
             msg += f"{self.current_level.actual_room.__str__()}"
         else:
-            msg += 'Bye'
+            msg += ' Bye'
         return msg
 
     def play(self, *command):
