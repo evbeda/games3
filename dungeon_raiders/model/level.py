@@ -11,6 +11,7 @@ class Level:
         self.hands = self.create_hands_for_level(players)
         self.level_card = level_card
 
+    # TODO implement hidden cards with level_card and test
     def __str__(self):
         msg = ', '
         room_names = [room.name for room in self.rooms]
@@ -26,9 +27,12 @@ class Level:
     def select_rooms(self, deck):
         return [deck.pop() for i in range(5)]
 
+    # TODO unit test this method
     def next_room(self):
         self.index_actual_room += 1
+        self.actual_room = self.rooms[self.index_actual_room]
 
+    # TODO unit test this method
     def is_last_room(self):
         return self.index_actual_room == 4
 
@@ -37,4 +41,3 @@ class Level:
         [hand.play()
             for index, hand in enumerate(self.hands)]
         self.actual_room.resolve_room(self.hands)
-        self.actual_room = self.rooms[self.index_actual_room]

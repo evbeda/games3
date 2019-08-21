@@ -17,6 +17,7 @@ from . import (
 
 
 class Game:
+    name = 'Dungeon Raiders'
     input_args = 1
 
     def __init__(self):
@@ -79,7 +80,7 @@ class Game:
             return BYE_MESSAGE
         else:
             try:
-                power_card_played = command[0]
+                power_card_played = int(command[0])
                 self.current_level.execute_level(power_card_played)
                 if self.current_level.is_last_room():
                     self.index_current_level += 1
