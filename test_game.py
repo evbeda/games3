@@ -20,9 +20,16 @@ from craps.constants import (
     CRAPS_BET_PLACED,
 )
 from game import Game
+from ruleta import (
+       EXAMPLE_SHOWN_BOARD_NO_BET,
+       EXAMPLE_SHOWN_BOARD_BET,
+       EXAMPLE_SHOWN_BOARD_WON_BET
+       )
 
 
 class TestGame(unittest.TestCase):
+
+
 
     def setUp(self):
         self.game = Game()
@@ -133,9 +140,9 @@ class TestGame(unittest.TestCase):
                 self.played = False
                 self.play_count = -1
                 self.plays = [
-                    'COLOR_BET RED 40',
-                    'GO GO GO',
-                    'END_GAME END_GAME END_GAME'
+                    'STRAIGHT_BET 20 40',
+                    'GO',
+                    'END_GAME'
                 ]
 
             def __call__(self, console_output):
@@ -153,16 +160,19 @@ class TestGame(unittest.TestCase):
                     ), \
                 patch('game.Game.output', side_effect=self.output_collector), \
                 patch(
-                    'sudoku.game.fetch_board',
-                    return_value=ALMOST_FINISHED_EXAMPLE_BOARD,
+                    'ruleta.roulette.randint',
+                    return_value=20,
                 ):
             self.game.play()
 
-        # expected output history
-        # self.assertEqual(
-        #    self.output_collector.output_collector,
-        #    [],
-        # )
+        self.assertEqual(
+           self.output_collector.output_collector,
+           [ \
+                EXAMPLE_SHOWN_BOARD_NO_BET, \
+                EXAMPLE_SHOWN_BOARD_BET, \
+                EXAMPLE_SHOWN_BOARD_WON_BET \
+            ],
+        )
 
     # def test_play_uno(self):
 
