@@ -25,26 +25,22 @@ EXAMPLE_SHOWN_BOARD_NO_BET = \
         #         ONEDOZEN_BET, TWODOZEN_BET, TRIO_BET, QUADRUPLE_BET" +\
         # "GO,"
 EXAMPLE_SHOWN_BOARD_BET = \
-        SUCCESS_MESSAGE + "\n" +\
         EXAMPLE_BOARD +\
-        "Player Money: $100\n" +\
+        "Player Money: $60\n" +\
         "Placed Bets: \n" +\
-        "STRAIGHT_BET 20, bet $40\n" #+\
+        "STRAIGHT_BET 20, bet $40" #+\
         # "STRAIGHT_BET, COLOR_BET, EVENODD_BET, LOWHIGH_BET, STREET_BET, SIXLINE_BET, DOUBLE_BET,\
         #         ONEDOZEN_BET, TWODOZEN_BET, TRIO_BET, QUADRUPLE_BET" +\
         # "GO,"
 EXAMPLE_SHOWN_BOARD_WON_BET = \
-        WON_MESSAGE + "1400 chips\nRANDOM NUMBER: 20\n" +\
         EXAMPLE_BOARD +\
         "Player Money: $1460\n" +\
-        "Player Money: $100\n" +\
-        "Placed Bets: \n" #+\
-        # "No bets" #+\
+        "Placed Bets: \n" +\
+        "No bets" #+\
         # "STRAIGHT_BET, COLOR_BET, EVENODD_BET, LOWHIGH_BET, STREET_BET, SIXLINE_BET, DOUBLE_BET,\
         #         ONEDOZEN_BET, TWODOZEN_BET, TRIO_BET, QUADRUPLE_BET" +\
         # "GO,"
 EXAMPLE_SHOW_BOARD_END_GAME = \
-        BYE_MESSAGE +\
         EXAMPLE_BOARD +\
         "Player Money: $1460\n" +\
         "Placed Bets: \n" +\

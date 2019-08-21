@@ -15,7 +15,7 @@ class Croupier:
         self.roulette = Roulette()
 
     def discount_money_from_player(self, ammount):
-        if ammount >= self.player.money:
+        if ammount > self.player.money:
             raise OutOfCashException()
         self.player.money -= ammount
 
