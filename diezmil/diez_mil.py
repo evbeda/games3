@@ -3,20 +3,14 @@ from .turn import Turn
 from . import (
     SETUP,
     GO,
-    PLAYERS_QUANTITY_MESSAGE,
-    PLAYING,
-    FINISHED,
     PLAYER_CHOOSING_DICE_MESSAGE,
     PLAYER_DONE_MESSAGE,
     PLAYERS_NAME_MESSAGE,
     NEXT_PLAYER_TURN_MESSAGE,
-    QUANTITY_SET,
-    INVALID_NUMBER,
     PLAYERS_SET,
     CANT_SAVE_THOSE_DICES,
 )
 from .exceptions.exceptions import (
-    NotCorrectPlayersQuantityException,
     PlayRemainsWithNoScore
 )
 
@@ -83,12 +77,10 @@ class DiezMil(object):
             selected_dices = DiezMil.parse_input(player_input)
             try:
                 self.actual_turn.select_dices(selected_dices)
+                if not self.actual_turn.is_playing():
+                    self.next_player()
             except PlayRemainsWithNoScore:
                 return CANT_SAVE_THOSE_DICES
-            # if self.actual_turn.lost_play:
-            #     self.next_player()
-            # else:
-            #     self.actual_turn.calculate_acumulated_score()
 
     @staticmethod
     def parse_input(user_input):
