@@ -80,9 +80,6 @@ class Game:
         else:
             msg = f'Game over\n'
             winners = self.resolve_game()
-            if not winners:
-                msg += f'Anyone won the game'
-                return msg
             msg += f'Winners:\n' if len(winners) > 1 else f'Winner:\n'
             msg += '\n'.join(
                 [f'{winner.character}, wounds:{winner.wounds}, gold:{winner.gold}'
