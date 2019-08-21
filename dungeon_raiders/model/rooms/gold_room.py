@@ -5,6 +5,7 @@ class GoldRoom(Trap):
 
     def __init__(self, characteristics):
         super().__init__(characteristics[0], characteristics[1])
+        self.long_name = self.name + " (Gold)"
 
     def __str__(self):
         msg = ''

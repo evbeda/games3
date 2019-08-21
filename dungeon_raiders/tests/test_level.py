@@ -86,7 +86,24 @@ class TestLevel(RoomHelper):
         expected += "Rooms:\n"
         expected += " * Esqueleto (❤️ 11, 🗡️️ 3)\n"
         expected += " * Treasure (💰 3, 💰 2)\n"
-        expected += " * Trampa de pinchos <--\n"
+        expected += " * Trampa de pinchos (Wounds) <--\n"
         expected += " * Hidden\n"
-        expected += " * Caldero de lava"
+        expected += " * Caldero de lava (Gold)"
         self.assertEqual(str(level), expected)
+
+    def test_level_next_room(self):
+        rooms = self.level.rooms
+        for i in range(5):
+            self.assertEqual(self.level.index_actual_room, i)
+            self.assertEqual(self.level.actual_room, rooms[i])
+            if not self.level.is_last_room():
+                self.level.next_room()
+
+    def test_level_is_last_room(self):
+        for i in range(5):
+            self.assertEqual(self.level.index_actual_room, i)
+            if i < 4:
+                self.assertFalse(self.level.is_last_room())
+                self.level.next_room()
+            else:
+                self.assertTrue(self.level.is_last_room())

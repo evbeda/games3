@@ -6,12 +6,7 @@ from uno.test_uno_player import TestPlayerUno
 from craps.test_craps import TestCraps
 from craps.test_turn import TestTurn
 from craps.test_bets import TestBets
-from dungeon_raiders.tests.test_dungeon import TestDungeon
-from dungeon_raiders.tests.test_monster_room import TestMonsterRoom
-from dungeon_raiders.tests.test_trap_room import TestTrapRoom
-from dungeon_raiders.tests.test_treasure import TestTreasure
-from dungeon_raiders.tests.test_level import TestLevel
-from dungeon_raiders.tests.test_player import TestPlayer
+from dungeon_raiders.tests.test_suite_dungeon import suite as dr_suite
 from guess_number_game.test_guess_number_game import TestGuessNumberGame
 from ruleta.tests.test_ruleta import (
     TestRoulette,
@@ -41,13 +36,6 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestCraps))
     test_suite.addTest(unittest.makeSuite(TestTurn))
     test_suite.addTest(unittest.makeSuite(TestBets))
-    # DUNGEON RAIDERS
-    test_suite.addTest(unittest.makeSuite(TestDungeon))
-    test_suite.addTest(unittest.makeSuite(TestMonsterRoom))
-    test_suite.addTest(unittest.makeSuite(TestTrapRoom))
-    test_suite.addTest(unittest.makeSuite(TestTreasure))
-    test_suite.addTest(unittest.makeSuite(TestLevel))
-    test_suite.addTest(unittest.makeSuite(TestPlayer))
     # ROULETTE
     test_suite.addTest(unittest.makeSuite(TestBetsRoulette))
     test_suite.addTest(unittest.makeSuite(TestBetCreator))
@@ -65,7 +53,11 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestGuessNumberGame))
     # GAME MACHINE
     test_suite.addTest(unittest.makeSuite(TestGame))
+    return test_suite
 
 
 if __name__ == '__main__':
-    unittest.main()
+    alltests = unittest.TestSuite()
+    alltests.addTest(suite())
+    alltests.addTest(dr_suite())
+    unittest.TextTestRunner().run(alltests)
