@@ -31,7 +31,7 @@ class TestTrapRoom(RoomHelper):
         ([5, 3, 2, 5], WoundRoom(WOUNDS[0]), [5, 2, 3, 4]),
         ([5, 3, 1, 5], WoundRoom(WOUNDS[1]), [2, 1, 1, 2]),
         ([5, 3, 1, 5], WoundRoom(WOUNDS[1]), [3, 1, 2, 3]),
-        ([5, 3, 2, 5], WoundRoom(WOUNDS[1]), [4, 1, 2, 3]),
+        ([5, 3, 1, 5], WoundRoom(WOUNDS[1]), [4, 1, 2, 3]),
         ([5, 3, 2, 5], WoundRoom(WOUNDS[1]), [5, 2, 3, 4])
     ])
     def test_play_cards_against_wound_room(self, wound_values, room, plays):
