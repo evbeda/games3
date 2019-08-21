@@ -8,10 +8,16 @@ from ..model.hand_player import HandPlayer
 from ..model.game import Game
 from ..model.player import Player
 from ..model.rooms.wound_room import WoundRoom
+from ..model.rooms.treasure import Treasure
+from ..model.rooms.gold_room import GoldRoom
+from ..model.rooms.monster_room import MonsterRoom
 # Messages
 from . import BOARD_EXAMPLE
 from . import ROOMS_EXAMPLE
 from . import NEXT_TURN_WOUNDROOM_EXAMPLE
+from . import NEXT_TURN_TREASURE_EXAMPLE
+from . import NEXT_TURN_GOLDROOM_EXAMPLE
+from . import NEXT_TURN_MONSTERROOM_EXAMPLE
 from . import PLAYERS_EXAMPLE
 
 
@@ -91,8 +97,20 @@ class TestDungeon(unittest.TestCase):
         game = Game()
         self.assertEqual(BOARD_EXAMPLE, game.board)
 
-    def test_next_turn_wound_room(self):
+    def test_next_turn_monster_room(self):
         game = Game()
-        game.current_level.actual_room = WoundRoom(
-            ['Trampa de pinchos', [(5, 2), (4, 2), (3, 1)]])
-        self.assertEqual(NEXT_TURN_WOUNDROOM_EXAMPLE, game.next_turn())
+        game.current_level.actual_room = MonsterRoom((11, 3, 'Esqueleto'))
+        self.assertEqual(NEXT_TURN_MONSTERROOM_EXAMPLE, game.next_turn())
+
+    @parameterized.expand([
+        (NEXT_TURN_MONSTERROOM_EXAMPLE, MonsterRoom((11, 3, 'Esqueleto'))),
+        (NEXT_TURN_GOLDROOM_EXAMPLE, GoldRoom(
+            ['Caldero de lava', [(5, 3), (4, 2), (3, 1)]])),
+        (NEXT_TURN_WOUNDROOM_EXAMPLE, WoundRoom(
+            ['Trampa de pinchos', [(5, 2), (4, 2), (3, 1)]])),
+        (NEXT_TURN_TREASURE_EXAMPLE, Treasure((4, 2))),
+        ])
+    def test_next_turn_gold_room(self, example, room):
+        game = Game()
+        game.current_level.actual_room = room
+        self.assertEqual(example, game.next_turn())
