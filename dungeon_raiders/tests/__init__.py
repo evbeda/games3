@@ -6,8 +6,13 @@ from ..model.rooms.treasure import Treasure
 from ..model.rooms.gold_room import GoldRoom
 
 
-BOARD_EXAMPLE = '''Level:1
-Rooms: Esqueleto, Treasure, Caldero de lava, Dragon, Treasure
+BOARD_EXAMPLE = '''Level: 1
+Rooms:
+ * Esqueleto (❤️ 11, 🗡️️ 3) <--
+ * Treasure (💰 4, 💰 2)
+ * Hidden
+ * Dragon (❤️ 14, 🗡️️ 3)
+ * Hidden
 Caballero, wounds:1, gold:1
 Exploradora, wounds:3, gold:2
 Guerrero, wounds:2, gold:0'''

@@ -11,11 +11,17 @@ class Level:
         self.hands = self.create_hands_for_level(players)
         self.level_card = level_card
 
-    # TODO implement hidden cards with level_card and test
     def __str__(self):
-        msg = ', '
-        room_names = [room.name for room in self.rooms]
-        return f'Level:{self.number_level}\nRooms: {msg.join(room_names)}'
+        msg = '\n * '
+        rooms = []
+        for index, room in enumerate(self.rooms):
+            if index == self.index_actual_room:
+                rooms.append(room.long_name + " <--")
+            elif index < self.index_actual_room or self.level_card[index]:
+                rooms.append(room.long_name)
+            else:
+                rooms.append('Hidden')
+        return f'Level: {self.number_level}\nRooms:\n * {msg.join(rooms)}'
 
     def create_hands_for_level(self, players):
         return [

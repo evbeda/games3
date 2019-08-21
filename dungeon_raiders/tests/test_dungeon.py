@@ -95,6 +95,10 @@ class TestDungeon(unittest.TestCase):
         self.assertEqual(winners, expected_winners)
 
     @patch(
+        'random.choice',
+        return_value=(True, True, False, True, False)
+        )
+    @patch(
         'dungeon_raiders.model.level.Level.select_rooms',
         return_value=ROOMS_EXAMPLE
         )
@@ -102,7 +106,7 @@ class TestDungeon(unittest.TestCase):
         'dungeon_raiders.model.game.Game.create_players',
         return_value=PLAYERS_EXAMPLE
         )
-    def test_board(self, mocked_rooms, mocked_players):
+    def test_board(self, _mocked_level_cards, _mocked_rooms, _mocked_players):
         game = Game()
         self.assertEqual(BOARD_EXAMPLE, game.board)
 
