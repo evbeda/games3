@@ -6,7 +6,7 @@ class Player():
 
     def __init__(self, cards):
         self.cards_player = cards
-        self.already_take_a_card = False
+        self.has_drawn_a_card = False
 
 
 class HumanPlayer(Player):
