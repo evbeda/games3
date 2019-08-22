@@ -63,39 +63,39 @@ class TestUnoGame(unittest.TestCase):
         self.assertEqual(len(uno.stack.stack_cards), 96)
         self.assertEqual(len(uno.player.cards_player), 8)
 
-    def test_play_invalid_card(self):
-        uno = Uno()
-        uno.stack.discard_cards = [NumberCard(GREEN, '5')]
-        uno.player.cards_player = [
-            NumberCard(RED, '7'),
-            NumberCard(BLUE, '7'),
-            NumberCard(YELLOW, '7'),
-            ReverseCard(RED),
-            SkipCard(RED),
-            DrawTwoCard(RED),
-        ]
-        result = uno.play('1')
-        expected = INVALID_CARD_MESSAGE
-        self.assertEqual(result, expected)
-        self.assertEqual(len(uno.player.cards_player), 6)
+    # def test_play_invalid_card(self):
+    #     uno = Uno()
+    #     uno.stack.discard_cards = [NumberCard(GREEN, '5')]
+    #     uno.player.cards_player = [
+    #         NumberCard(RED, '7'),
+    #         NumberCard(BLUE, '7'),
+    #         NumberCard(YELLOW, '7'),
+    #         ReverseCard(RED),
+    #         SkipCard(RED),
+    #         DrawTwoCard(RED),
+    #     ]
+    #     result = uno.play('1')
+    #     expected = INVALID_CARD_MESSAGE
+    #     self.assertEqual(result, expected)
+    #     self.assertEqual(len(uno.player.cards_player), 6)
 
-    def test_play_a_valid_card(self):
-        uno = Uno()
-        uno.stack.discard_cards = [NumberCard(RED, '7')]
-        uno.player.cards_player = [
-            NumberCard(GREEN, '7'),
-            NumberCard(BLUE, '7'),
-            NumberCard(YELLOW, '7'),
-            ReverseCard(RED),
-            SkipCard(RED),
-            DrawTwoCard(RED),
-        ]
-        last_played_card = uno.player.cards_player[0]
-        uno.play('1')
-        # check player_cards length reduced
-        self.assertEqual(len(uno.player.cards_player), 5)
-        # check played_card equal to last discard_card
-        self.assertEqual(last_played_card, uno.stack.discard_cards[-1])
+    # def test_play_a_valid_card(self):
+    #     uno = Uno()
+    #     uno.stack.discard_cards = [NumberCard(RED, '7')]
+    #     uno.player.cards_player = [
+    #         NumberCard(GREEN, '7'),
+    #         NumberCard(BLUE, '7'),
+    #         NumberCard(YELLOW, '7'),
+    #         ReverseCard(RED),
+    #         SkipCard(RED),
+    #         DrawTwoCard(RED),
+    #     ]
+    #     last_played_card = uno.player.cards_player[0]
+    #     uno.play('1')
+    #     # check player_cards length reduced
+    #     self.assertEqual(len(uno.player.cards_player), 5)
+    #     # check played_card equal to last discard_card
+    #     self.assertEqual(last_played_card, uno.stack.discard_cards[-1])
 
     # def test_player_winner(self):
         # uno = Uno()
