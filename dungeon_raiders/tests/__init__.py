@@ -79,18 +79,16 @@ class RoomHelper(unittest.TestCase):
 
     def _get_hands(self):
 
-        player_a = Player('A')
-        player_a.add_gold(5)
-        player_a.add_wounds(5)
-        player_b = Player('B')
-        player_b.add_gold(3)
-        player_b.add_wounds(3)
-        player_c = Player('C')
-        player_c.add_gold(0)
-        player_c.add_wounds(0)
-        player_d = Player('D')
-        player_d.add_gold(5)
-        player_d.add_wounds(5)
+        player_a, player_b, player_c = self._get_players_example()
+        player_a.gold = 5
+        player_a.wounds = 5
+        player_b.gold = 3
+        player_b.wounds = 3
+        player_c.gold = 0
+        player_c.wounds = 0
+        player_d = Player(character=('Hechicero', 1, 1))
+        player_d.gold = 5
+        player_d.wounds = 5
 
         return HandPlayer(player_a), HandPlayer(player_b), \
             HandPlayer(player_c), HandPlayer(player_d)
@@ -100,8 +98,7 @@ class RoomHelper(unittest.TestCase):
 
         for hand in hands:
             hand.play(str(plays[hands.index(hand)]))
-        return self._play(room, hands)
+        return hands, self._play(room, hands)
 
     def _play(self, room, hands):
-        room.resolve_room(hands)
-        return hands
+        return room.resolve_room(hands)

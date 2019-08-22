@@ -32,6 +32,7 @@ class Treasure(Room):
                     player.add_gold(reward)
 
     def resolve_room(self, hands):
+        ret = ''
         # For example: played_cards = [5, 3, 1, 1]
         played_cards = [hand.last_card_played for hand in hands]
         cards_second_treasure = []
@@ -53,3 +54,24 @@ class Treasure(Room):
         # 0 means first winners and 1 second winners
         self.add_treasure(first_treasure_winners, hands, 0)
         self.add_treasure(second_treasure_winners, hands, 1)
+
+        # ret = ''
+        # if len(first_treasure_winners) > 1:
+        #     first_treasure_characters = [
+        #         hand.player.character
+        #         for winner in first_treasure_winners
+        #         for hand in hands[winner[1]]
+        #         ]
+        #     print(first_treasure_characters)
+        #     ret += f"{', '.join(hands[first_treasure_winners[:-1][1]].player.character)}"
+        #     ret += f" and {first_treasure_winners[-1]} "
+        # else:
+        #     ret += f"{first_treasure_winners[0]} "
+        # ret += f"earnt {self.values[0]} gold."
+        # if self.values[1] != 0:
+        #     if len(second_treasure_winners) > 1:
+        #         ret += f" {', '.join(second_treasure_winners[:-1])} and {second_treasure_winners[-1]} "
+        #     else:
+        #         ret += f" {second_treasure_winners[0]} "
+        #     ret += f"earnt {self.values[1]} gold."
+        # return ret

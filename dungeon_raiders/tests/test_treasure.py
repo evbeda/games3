@@ -17,10 +17,5 @@ class TestTreasure(RoomHelper):
     ])
     def test_play_check_who_win_treasure(
             self, players_gold_win, treasure, plays):
-        handA, handB, handC, handD = \
-            self._play_cards_against_room(treasure, plays)
-        self.assertEqual(players_gold_win, [
-            handA.player.gold,
-            handB.player.gold,
-            handC.player.gold,
-            handD.player.gold])
+        hands, result = self._play_cards_against_room(treasure, plays)
+        self.assertEqual(players_gold_win, [hand.player.gold for hand in hands])

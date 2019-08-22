@@ -115,15 +115,15 @@ class TestDungeon(unittest.TestCase):
         game = Game()
         game.current_level.actual_room = room
         self.assertEqual(example, game.next_turn())
-    
+
     # Test for play method
     def test_command_exit(self):
         game = Game()
         self.assertEqual(BYE_MESSAGE, game.play(EXIT))
 
-    def test_power_card_input(self):
-        game = Game()
-        self.assertEqual(ROOM_MESSAGE, game.play(3))
+    # def test_power_card_input(self):
+    #     game = Game()
+    #     self.assertEqual(ROOM_MESSAGE, game.play(3))
 
     def test_you_cant_play_2_again(self):
         game = Game()
