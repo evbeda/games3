@@ -33,12 +33,10 @@ class Level:
     def select_rooms(self, deck):
         return [deck.pop() for i in range(5)]
 
-    # TODO unit test this method
     def next_room(self):
         self.index_actual_room += 1
         self.actual_room = self.rooms[self.index_actual_room]
 
-    # TODO unit test this method
     def is_last_room(self):
         return self.index_actual_room == 4
 
