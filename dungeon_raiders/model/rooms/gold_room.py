@@ -29,7 +29,6 @@ class GoldRoom(Trap):
         return affected_players
 
     def resolve_room(self, hands):
-
         # Determine affected players
         affected_players = self.determine_affected_players(hands)
 
@@ -39,11 +38,10 @@ class GoldRoom(Trap):
         for elem in self.effects:
             if elem[0] == max_card:
                 trap_effect = elem[1]
-        
+
+        # Apply effect and return
         ret = ''
-        # Apply effect
         for player in affected_players:
             ret += player.character + ' lost ' + str(trap_effect) + ' gold. '
             player.gold -= trap_effect
-        
         return ret

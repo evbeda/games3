@@ -1,7 +1,5 @@
 import unittest
-from unittest.mock import patch
 from parameterized import parameterized
-from ..model import EXIT
 from ..model.exceptions.exceptions import (
     UnplayableCardException,
     NotANumberException,
@@ -38,13 +36,15 @@ class TestHandPlayer(unittest.TestCase):
 
     @parameterized.expand([
         (HandComputer(None), [3, 4, 5]),
-        (HandComputer(None), [3, 4, 5]),
         (HandComputer(None), [1, 2, 3, 4, 5]),
         (HandComputer(None), []),
     ])
     def test_select_card_hand_computer_valid(self, hand, cards):
         selected_card = hand.select_card(cards)
-        self.assertTrue(True, selected_card in cards)
+        if cards:
+            self.assertTrue(selected_card in cards)
+        else:
+            self.assertTrue(selected_card in [1, 2, 3, 4, 5])
 
     @parameterized.expand([
         ([1, 2, 3, 4, 5], '1'),
@@ -62,6 +62,6 @@ class TestHandPlayer(unittest.TestCase):
     ])
     def test_select_card_human_player_not_valid(self, cards, sel_card, exc):
         with self.assertRaises(exc):
-            hp = HandPlayer(None)
-            hp.cards_to_play = cards
-            hp.validate(sel_card)
+            hand_player = HandPlayer(None)
+            hand_player.cards_to_play = cards
+            hand_player.validate(sel_card)

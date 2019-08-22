@@ -10,7 +10,7 @@ from ..model.rooms.gold_room import GoldRoom
 from ..model.rooms.monster_room import MonsterRoom
 from ..model.rooms.room import Room
 # Messages
-from ..model import BYE_MESSAGE, EXIT, ROOM_MESSAGE, GAME_OVER
+from ..model import BYE_MESSAGE, EXIT, GAME_OVER, LEVEL_FINISHED_MESSAGE
 from . import BOARD_EXAMPLE
 from . import BOARD_EXAMPLE_TWO_WINNERS
 from . import BOARD_EXAMPLE_WINNER
@@ -141,6 +141,13 @@ class TestDungeon(unittest.TestCase):
         self.assertTrue(game.is_playing)
         game.play(EXIT)
         self.assertFalse(game.is_playing)
+
+    def test_level_finished(self):
+        game = Game()
+        # play 4 cards
+        for card in range(1, 5):
+            game.play(card)
+        self.assertIn(LEVEL_FINISHED_MESSAGE, game.play(5))
 
     # Test for Room
     def test_not_possible_to_resolve_room_in_room(self):

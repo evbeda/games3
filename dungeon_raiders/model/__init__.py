@@ -5,7 +5,6 @@ from .rooms.wound_room import WoundRoom
 
 EXIT = 'EXIT'
 BYE_MESSAGE = 'Bye'
-ROOM_MESSAGE = 'Room played succesfully'
 GAME_OVER = 'Game over'
 LEVEL_FINISHED_MESSAGE = 'Level finished succesfully'
 
@@ -14,7 +13,6 @@ TREASURE_ROOM = 1
 GOLD_TRAP_ROOM = 2
 WOUND_TRAP_ROOM = 3
 
-# TODO check real config of the deck
 MONSTERS = [
     (14, 1, 'La Cosa'),
     (11, 3, 'Esqueleto'),

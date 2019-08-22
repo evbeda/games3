@@ -22,13 +22,11 @@ Guerrero, wounds: 2, gold: 0
 '''
 
 BOARD_EXAMPLE_WINNER = '''===================================================
-Game over
 Winner:
 Caballero, wounds: 1, gold: 1
 '''
 
 BOARD_EXAMPLE_TWO_WINNERS = '''===================================================
-Game over
 Winners:
 Caballero, wounds: 1, gold: 5
 Exploradora, wounds: 1, gold: 5
