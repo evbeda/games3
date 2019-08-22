@@ -22,6 +22,7 @@ BET_PLACED = 'Your bet was placed successfully: '
 INVALID_BET_TYPE = 'Invalid bet type'
 OUT_OF_CASH = "You don't have enough money"
 CAN_NOT_LEAVE = "You can't leave until the turn ends. "
+INVALID_USER_INPUT = "Invalid user input"
 INVALID_TURN_BET = "You can't make this bet in this turn"
 SHOOT_DICE_MESSAGE = 'Write Go to shoot the dice'
 BET_AGAIN_OR_GO = 'Bet again or go'

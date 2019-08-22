@@ -203,4 +203,4 @@ class BetCreator:
     def list_bets(state):
         bets = ONLY_START_BETS if state == GAME_STARTED else BET_TYPES
         menu = [bet_type for bet_type in bets]
-        return ', '.join(menu)
+        return 'Bets availables: '+', '.join(menu)+'\n'
