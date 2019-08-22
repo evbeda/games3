@@ -5,6 +5,7 @@ class Player():
 
     def __init__(self, cards):
         self.cards_player = cards
+        self.already_take_a_card = False
 
     # def selected_card(self, index_card):
     #     return self.cards[int(index_card) - 1]
@@ -35,4 +36,3 @@ class HumanPlayer(Player):
         if not card.is_valid(stack.get_last_discard_card):
             raise Exception()
         return card
-
