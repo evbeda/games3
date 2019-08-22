@@ -4,7 +4,7 @@ from parameterized import parameterized
 from .exceptions.out_of_cash_exception import OutOfCashException
 from .game import CrapsGame
 from .turn import Turn
-from .bet import BetCreator
+from .bet import BetCreator, PassBet
 from .constants import (
     PLAYER_LOST,
     PLAYER_WON,
@@ -23,6 +23,7 @@ from .constants import (
     GO_COMMAND,
     NO_COMMAND,
     SHOOT_DICE_MESSAGE,
+    BET_PAYED,
 )
 
 
@@ -135,24 +136,22 @@ class TestCraps(unittest.TestCase):
         self.assertEqual(is_same_turn, expected)
 
     @parameterized.expand([
-        (GAME_STARTED, None, [], None, "Point: None\nDice: None\nMoney: 1000"),
-        (GAME_STARTED, None, ['PASS_BET', 20, None], None, "Point: None\nDice: None\nBet:\nBet type: PassBet\nAmount bet: 20\nAmount payed: 0\nBet state: Bet in progress\nMoney: 980"),
-        (GAME_IN_PROGRESS, 9, ['PASS_BET', 20, None], (6, 3), "Point: 9\nDice: (6, 3)\nBet:\nBet type: PassBet\nAmount bet: 20\nAmount payed: 0\nBet state: Bet in progress\nMoney: 980"),
-        (PLAYER_LOST, 9, ['PASS_BET', 200, None], (5, 2), "Point: 9\nDice: (5, 2)\nBet:\nBet type: PassBet\nAmount bet: 200\nAmount payed: 0\nBet state: Bet in progress\nMoney: 800"),
-        # (PLAYER_WON, 6, ['PASS_BET', 200, None], (4, 2), "Point: 6\nDice: (4, 2)\nMoney: 1200"),
+        (GAME_STARTED, None, None, 1000, None, "Point: None\nDice: None\nMoney: 1000"),
+        (GAME_STARTED, None, PassBet(20, None), 980, None, "Point: None\nDice: None\nBet:\nBet type: PassBet\nAmount bet: 20\nAmount payed: 0\nBet state: Bet in progress\nMoney: 980"),
+        (GAME_IN_PROGRESS, 9, PassBet(20, (6, 3)), 980, None, "Point: 9\nDice: (6, 3)\nBet:\nBet type: PassBet\nAmount bet: 20\nAmount payed: 0\nBet state: Bet in progress\nMoney: 980"),
+        (PLAYER_LOST, 9, PassBet(200, (5, 2)), 800, None, "Point: 9\nDice: (5, 2)\nBet:\nBet type: PassBet\nAmount bet: 200\nAmount payed: 0\nBet state: Bet in progress\nMoney: 800"),
+        (PLAYER_WON, 6, PassBet(200, (4, 2)), 1200, 400, "Point: 6\nDice: (4, 2)\nBet:\nBet type: PassBet\nAmount bet: 200\nAmount payed: 400\nBet state: Payed\nMoney: 1200"),
     ])
-    def test_show(self, state, point, bets, dice, expected):
+    def test_show_board(self, state, point, bet, money, amount_payed, expected):
         game = CrapsGame()
         game.turn.state = state
         game.turn.point = point
-        if bets:
-            bet = BetCreator.create(bets[0], bets[1], self.game.turn, bets[2])
+        if bet:
             game.turn.bets.append(bet)
-            game.decrease_money(bets[1])
-
-            if game.turn.state == PLAYER_WON:
-                bet.pay(state)
-        game.turn.dice = dice
-
+            game.turn.dice = bet.selected_dices
+            if state == PLAYER_WON:
+                bet.amount_payed = amount_payed
+                bet.state = BET_PAYED
+        game.money = money
         boards = game.board
         self.assertEqual(boards, expected)
