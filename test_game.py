@@ -15,9 +15,9 @@ from uno.const import (
     )
 from craps.constants import (
     CRAPS_FIRST_BOARD,
-    CRAPS_YOU_WON,
+    CRAPS_DICE,
     BET_PLACED_SUCCESFULLY,
-    CRAPS_BET_PLACED,
+    CRAPS_SHOW_BET,
 )
 from game import Game
 from ruleta import (
@@ -32,7 +32,6 @@ from ruleta import (
 
 
 class TestGame(unittest.TestCase):
-
 
     def setUp(self):
         self.game = Game()
@@ -256,11 +255,11 @@ class TestGame(unittest.TestCase):
             [
                 CRAPS_FIRST_BOARD,
                 BET_PLACED_SUCCESFULLY,
-                CRAPS_BET_PLACED,
+                CRAPS_SHOW_BET,
                 (3, 4),
-                CRAPS_YOU_WON,
+                CRAPS_DICE,
                 'Game Over',
-                CRAPS_YOU_WON,
+                CRAPS_DICE,
                    ],
          )
 

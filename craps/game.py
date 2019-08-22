@@ -85,7 +85,7 @@ class CrapsGame:
             return INVALID_TURN_BET
 
     def decrease_money(self, amount):
-        if amount >= self.money:
+        if amount > self.money:
             raise OutOfCashException()
         self.money -= amount
 

@@ -42,7 +42,7 @@ DOUBLE_SEVEN = 'DOUBLE_SEVEN'
 # Integration Test
 CRAPS_FIRST_BOARD = "Point: None\nDice: None\nMoney: 1000"
 BET_PLACED_SUCCESFULLY = "Your bet was placed successfully: PASS_BET"
-CRAPS_BET_PLACED = "Point: None\n" \
+CRAPS_SHOW_BET = "Point: None\n" \
     "Dice: None\n" \
     "Bet:\n" \
     "Bet type: PassBet\n" \
@@ -51,4 +51,4 @@ CRAPS_BET_PLACED = "Point: None\n" \
     "Bet state: Bet in progress\n" \
     "Money: 800" \
 
-CRAPS_YOU_WON = 'Point: None\nDice: (3, 4)\nMoney: 1200'
+CRAPS_DICE = 'Point: None\nDice: (3, 4)\nMoney: 1200'
