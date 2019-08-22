@@ -10,7 +10,7 @@ from ..model.rooms.gold_room import GoldRoom
 from ..model.rooms.monster_room import MonsterRoom
 from ..model.rooms.room import Room
 # Messages
-from ..model import BYE_MESSAGE, EXIT, GAME_OVER, LEVEL_FINISHED_MESSAGE
+from ..model import BYE_MESSAGE, EXIT, GAME_OVER, LEVEL_FINISHED_MESSAGE, INPUT_NUMBER
 from . import BOARD_EXAMPLE
 from . import BOARD_EXAMPLE_TWO_WINNERS
 from . import BOARD_EXAMPLE_WINNER
@@ -24,7 +24,7 @@ from . import PLAYERS_EXAMPLE_TWO_WINNERS
 
 
 class TestDungeon(unittest.TestCase):
-    """ -------------------- Game tests -------------------- """
+    # """ -------------------- Game tests -------------------- """
     def test_check_if_game_has_5_levels(self):
         game = Game()
         self.assertEqual(5, len(game.create_levels()))
@@ -121,20 +121,24 @@ class TestDungeon(unittest.TestCase):
         game = Game()
         self.assertEqual(BYE_MESSAGE, game.play(EXIT))
 
-    # def test_power_card_input(self):
-    #     game = Game()
-    #     self.assertEqual(ROOM_MESSAGE, game.play(3))
-
     def test_you_cant_play_2_again(self):
         game = Game()
         game.play(2)
         self.assertEqual('You can\'t play a 2 again', game.play(2))
 
+    @parameterized.expand([
+        ("",),
+        ("a",),
+    ])
+    def test_not_a_number(self, number):
+        game = Game()
+        self.assertEqual(INPUT_NUMBER, game.play(number))
+
     def test_game_over(self):
         game = Game()
         game.index_current_level = 4
         game.current_level.index_actual_room = 4
-        self.assertEqual(GAME_OVER, game.play(3))
+        self.assertIn(GAME_OVER, game.play(3))
 
     def test_game_is_playing(self):
         game = Game()
