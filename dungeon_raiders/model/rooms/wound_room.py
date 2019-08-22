@@ -40,6 +40,10 @@ class WoundRoom(Trap):
             if elem[0] == max_card:
                 trap_effect = elem[1]
 
+        ret = ''
         # Apply effect
         for player in affected_players:
+            ret += player.character + ' took ' + str(trap_effect) + ' damage. '
             player.wounds += trap_effect
+        
+        return ret

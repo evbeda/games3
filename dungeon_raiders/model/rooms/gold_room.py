@@ -39,7 +39,11 @@ class GoldRoom(Trap):
         for elem in self.effects:
             if elem[0] == max_card:
                 trap_effect = elem[1]
-
+        
+        ret = ''
         # Apply effect
         for player in affected_players:
+            ret += player.character + ' lost ' + str(trap_effect) + ' gold. '
             player.gold -= trap_effect
+        
+        return ret
