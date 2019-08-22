@@ -28,6 +28,7 @@ class DiezMil(object):
         self.players = []
         self.who_is_playing = 0
         self.actual_turn = None
+        self.lost_on_create_turn_message = ''
 
     # It's a circle, it adds one until the top boundary of players_qty
     # Otherwise it beging with the first one
@@ -43,11 +44,22 @@ class DiezMil(object):
         elif self.state == GO and not self.actual_turn.is_playing():
             return NEXT_PLAYER_TURN_MESSAGE
 
-    def next_player(self):
+    def _create_turn(self):
         self.who_is_playing = (self.who_is_playing + 1) \
             if self.who_is_playing in range(1, self.players_qty) else 1
         # import pdb; pdb.set_trace()
         self.actual_turn = Turn(self.players[self.who_is_playing - 1])
+
+    def next_player(self):
+        self.lost_on_create_turn_message = ''
+        self._create_turn()
+        while not self.actual_turn.is_playing():
+            self.lost_on_create_turn_message += 'Player {} lost, dices: {} \n'.format(
+                self.actual_turn.player.name,
+                self.actual_turn.plays[-1].dices,
+            )
+            self._create_turn()
+        print(self.lost_on_create_turn_message)
 
     def check_players_qty(self, players_qty):
         return False if players_qty == 0 else True
@@ -69,7 +81,7 @@ class DiezMil(object):
             self.create_players(names)
             self.next_player()
             return PLAYERS_SET
-        elif player_input == 'STAY':
+        elif player_input == 'S':
             # asignar puntaje
             ret = self.actual_turn.calculate_acumulated_score()
             if self.actual_turn.is_player_win():
@@ -82,6 +94,11 @@ class DiezMil(object):
             try:
                 self.actual_turn.select_dices(selected_dices)
                 if not self.actual_turn.is_playing():
+                    self.lost_on_create_turn_message += 'Player {} lost, dices: {} \n'.format(
+                    self.actual_turn.player.name,
+                    self.actual_turn.plays[-1].dices,
+                    )
+                    print(self.lost_on_create_turn_message)
                     self.next_player()
             except (PlayRemainsWithNoScore):
                 return CANT_SAVE_THOSE_DICES
