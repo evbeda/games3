@@ -133,9 +133,14 @@ class TestUnoGame(unittest.TestCase):
         # self.assertEqual(board, expected_board)
 
     def test_validate_draw_card_input(self):
-        uno = Uno()
-        uno.play('')
-        self.assertEqual(len(uno.player.cards_player), 8)
+        self.game.play(DRAW_CARD_INPUT)
+        self.assertEqual(len(self.game.player.cards_player), 8)
+
+    def test_player_pass_his_turn(self):
+        self.game.play(DRAW_CARD_INPUT)
+        self.game.play(DRAW_CARD_INPUT)
+        self.assertEqual(self.game.computer_player, self.game.current_player)
+
 
     @parameterized.expand([
         ('1 red', (0, 'red')),
@@ -152,11 +157,11 @@ class TestUnoGame(unittest.TestCase):
 
     def test_decide_whos_next_player(self):
         uno = Uno()
-        self.assertEqual(uno.decide_whos_next(True), uno.player)
-        self.assertEqual(uno.decide_whos_next(False), uno.computer_player)
+        self.assertEqual(uno.decide_whos_next(False), uno.player)
+        self.assertEqual(uno.decide_whos_next(True), uno.computer_player)
 
     def test_decide_whos_next_computer_player(self):
         uno = Uno()
         uno.current_player = uno.computer_player
-        self.assertEqual(uno.decide_whos_next(True), uno.computer_player)
-        self.assertEqual(uno.decide_whos_next(False), uno.player)
+        self.assertEqual(uno.decide_whos_next(False), uno.computer_player)
+        self.assertEqual(uno.decide_whos_next(True), uno.player)

@@ -26,16 +26,21 @@ class Uno():
         if command == EXIT:
             self.is_playing = False
         elif command == DRAW_CARD_INPUT:
-            self.player_draws(self.player)
+            if self.player.already_take_a_card:
+                self.current_player = self.decide_whos_next(True)
+                self.player.already_take_a_card = False
+            else:
+                self.player_draws(self.player)
         else:
-            parsed = self.parse_command(command)
+            card_index, color = self.parse_command(command)
             try:
-                self.current_player.play(parsed, self.stack)
+                card_played = self.current_player.play(card_index, self.stack)
             except Exception:
                 return INVALID_CARD_MESSAGE
 
     def player_draws(self, player):
-        player.cards_player.append(self.stack.stack_cards.pop())
+        player.cards_player.append(self.stack.draw_card_from_stack())
+        player.already_take_a_card = True
 
     def player_plays_card(self, player, card):
         player.cards_player.remove(card)
@@ -66,7 +71,7 @@ class Uno():
         return (card_index, color)
 
     def decide_whos_next(self, loses_turn):
-        if not loses_turn:
+        if loses_turn:
             if self.current_player == self.computer_player:
                 return self.player
             else:
