@@ -38,23 +38,27 @@ NEXT_TURN_WOUNDROOM_EXAMPLE = '''Room name: Trampa de pinchos
 Card: 5 Wound: 2
 Card: 4 Wound: 2
 Card: 3 Wound: 1
-'''
+
+Playable cards: 1, 2, 3, 4, 5'''
 
 NEXT_TURN_TREASURE_EXAMPLE = '''Room name: Treasure
 First winner: 4
 Second winner: 2
-'''
+
+Playable cards: 1, 2, 3, 4, 5'''
 
 NEXT_TURN_GOLDROOM_EXAMPLE = '''Room name: Caldero de lava
 Max played: 5 Gold: 3
 Max played: 4 Gold: 2
 Max played: 3 Gold: 1
-'''
+
+Playable cards: 1, 2, 3, 4, 5'''
 
 NEXT_TURN_MONSTERROOM_EXAMPLE = '''Room name: Esqueleto
 Life: 11
 Damage: 3
-'''
+
+Playable cards: 1, 2, 3, 4, 5'''
 
 ROOMS_EXAMPLE = [
     MonsterRoom((11, 3, 'Esqueleto')),

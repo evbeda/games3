@@ -68,7 +68,9 @@ class Game:
     def next_turn(self):
         msg = ''
         if self.is_playing is True:
-            msg += f"{self.current_level.actual_room.__str__()}"
+            msg += f"{self.current_level.actual_room}\n"
+            cards_to_play = [str(card) for card in self.current_level.hands[0].cards_to_play]
+            msg += f"Playable cards: {', '.join(cards_to_play)}"
         else:
             msg += 'Bye'
         return msg
