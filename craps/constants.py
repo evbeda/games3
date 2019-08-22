@@ -51,4 +51,4 @@ CRAPS_SHOW_BET = "Point: None\n" \
     "Bet state: Bet in progress\n" \
     "Money: 800" \
 
-CRAPS_DICE = 'Point: None\nDice: (3, 4)\nMoney: 1200'
+CRAPS_DICE = 'Point: None\nDice: (3, 4)\nBet:\nBet type: PassBet\nAmount bet: 200\nAmount payed: 400\nBet state: Payed\nMoney: 1200'

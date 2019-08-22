@@ -37,18 +37,17 @@ class Turn:
 
     def check_bets(self):
         activated_bets = [bet for bet in self.bets if bet.check(self)]
-        self.bets = [bet for bet in self.bets if bet not in activated_bets]
+        # self.bets = [bet for bet in self.bets if bet not in activated_bets]
         return activated_bets
 
     def pay_bets(self):
-        activated_bets = self.check_bets()
-        return sum([bet.pay(self) for bet in activated_bets])
+        # activated_bets = self.check_bets()
+        return sum([bet.pay(self) for bet in self.bets])
 
     def build_board(self):
         board = ''
         board += 'Point: {}\n'.format(self.point)
         board += 'Dice: {}\n'.format(self.dice)
         for bet in self.bets:
-            import ipdb ; ipdb.set_trace()
             board += 'Bet:\n{}'.format(bet)
         return board

@@ -119,20 +119,6 @@ class TestTurn(unittest.TestCase):
         self.assertEqual(actual_activated_bets, expected_activated_bets)
 
     @parameterized.expand([
-        (PLAYER_WON, [1, 2]),   # Only remains DO_NOT_PASS_BETS
-        (PLAYER_LOST, [0, 3])   # Only remains PASS_BETS
-    ])
-    def test_check_bets_get_deleted(self, state, expect_remaining_bets_index):
-        self._set_bets()
-        self.turn.state = state
-        expected_remaining_bets = []
-        for index in expect_remaining_bets_index:
-            expected_remaining_bets.append(self.turn.bets[index])
-        self.turn.check_bets()
-        actual_remaining_bets = self.turn.bets
-        self.assertEqual(actual_remaining_bets, expected_remaining_bets)
-
-    @parameterized.expand([
         (PLAYER_WON, 7*2),      # win PASS_BETS
         (PLAYER_LOST, 23*2)     # win DO_NOT_PASS_BETS
     ])
