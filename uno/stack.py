@@ -64,7 +64,7 @@ class Stack():
             self.discard_cards.append(card)
 
     @property
-    def get_last_discard_card(self):
+    def top_card(self):
         return self.discard_cards[-1]
 
     def draw_card_from_stack(self):

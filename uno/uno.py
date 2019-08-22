@@ -2,7 +2,7 @@
 from .stack import Stack
 from .player import HumanPlayer, ComputerPlayer
 # Exception
-from .exceptions import ComputerCantPlayException
+# from .exceptions import ComputerCantPlayException
 # Const
 from .const import (
     # Commands
@@ -42,19 +42,18 @@ class Uno():
         else:
             card_index, color = self.parse_command(command)
             try:
-                pass
-                # card_played = self.current_player.select_card(
-                #     card_index, self.stack
-                #     )
-                # self.stack.put_card_in_discard(card_played)
-                # has_to_change_current_player, qty_draw_cards = \
-                #     card_played.get_action()
-                # self.current_player = \
-                #     self.decide_whos_next(has_to_change_current_player)
+                card_played = self.current_player.select_card(
+                    card_index, self.stack
+                    )
+                self.stack.put_card_in_discard(card_played)
+                loses_turn, cards_to_pick = \
+                    card_played.get_action()
+                self.current_player = \
+                    self.decide_whos_next(loses_turn)
             except Exception:
                 return INVALID_CARD_MESSAGE
-            except ComputerCantPlayException:
-                self.player_passes()
+            # except ComputerCantPlayException:
+            #     self.player_passes()
 
     def player_passes(self):
         if self.current_player.has_drawn_a_card:

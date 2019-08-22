@@ -18,7 +18,7 @@ class HumanPlayer(Player):
 
     def select_card(self, card_index, stack):
         card = self.cards_player[card_index]
-        if not card.is_valid(stack.get_last_discard_card):
+        if not card.is_valid(stack.top_card):
             raise Exception()
         return card
 
@@ -33,7 +33,7 @@ class ComputerPlayer(Player):
     def select_card(self, card_index, stack):
         possible_cards = [
             card for card in self.cards_player
-            if card.is_valid(stack.get_last_discard_card)
+            if card.is_valid(stack.top_card)
         ]
         if possible_cards:
             return choice(possible_cards)
