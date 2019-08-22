@@ -13,7 +13,7 @@ from .constants import (
     CRAPS_BET,
     GAME_STARTED,
     LOSING_SCORES,
-    GAME_IN_PROGRESS
+    GAME_IN_PROGRESS,
 )
 
 

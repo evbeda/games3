@@ -24,6 +24,9 @@ from .constants import (
     NO_COMMAND,
     SHOOT_DICE_MESSAGE,
     BET_PAYED,
+    INVALID_TURN_BET,
+    DOUBLE_BET,
+    SEVEN_BET,
 )
 
 
@@ -102,6 +105,14 @@ class TestCraps(unittest.TestCase):
         turn = Turn()
         self.game.play(DO_NOT_PASS_BET, 300, turn)
         self.assertEqual(self.game.money, 700)
+
+    @parameterized.expand([
+        (DOUBLE_BET, 2, 'GAME_STARTED'),
+        (SEVEN_BET, 20, 'GAME_STARTED'),
+    ])
+    def test__play_catches_invalid_bet_turn_exception(self, bet, amount, turn_state):
+        self.game.turn.state = turn_state
+        self.assertEqual(self.game.play(bet, amount), INVALID_TURN_BET)
 
     def test_craps_decrease_money(self):
         self.game.decrease_money(200)
