@@ -66,9 +66,9 @@ class TestStack(unittest.TestCase):
         cards_player = self.stack.generate_cards_player()
         self.assertEqual(7, len(cards_player))
 
-    def test_get_last_discard_card(self):
+    def test_top_card(self):
         self.stack.discard_cards = self.STACK_EXAMPLE
-        card = self.stack.get_last_discard_card
+        card = self.stack.top_card
         self.assertEqual((YELLOW, 4), (card.color, card.number))
 
     def test_draw_card_from_stack_should_return_last_card_from_stack(self):
