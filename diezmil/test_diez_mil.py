@@ -38,7 +38,8 @@ class TestDiezMil(unittest.TestCase):
         self.game.who_is_playing = who_is_playing
         self.game.players_qty = players_qty
         self.game.players = [Player(str(i)) for i in range(players_qty)]
-        self.game.next_player()
+        with patch('random.randint', side_effect=[1, 1, 1, 1, 1]):
+            self.game.next_player()
         self.assertEqual(expected, self.game.who_is_playing)
 
     # Play testings
