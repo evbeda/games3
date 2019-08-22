@@ -11,3 +11,6 @@ class Player:
     def add_gold(self, gold):
         self.gold += gold
 
+    @property
+    def status(self):
+        return f'{self.character}, wounds: {self.wounds}, gold: {self.gold}'

@@ -6,25 +6,33 @@ from ..model.rooms.treasure import Treasure
 from ..model.rooms.gold_room import GoldRoom
 
 
-BOARD_EXAMPLE = '''Level: 1
+BOARD_EXAMPLE = '''===================================================
+Level: 1
 Rooms:
  * Esqueleto (❤️ 11, 🗡️️ 3) <--
  * Treasure (💰 4, 💰 2)
  * Hidden
  * Dragon (❤️ 14, 🗡️️ 3)
  * Hidden
-Caballero, wounds:1, gold:1
-Exploradora, wounds:3, gold:2
-Guerrero, wounds:2, gold:0'''
 
-BOARD_EXAMPLE_WINNER = '''Game over
+Players status:
+Caballero, wounds: 1, gold: 1
+Exploradora, wounds: 3, gold: 2
+Guerrero, wounds: 2, gold: 0
+'''
+
+BOARD_EXAMPLE_WINNER = '''===================================================
+Game over
 Winner:
-Caballero, wounds:1, gold:1'''
+Caballero, wounds: 1, gold: 1
+'''
 
-BOARD_EXAMPLE_TWO_WINNERS = '''Game over
+BOARD_EXAMPLE_TWO_WINNERS = '''===================================================
+Game over
 Winners:
-Caballero, wounds:1, gold:5
-Exploradora, wounds:1, gold:5'''
+Caballero, wounds: 1, gold: 5
+Exploradora, wounds: 1, gold: 5
+'''
 
 NEXT_TURN_WOUNDROOM_EXAMPLE = '''Room name: Trampa de pinchos
 Card: 5 Wound: 2

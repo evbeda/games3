@@ -45,4 +45,10 @@ class Level:
     def execute_level(self, human_power_cards_played):
         [hand.play(human_power_cards_played)
             for index, hand in enumerate(self.hands)]
-        return self.actual_room.resolve_room(self.hands)
+        players_played_str = [
+            hand.player.character + " played " + str(hand.last_card_played)
+            for hand in self.hands
+        ]
+        ret = ', '.join(players_played_str) + "\n"
+        ret += self.actual_room.resolve_room(self.hands)
+        return ret
