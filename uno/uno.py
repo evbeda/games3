@@ -1,6 +1,6 @@
 from .const import DRAW_CARD_INPUT, EXIT, INVALID_CARD_MESSAGE
 from .stack import Stack
-from .player import HumanPlayer, Player
+from .player import HumanPlayer, ComputerPlayer
 from .const import ASK_FOR_INPUT
 
 
@@ -13,7 +13,8 @@ class Uno():
         self.is_playing = True
         self.stack = Stack()
         self.player = HumanPlayer(self.stack.generate_cards_player())
-        self.computer_player = Player(self.stack.generate_cards_player())
+        self.computer_player = ComputerPlayer(
+            self.stack.generate_cards_player())
         self.stack.put_card_in_discard()
         self.current_player = self.player
 
