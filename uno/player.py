@@ -1,4 +1,4 @@
-from .card import DrawTwoCard, DrawFourCard
+from random import choice
 
 
 class Player():
@@ -6,25 +6,6 @@ class Player():
     def __init__(self, cards):
         self.cards_player = cards
         self.already_take_a_card = False
-
-    # def selected_card(self, index_card):
-    #     return self.cards[int(index_card) - 1]
-
-    # def auto_play(self, last_card):
-    #     if isinstance(last_card, DrawTwoCard):
-    #         draw_two_cards = [card for card in self.cards_player
-    #                           if isinstance(card, DrawTwoCard)]
-    #         if draw_two_cards != []:
-    #             card = draw_two_cards[0]
-    #             card = self.cards_player.pop(self.cards_player.index(card))
-    #             return card
-    #         else:
-    #             return None
-    #     for card in self.cards_player:
-    #         if card.is_valid(last_card):
-    #             card_selected = self.cards_player.pop(self.cards_player.index(card))
-    #             return card_selected
-    #     return None
 
 
 class HumanPlayer(Player):
@@ -36,3 +17,17 @@ class HumanPlayer(Player):
         if not card.is_valid(stack.get_last_discard_card):
             raise Exception()
         return card
+
+
+class ComputerPlayer(Player):
+    def __init__(self, cards):
+        super().__init__(cards)
+
+    def select_card(self, card_index, stack):
+        possible_cards = [
+            card for card in self.cards_player
+            if card.is_valid(stack.get_last_discard_card)
+        ]
+        if possible_cards:
+            return choice(possible_cards)
+        return None
