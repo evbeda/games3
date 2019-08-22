@@ -3,10 +3,7 @@ import unittest
 from unittest.mock import patch
 from parameterized import parameterized
 # Model
-from ..model.exceptions.exceptions import UnplayableCardException
-from ..model.hand_player import HandPlayer
 from ..model.game import Game
-from ..model.player import Player
 from ..model.rooms.wound_room import WoundRoom
 from ..model.rooms.treasure import Treasure
 from ..model.rooms.gold_room import GoldRoom
@@ -26,34 +23,6 @@ from . import PLAYERS_EXAMPLE_TWO_WINNERS
 
 
 class TestDungeon(unittest.TestCase):
-
-    """ -------------------- Player tests -------------------- """
-    def test_init_hand(self):
-        hand = HandPlayer(Player('A'))
-        self.assertEqual(5, len(hand.cards_to_play))
-
-    def test_check_if_player_can_play_card_2(self):
-        hand = HandPlayer(Player('A'))
-        hand.chosen_card = 2
-        hand.play()
-        hand.chosen_card = 5
-        hand.play()
-        with self.assertRaises(UnplayableCardException):
-            hand.chosen_card = 2
-            hand.play()
-
-    def test_check_actual_card(self):
-        hand = HandPlayer(Player('A'))
-        hand.chosen_card = 2
-        hand.play()
-        self.assertEqual(2, hand.last_card_played)
-
-    def test_check_if_3_is_in_hand(self):
-        hand = HandPlayer(Player('A'))
-        hand.chosen_card = 3
-        hand.play()
-        self.assertTrue(3 not in hand.cards_to_play)
-
     """ -------------------- Game tests -------------------- """
     def test_check_if_game_has_5_levels(self):
         game = Game()
@@ -165,3 +134,9 @@ class TestDungeon(unittest.TestCase):
         game.index_current_level = 4
         game.current_level.index_actual_room = 4
         self.assertEqual(GAME_OVER, game.play(3))
+
+    def test_game_is_playing(self):
+        game = Game()
+        self.assertTrue(game.is_playing)
+        game.play(EXIT)
+        self.assertFalse(game.is_playing)

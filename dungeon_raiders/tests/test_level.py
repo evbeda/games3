@@ -9,6 +9,7 @@ from ..model.rooms.monster_room import MonsterRoom
 from ..model.rooms.treasure import Treasure
 from ..model.rooms.gold_room import GoldRoom
 from ..model.rooms.wound_room import WoundRoom
+from ..model.game import Game
 # Helpers
 from . import RoomHelper
 
@@ -45,6 +46,10 @@ class TestLevel(RoomHelper):
         ]
         for level in levels:
             self.assertIn(level.level_card, LEVEL_CARDS)
+
+    def test_game_levels(self):
+        game = Game()
+        self.assertEqual(game.current_level, game.levels[0])
 
 # PLAYERS_EXAMPLE = [             wounds, gold
 #    Player(character=['Caballero', 1, 1]),

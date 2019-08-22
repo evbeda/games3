@@ -4,7 +4,7 @@ from .test_monster_room import TestMonsterRoom
 from .test_trap_room import TestTrapRoom
 from .test_treasure import TestTreasure
 from .test_level import TestLevel
-from .test_player import TestPlayer
+from .test_hand_player import TestHandPlayer
 
 
 def suite():
@@ -15,5 +15,5 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestTrapRoom))
     test_suite.addTest(unittest.makeSuite(TestTreasure))
     test_suite.addTest(unittest.makeSuite(TestLevel))
-    test_suite.addTest(unittest.makeSuite(TestPlayer))
+    test_suite.addTest(unittest.makeSuite(TestHandPlayer))
     return test_suite
