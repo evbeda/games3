@@ -26,10 +26,8 @@ GOLD_SCENARIOS = [
 ]
 
 ALL_SCENARIOS = [
-        ("Caballero lost 1 gold. ", GoldRoom(GOLDS[0]),
-            [3, 1, 3]),
-        ("Caballero lost 2 gold. ", GoldRoom(GOLDS[0]),
-            [4, 1, 2]),
+        ("Caballero lost 1 gold. ", GoldRoom(GOLDS[0]), [3, 1, 3]),
+        ("Caballero lost 2 gold. ", GoldRoom(GOLDS[0]), [4, 1, 2]),
         ("Guerrero took 2 damage. ", WoundRoom(WOUNDS[0]), [4, 1, 2]),
         ("Guerrero took 1 damage. ", WoundRoom(WOUNDS[1]), [2, 1, 1]),
 ]
@@ -41,20 +39,19 @@ class TestTrapRoom(RoomHelper):
 
     @parameterized.expand(ALL_SCENARIOS)
     def test_return_resolve_room(self, expected, room, plays):
-        hands, result = RoomHelper._play_cards_against_room(room, plays)
+        _, result = RoomHelper._play_cards_against_room(room, plays)
         self.assertEqual(expected, result)
 
-    """ -------------------- GoldRoom card --------------------"""
-
+    # """ -------------------- GoldRoom card --------------------"""
     @parameterized.expand(GOLD_SCENARIOS)
     def test_play_cards_against_gold_room(self, gold_values, room, plays):
-        hands, result = RoomHelper._play_cards_against_room(room, plays)
+        hands, _ = RoomHelper._play_cards_against_room(room, plays)
         self.assertEqual(gold_values, [hand.player.gold for hand in hands])
 
-    """ -------------------- WoundRoom card -------------------- """
+    # """ -------------------- WoundRoom card -------------------- """
     @parameterized.expand(WOUND_SCENARIOS)
     def test_play_cards_against_wound_room(self, wound_values, room, plays):
-        hands, result = RoomHelper._play_cards_against_room(room, plays)
+        hands, _ = RoomHelper._play_cards_against_room(room, plays)
         self.assertEqual(wound_values, [hand.player.wounds for hand in hands])
 
     def test_not_possible_to_resolve_room_in_trap(self):
