@@ -269,22 +269,13 @@ class TestUnoCards(unittest.TestCase):
     def test_cards_correct_representation(self, card, representation):
         self.assertEqual(str(card), representation)
 
-    def test_card_skip_card_action(self):
-        card = SkipCard(GREEN)
-        self.assertEqual(card.get_action(), (True, 0))
+    @parameterized.expand([
+        (SkipCard(GREEN), (True, 0)),
+        (ReverseCard(GREEN), (True, 0)),
+        (DrawTwoCard(GREEN), (True, 2)),
+        (DrawFourCard(), (True, 4)),
+        (NumberCard(RED, 4), (False, 0)),
+    ])
+    def test_card_action(self, card, expected_action):
+        self.assertEqual(card.get_action(), expected_action)
 
-    def test_card_reverse_card_action(self):
-        card = ReverseCard(GREEN)
-        self.assertEqual(card.get_action(), (True, 0))
-
-    def test_card_draw_two_card_action(self):
-        card = DrawTwoCard(GREEN)
-        self.assertEqual(card.get_action(), (True, 2))
-
-    def test_card_draw_four_card_action(self):
-        card = DrawFourCard()
-        self.assertEqual(card.get_action(), (True, 4))
-
-    def test_card_number_card_action(self):
-        card = NumberCard(RED, 4)
-        self.assertEqual(card.get_action(), (False, 0))
