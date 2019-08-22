@@ -91,8 +91,7 @@ class CrapsGame:
 
     @property
     def board(self):
-        ret = '----------------BOARD INIT---------------------------\n'
+        ret = ''
         ret += self.turn.build_board()
         ret += 'Money: {}'.format(self.money)
-        ret += '\n----------------BOARD END---------------------------'
         return ret
