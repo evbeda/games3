@@ -69,48 +69,49 @@ ROOMS_EXAMPLE = [
 ]
 
 PLAYERS_EXAMPLE = [
-            Player(character=['Caballero', 1, 1]),
-            Player(character=['Exploradora', 3, 2]),
-            Player(character=['Guerrero', 2, 0]),
-        ]
+    Player(character=['Caballero', 1, 1]),
+    Player(character=['Exploradora', 3, 2]),
+    Player(character=['Guerrero', 2, 0]),
+]
 
 PLAYERS_EXAMPLE_TWO_WINNERS = [
-            Player(character=['Caballero', 1, 5]),
-            Player(character=['Exploradora', 1, 5]),
-            Player(character=['Guerrero', 2, 0]),
-        ]
+    Player(character=['Caballero', 1, 5]),
+    Player(character=['Exploradora', 1, 5]),
+    Player(character=['Guerrero', 2, 0]),
+]
 
 
 class RoomHelper(unittest.TestCase):
-    def _get_players_example(self):
+
+    @staticmethod
+    def _get_players_example():
         return[
             Player(character=['Caballero', 1, 1]),
             Player(character=['Exploradora', 3, 2]),
             Player(character=['Guerrero', 2, 0]),
         ]
 
-    def _get_hands(self):
-
-        player_a, player_b, player_c = self._get_players_example()
+    @staticmethod
+    def _get_hands():
+        player_a, player_b, player_c = RoomHelper._get_players_example()
         player_a.gold = 5
         player_a.wounds = 5
         player_b.gold = 3
         player_b.wounds = 3
         player_c.gold = 0
         player_c.wounds = 0
-        player_d = Player(character=('Hechicero', 1, 1))
-        player_d.gold = 5
-        player_d.wounds = 5
 
         return HandPlayer(player_a), HandPlayer(player_b), \
-            HandPlayer(player_c), HandPlayer(player_d)
+            HandPlayer(player_c)
 
-    def _play_cards_against_room(self, room, plays):
-        hands = self._get_hands()
+    @staticmethod
+    def _play_cards_against_room(room, plays):
+        hands = RoomHelper._get_hands()
 
         for hand in hands:
             hand.play(str(plays[hands.index(hand)]))
-        return hands, self._play(room, hands)
+        return hands, RoomHelper._play(room, hands)
 
-    def _play(self, room, hands):
+    @staticmethod
+    def _play(room, hands):
         return room.resolve_room(hands)
