@@ -19,3 +19,23 @@ class TestTreasure(RoomHelper):
             self, players_gold_win, treasure, plays):
         hands, result = self._play_cards_against_room(treasure, plays)
         self.assertEqual(players_gold_win, [hand.player.gold for hand in hands])
+
+    @parameterized.expand([
+        ("Caballero earnt 3 gold.",
+            Treasure([3, 0]), [3, 2, 2, 2]),
+        ("Caballero and Exploradora earnt 1 gold.",
+            Treasure([3, 0]), [3, 3, 2, 2]),
+        ("Caballero, Exploradora and Guerrero earnt 1 gold.",
+            Treasure([3, 0]), [3, 3, 3, 2]),
+        ("Caballero, Exploradora, Guerrero and Hechicero earnt 0 gold.",
+            Treasure([3, 0]), [2, 2, 2, 2]),
+        ("Caballero earnt 4 gold. Exploradora earnt 2 gold.",
+            Treasure([4, 2]), [5, 3, 1, 2]),
+        ("Caballero earnt 4 gold. Exploradora and Guerrero earnt 1 gold.",
+            Treasure([4, 2]), [5, 4, 4, 1]),
+        ("Caballero earnt 4 gold. Exploradora, Guerrero and Hechicero earnt 0 gold.",
+            Treasure([4, 2]), [5, 4, 4, 4]),
+    ])
+    def test_return_resolve_room(self, expected, treasure, plays):
+        hands, result = self._play_cards_against_room(treasure, plays)
+        self.assertEqual(expected, result)

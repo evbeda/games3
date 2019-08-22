@@ -30,9 +30,15 @@ class Treasure(Room):
                 if winner[1] == hands.index(hand):
                     player = hand.player
                     player.add_gold(reward)
+        return reward
+
+    @staticmethod
+    def get_characters_from_winners(hands, treasure_winners):
+        indexes = [x[1] for x in treasure_winners]
+        winner_characters = [hands[index].player.character for index in indexes]
+        return winner_characters
 
     def resolve_room(self, hands):
-        ret = ''
         # For example: played_cards = [5, 3, 1, 1]
         played_cards = [hand.last_card_played for hand in hands]
         cards_second_treasure = []
@@ -52,26 +58,22 @@ class Treasure(Room):
             self.determine_winners(max_value, cards_second_treasure)
         # Set new treasure value to winners
         # 0 means first winners and 1 second winners
-        self.add_treasure(first_treasure_winners, hands, 0)
-        self.add_treasure(second_treasure_winners, hands, 1)
+        reward_first = self.add_treasure(first_treasure_winners, hands, 0)
+        reward_second = self.add_treasure(second_treasure_winners, hands, 1)
 
-        # ret = ''
-        # if len(first_treasure_winners) > 1:
-        #     first_treasure_characters = [
-        #         hand.player.character
-        #         for winner in first_treasure_winners
-        #         for hand in hands[winner[1]]
-        #         ]
-        #     print(first_treasure_characters)
-        #     ret += f"{', '.join(hands[first_treasure_winners[:-1][1]].player.character)}"
-        #     ret += f" and {first_treasure_winners[-1]} "
-        # else:
-        #     ret += f"{first_treasure_winners[0]} "
-        # ret += f"earnt {self.values[0]} gold."
-        # if self.values[1] != 0:
-        #     if len(second_treasure_winners) > 1:
-        #         ret += f" {', '.join(second_treasure_winners[:-1])} and {second_treasure_winners[-1]} "
-        #     else:
-        #         ret += f" {second_treasure_winners[0]} "
-        #     ret += f"earnt {self.values[1]} gold."
-        # return ret
+        ret = ''
+        first_treasure_characters = Treasure.get_characters_from_winners(hands, first_treasure_winners)
+        if len(first_treasure_characters) > 1:
+            ret += f"{', '.join(first_treasure_characters[:-1])}"
+            ret += f" and {first_treasure_characters[-1]} "
+        else:
+            ret += f"{first_treasure_characters[0]} "
+        ret += f"earnt {reward_first} gold."
+        if self.values[1] != 0:
+            second_treasure_characters = Treasure.get_characters_from_winners(hands, second_treasure_winners)
+            if len(second_treasure_characters) > 1:
+                ret += f" {', '.join(second_treasure_characters[:-1])} and {second_treasure_characters[-1]} "
+            else:
+                ret += f" {second_treasure_characters[0]} "
+            ret += f"earnt {reward_second} gold."
+        return ret
