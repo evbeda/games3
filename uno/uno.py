@@ -1,7 +1,18 @@
-from .const import DRAW_CARD_INPUT, EXIT, INVALID_CARD_MESSAGE
+# Model
 from .stack import Stack
 from .player import HumanPlayer, ComputerPlayer
-from .const import ASK_FOR_INPUT
+# Exception
+from .exceptions import ComputerCantPlayException
+# Const
+from .const import (
+    # Commands
+    DRAW_CARD_INPUT, EXIT,
+    # Messages
+    INVALID_CARD_MESSAGE,
+    ASK_FOR_INPUT,
+    COMPUTER_WON_MESSAGE,
+    HUMAN_PLAYER_WON_MESSAGE
+    )
 
 
 class Uno():
@@ -31,7 +42,15 @@ class Uno():
         else:
             card_index, color = self.parse_command(command)
             try:
-                card_played = self.current_player.play(card_index, self.stack)
+                pass
+                # card_played = self.current_player.select_card(
+                #     card_index, self.stack
+                #     )
+                # self.stack.put_card_in_discard(card_played)
+                # has_to_change_current_player, qty_draw_cards = \
+                #     card_played.get_action()
+                # self.current_player = \
+                #     self.decide_whos_next(has_to_change_current_player)
             except Exception:
                 return INVALID_CARD_MESSAGE
             except ComputerCantPlayException:
@@ -40,7 +59,7 @@ class Uno():
     def player_passes(self):
         if self.current_player.has_drawn_a_card:
             self.current_player.has_drawn_a_card = False
-            self.current_player = self.decide_whos_next(True)
+            self.current_player = self.decide_whos_next(False)
         else:
             self.player_draws(self.current_player)
 
@@ -48,14 +67,13 @@ class Uno():
         player.cards_player.append(self.stack.draw_card_from_stack())
         player.has_drawn_a_card = True
 
-    def player_plays_card(self, player, card):
-        player.cards_player.remove(card)
-        self.stack.put_card_in_discard(card)
-
-    def winner(self, player):
-        if player.cards_player == []:
+    def winner(self):
+        if self.player.cards_player == []:
             self.is_playing = False
-            return "You WON" if player.name == 'Player' else 'Computer WON'
+            return HUMAN_PLAYER_WON_MESSAGE
+        elif self.computer_player.cards_player == []:
+            self.is_playing = False
+            return COMPUTER_WON_MESSAGE
 
     @property
     def board(self):
@@ -78,9 +96,9 @@ class Uno():
 
     def decide_whos_next(self, loses_turn):
         if loses_turn:
+            return self.current_player
+        else:
             if self.current_player == self.computer_player:
                 return self.player
             else:
                 return self.computer_player
-        else:
-            return self.current_player

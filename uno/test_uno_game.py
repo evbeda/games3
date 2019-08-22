@@ -1,12 +1,29 @@
+# Modules
 import unittest
-from .const import DRAW_CARD_INPUT, EXIT
 from parameterized import parameterized
+# Const
+from .const import (
+    # Commands
+    DRAW_CARD_INPUT, EXIT,
+    # Messages
+    HUMAN_PLAYER_WON_MESSAGE,
+    COMPUTER_WON_MESSAGE,
+    # Color for the cards
+    RED,
+    YELLOW
+    )
+# Model
 from .uno import Uno
+from .card import NumberCard
 
 
 class TestUnoGame(unittest.TestCase):
     def setUp(self):
         self.game = Uno()
+        self.STACK_EXAMPLE = [
+                            NumberCard(RED, 5),
+                            NumberCard(YELLOW, 4)
+                        ]
 
     def test_is_playing(self):
         self.assertEqual(self.game.is_playing, True)
@@ -50,10 +67,9 @@ class TestUnoGame(unittest.TestCase):
         self.assertEqual(len(self.game.stack.discard_cards), 1)
 
     def test_initial_take_card_stack_length(self):
-        uno = Uno()
-        uno.play(DRAW_CARD_INPUT)
-        self.assertEqual(len(uno.stack.stack_cards), 96)
-        self.assertEqual(len(uno.player.cards_player), 8)
+        self.game.play(DRAW_CARD_INPUT)
+        self.assertEqual(len(self.game.stack.stack_cards), 96)
+        self.assertEqual(len(self.game.player.cards_player), 8)
 
     # def test_play_invalid_card(self):
     #     uno = Uno()
@@ -89,18 +105,15 @@ class TestUnoGame(unittest.TestCase):
     #     # check played_card equal to last discard_card
     #     self.assertEqual(last_played_card, uno.stack.discard_cards[-1])
 
-    # def test_player_winner(self):
-        # uno = Uno()
-        # uno.stack.discard_cards = [NumberCard(RED, '7')]
-        # uno.player.cards_player = [NumberCard(GREEN, '7')]
-        # self.assertEqual(uno.play(1), 'You WON')
+    def test_player_winner(self):
+        self.game.player.cards_player = []
+        self.game.computer_player.cards_player = self.STACK_EXAMPLE
+        self.assertEqual(self.game.winner(), HUMAN_PLAYER_WON_MESSAGE)
 
-    # def test_computer_player_winner(self):
-        # uno = Uno()
-        # uno.player.loses_turn = True
-        # uno.stack.discard_cards = [NumberCard(BLUE, '5')]
-        # uno.computer_player.cards_player = [NumberCard(YELLOW, '5')]
-        # self.assertEqual(uno.play(1), 'Computer WON')
+    def test_computer_player_winner(self):
+        self.game.computer_player.cards_player = []
+        self.game.player.cards_player = self.STACK_EXAMPLE
+        self.assertEqual(self.game.winner(), COMPUTER_WON_MESSAGE)
 
     # def test_board(self):
         # game = Uno()
@@ -145,16 +158,20 @@ class TestUnoGame(unittest.TestCase):
         # ('3', (2, None)),
     ])
     def test_validate_play_card_input(self, user_input, index_in_hand):
-        uno = Uno()
-        self.assertEqual(uno.parse_command(user_input), index_in_hand)
+        self.assertEqual(self.game.parse_command(user_input), index_in_hand)
 
     def test_decide_whos_next_player(self):
-        uno = Uno()
-        self.assertEqual(uno.decide_whos_next(False), uno.player)
-        self.assertEqual(uno.decide_whos_next(True), uno.computer_player)
+        self.assertEqual(
+            self.game.decide_whos_next(False), self.game.computer_player
+            )
+        self.assertEqual(
+                self.game.decide_whos_next(True), self.game.player
+            )
 
     def test_decide_whos_next_computer_player(self):
-        uno = Uno()
-        uno.current_player = uno.computer_player
-        self.assertEqual(uno.decide_whos_next(False), uno.computer_player)
-        self.assertEqual(uno.decide_whos_next(True), uno.player)
+        self.game.current_player = self.game.computer_player
+        self.assertEqual(
+            self.game.decide_whos_next(False), self.game.player)
+        self.assertEqual(
+            self.game.decide_whos_next(True), self.game.computer_player
+            )

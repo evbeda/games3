@@ -13,6 +13,9 @@ class HumanPlayer(Player):
     def __init___(self, cards):
         super().__init__(cards)
 
+    def __str__(self):
+        return 'Player'
+
     def select_card(self, card_index, stack):
         card = self.cards_player[card_index]
         if not card.is_valid(stack.get_last_discard_card):
@@ -23,6 +26,9 @@ class HumanPlayer(Player):
 class ComputerPlayer(Player):
     def __init__(self, cards):
         super().__init__(cards)
+
+    def __str__(self):
+        return 'Computer'
 
     def select_card(self, card_index, stack):
         possible_cards = [

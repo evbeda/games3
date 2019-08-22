@@ -18,3 +18,5 @@ UNO_ALMOST_FINISHED_BOARD = "Your cards are: \n" +\
 UNO_FINISHED_BOARD = 'Your cards are: \nThe last card played is: \n9 - red'
 
 INVALID_CARD_MESSAGE = "Invalid card."
+COMPUTER_WON_MESSAGE = 'CPU won! you lose'
+HUMAN_PLAYER_WON_MESSAGE = 'Congrats!!, You won!'
