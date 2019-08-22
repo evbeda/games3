@@ -1,8 +1,5 @@
 import unittest
-from uno.test_uno_cards import TestUnoCards
-from uno.test_stack_uno import TestStack
-from uno.test_uno_game import TestUnoGame
-from uno.test_uno_player import TestPlayerUno
+from uno.uno_suite import suite as uno_suite
 from craps.craps_suite import suite as craps_suite
 from dungeon_raiders.tests.test_suite_dungeon import suite as dr_suite
 from sudoku.tests.test_suite_sudoku import suite as sudoku_suite
@@ -24,10 +21,7 @@ from test_game import TestGame
 def suite():
     test_suite = unittest.TestSuite()
     # UNO
-    test_suite.addTest(unittest.makeSuite(TestUnoCards))
-    test_suite.addTest(unittest.makeSuite(TestStack))
-    test_suite.addTest(unittest.makeSuite(TestUnoGame))
-    test_suite.addTest(unittest.makeSuite(TestPlayerUno))
+    test_suite.addTest(uno_suite())
     # CRAPS
     test_suite.addTest(craps_suite())
     # ROULETTE
