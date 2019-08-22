@@ -62,7 +62,8 @@ class Treasure(Room):
         reward_second = self.add_treasure(second_treasure_winners, hands, 1)
 
         ret = ''
-        first_treasure_characters = Treasure.get_characters_from_winners(hands, first_treasure_winners)
+        first_treasure_characters = \
+            Treasure.get_characters_from_winners(hands, first_treasure_winners)
         if len(first_treasure_characters) > 1:
             ret += f"{', '.join(first_treasure_characters[:-1])}"
             ret += f" and {first_treasure_characters[-1]} "
@@ -70,9 +71,11 @@ class Treasure(Room):
             ret += f"{first_treasure_characters[0]} "
         ret += f"earnt {reward_first} gold."
         if self.values[1] != 0:
-            second_treasure_characters = Treasure.get_characters_from_winners(hands, second_treasure_winners)
+            second_treasure_characters = \
+                Treasure.get_characters_from_winners(hands, second_treasure_winners)
             if len(second_treasure_characters) > 1:
-                ret += f" {', '.join(second_treasure_characters[:-1])} and {second_treasure_characters[-1]} "
+                ret += f" {', '.join(second_treasure_characters[:-1])}"
+                ret += f" and {second_treasure_characters[-1]} "
             else:
                 ret += f" {second_treasure_characters[0]} "
             ret += f"earnt {reward_second} gold."

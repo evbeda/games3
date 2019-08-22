@@ -16,7 +16,7 @@ from . import RoomHelper
 
 class TestLevel(RoomHelper):
     def setUp(self):
-        self.players = self._get_players_example()
+        self.players = RoomHelper._get_players_example()
         self.deck = ROOMS.copy()
         self.level = Level(self.players, 1, self.deck, choice(LEVEL_CARDS))
 
