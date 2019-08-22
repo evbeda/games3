@@ -49,5 +49,6 @@ class Turn:
         board += 'Point: {}\n'.format(self.point)
         board += 'Dice: {}\n'.format(self.dice)
         for bet in self.bets:
+            import ipdb ; ipdb.set_trace()
             board += 'Bet:\n{}'.format(bet)
         return board
