@@ -3,9 +3,7 @@ from uno.test_uno_cards import TestUnoCards
 from uno.test_stack_uno import TestStack
 from uno.test_uno_game import TestUnoGame
 from uno.test_uno_player import TestPlayerUno
-from craps.test_craps import TestCraps
-from craps.test_turn import TestTurn
-from craps.test_bets import TestBets
+from craps.craps_suite import suite as craps_suite
 from dungeon_raiders.tests.test_suite_dungeon import suite as dr_suite
 from sudoku.tests.test_suite_sudoku import suite as sudoku_suite
 from guess_number_game.test_guess_number_game import TestGuessNumberGame
@@ -31,9 +29,7 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestUnoGame))
     test_suite.addTest(unittest.makeSuite(TestPlayerUno))
     # CRAPS
-    test_suite.addTest(unittest.makeSuite(TestCraps))
-    test_suite.addTest(unittest.makeSuite(TestTurn))
-    test_suite.addTest(unittest.makeSuite(TestBets))
+    test_suite.addTest(craps_suite())
     # ROULETTE
     test_suite.addTest(unittest.makeSuite(TestBetsRoulette))
     test_suite.addTest(unittest.makeSuite(TestBetCreator))
@@ -42,9 +38,9 @@ def suite():
     test_suite.addTest(unittest.makeSuite(IntegrationTest))
     test_suite.addTest(unittest.makeSuite(TestBoard))
     # SUDOKU
-    # test_suite.addTest(unittest.makeSuite(TestSudokuBoard))
-    # test_suite.addTest(unittest.makeSuite(TestSudokuGame))
-    # test_suite.addTest(unittest.makeSuite(TestSudokuApi))
+    test_suite.addTest(sudoku_suite())
+    # DANGEONS RAIDERS
+    test_suite.addTest(dr_suite())
     # DIEZ MIL
     test_suite.addTest(unittest.makeSuite(TestDiezMil))
     # GUESS NUMBER GAME
@@ -57,6 +53,4 @@ def suite():
 if __name__ == '__main__':
     alltests = unittest.TestSuite()
     alltests.addTest(suite())
-    alltests.addTest(dr_suite())
-    alltests.addTest(sudoku_suite())
     unittest.TextTestRunner().run(alltests)
