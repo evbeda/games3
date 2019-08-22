@@ -63,10 +63,15 @@ class Stack():
         else:
             self.discard_cards.append(card)
 
+    @property
+    def get_last_discard_card(self):
+        return self.discard_cards[-1]
+
+    def draw_card_from_stack(self):
+        card = self.stack_cards.pop()
+        if not self.stack_cards:
+            self.recreate_stack()
+        return card
+
     def generate_cards_player(self):
-        cards_qty = 0
-        cards_player = []
-        while cards_qty != 7:
-            cards_player.append(self.stack_cards.pop())
-            cards_qty += 1
-        return cards_player
+        return [self.stack_cards.pop() for _ in range(7)]
