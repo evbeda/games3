@@ -1,4 +1,5 @@
 from random import choice
+from .exceptions import ComputerCantPlayException
 
 
 class Player():
@@ -30,4 +31,5 @@ class ComputerPlayer(Player):
         ]
         if possible_cards:
             return choice(possible_cards)
-        return None
+        else:
+            raise ComputerCantPlayException
