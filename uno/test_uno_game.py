@@ -125,12 +125,14 @@ class TestUnoGame(unittest.TestCase):
         # self.assertEqual(board, expected_board)
 
     def test_validate_draw_card_input(self):
-        self.game.play(DRAW_CARD_INPUT)
-        self.assertEqual(len(self.game.player.cards_player), 8)
+        self.game.current_player = self.game.computer_player
+        self.game.player_passes()
+        self.assertEqual(len(self.game.computer_player.cards_player), 8)
 
     def test_player_pass_his_turn(self):
-        self.game.play(DRAW_CARD_INPUT)
-        self.game.play(DRAW_CARD_INPUT)
+        self.game.player_passes()
+        self.assertEqual(self.game.current_player, self.game.player)
+        self.game.player_passes()
         self.assertEqual(self.game.computer_player, self.game.current_player)
 
     @parameterized.expand([
