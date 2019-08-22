@@ -45,4 +45,4 @@ class Level:
     def execute_level(self, human_power_cards_played):
         [hand.play(human_power_cards_played)
             for index, hand in enumerate(self.hands)]
-        self.actual_room.resolve_room(self.hands)
+        return self.actual_room.resolve_room(self.hands)

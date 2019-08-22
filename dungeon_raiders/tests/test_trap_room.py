@@ -21,11 +21,8 @@ class TestTrapRoom(RoomHelper):
         ([3, 3, 0, 3], GoldRoom(GOLDS[1]), [5, 5, 4, 3]),
     ])
     def test_play_cards_against_gold_room(self, gold_values, room, plays):
-        handA, handB, handC, handD = \
-            self._play_cards_against_room(room, plays)
-        self.assertEqual(gold_values, [
-                handA.player.gold, handB.player.gold, handC.player.gold,
-                handD.player.gold])
+        hands, result = self._play_cards_against_room(room, plays)
+        self.assertEqual(gold_values, [hand.player.gold for hand in hands])
 
     """ -------------------- WoundRoom card -------------------- """
     @parameterized.expand([
@@ -38,11 +35,8 @@ class TestTrapRoom(RoomHelper):
         ([5, 3, 2, 5], WoundRoom(WOUNDS[1]), [5, 2, 3, 4])
     ])
     def test_play_cards_against_wound_room(self, wound_values, room, plays):
-        handA, handB, handC, handD = \
-            self._play_cards_against_room(room, plays)
-        self.assertEqual(wound_values, [
-            handA.player.wounds, handB.player.wounds, handC.player.wounds,
-            handD.player.wounds])
+        hands, result = self._play_cards_against_room(room, plays)
+        self.assertEqual(wound_values, [hand.player.wounds for hand in hands])
 
     def test_not_possible_to_resolve_room_in_trap(self):
         with self.assertRaises(NotImplementedError):

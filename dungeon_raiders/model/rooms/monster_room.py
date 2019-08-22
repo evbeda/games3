@@ -20,9 +20,24 @@ class MonsterRoom(Room):
         # Determine damage
         total_damage = sum(played_cards)
 
+        ret = ""
         # If necessary, apply damage
         if total_damage < self.life:
+            ret += f"{self.name} attacks. "
             min_card = min(played_cards)
+            players_damaged = []
             for hand in hands:
                 if hand.last_card_played == min_card:
+                    players_damaged.append(hand.player.character)
                     hand.player.add_wounds(self.damage)
+            if len(players_damaged) == 1:
+                ret += f"{players_damaged[0]} "
+            elif len(players_damaged) == 2:
+                ret += f"{players_damaged[0]} and {players_damaged[1]} "
+            else:
+                ret += ", ".join(players_damaged[:-2])
+                ret += f", {players_damaged[-2]} and {players_damaged[-1]} "
+            ret += f"took {self.damage} damage."
+        else:
+            ret += f"{self.name} was beaten. No one took damage."
+        return ret

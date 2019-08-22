@@ -9,7 +9,6 @@ from . import (
     EXIT,
     ROOMS,
     BYE_MESSAGE,
-    ROOM_MESSAGE,
     GAME_OVER,
     LEVEL_FINISHED_MESSAGE,
     LEVEL_CARDS
@@ -81,13 +80,13 @@ class Game:
         else:
             try:
                 power_card_played = command[0]
-                self.current_level.execute_level(power_card_played)
+                room_resolved_msg = self.current_level.execute_level(power_card_played)
                 if self.current_level.is_last_room():
                     self.index_current_level += 1
                     self.current_level = self.levels[self.index_current_level]
                     return LEVEL_FINISHED_MESSAGE
                 self.current_level.next_room()
-                return ROOM_MESSAGE
+                return room_resolved_msg
             except IndexError:
                 self.is_playing = False
                 return GAME_OVER
