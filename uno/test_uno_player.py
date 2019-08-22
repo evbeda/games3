@@ -1,6 +1,7 @@
 import unittest
 from .player import HumanPlayer, ComputerPlayer
 from .stack import Stack
+from .exceptions import ComputerCantPlayException
 from .card import (
     NumberCard,
     # WildCard,
@@ -44,5 +45,5 @@ class TestPlayerUno(unittest.TestCase):
         invalid_card = NumberCard(GREEN, 2)
         self.stack.discard_cards = [top_card]
         self.computer_player.cards_player = [invalid_card]
-        self.assertEqual(self.computer_player.select_card(0, self.stack), None)
-
+        with self.assertRaises(ComputerCantPlayException):
+            self.computer_player.select_card(0, self.stack)

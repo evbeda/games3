@@ -1,0 +1,2 @@
+class ComputerCantPlayException(Exception):
+    pass

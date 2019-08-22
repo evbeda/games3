@@ -1,15 +1,7 @@
 import unittest
-from .const import GREEN, RED, BLUE, YELLOW, DRAW_CARD_INPUT, EXIT, INVALID_CARD_MESSAGE
+from .const import DRAW_CARD_INPUT, EXIT
 from parameterized import parameterized
 from .uno import Uno
-from .card import (
-    NumberCard,
-    ReverseCard,
-    SkipCard,
-    DrawTwoCard,
-    # DrawFourCard,
-    # WildCard,
-)
 
 
 class TestUnoGame(unittest.TestCase):
@@ -140,7 +132,6 @@ class TestUnoGame(unittest.TestCase):
         self.game.play(DRAW_CARD_INPUT)
         self.game.play(DRAW_CARD_INPUT)
         self.assertEqual(self.game.computer_player, self.game.current_player)
-
 
     @parameterized.expand([
         ('1 red', (0, 'red')),
