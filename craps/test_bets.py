@@ -5,6 +5,7 @@ from .bet import (
     Bet, BetCreator, PassBet, DoNotPassBet, SevenBet, DoubleBet, CrapsBet
 )
 from .game import CrapsGame
+from .exceptions.invalid_bet_turn_exception import InvalidBetTurnException
 from .exceptions.invalid_bet_type_exception import InvalidBetTypeException
 from .constants import (
     PLAYER_LOST,
@@ -64,12 +65,22 @@ class TestBets(unittest.TestCase):
     ])
     def test_bet_creator_returns_correct_type(self, type_string, bet_child):
         turn = Turn()
+        turn.state = GAME_IN_PROGRESS
         bet = BetCreator.create(type_string, 2, turn, (1, 2))
         self.assertIsInstance(bet, bet_child)
 
     def test_bet_creator_raises_invalid_type_exception(self):
         with self.assertRaises(InvalidBetTypeException):
             BetCreator.create("ASDF", 2, '', (1, 2))
+
+    @parameterized.expand([
+        ('DOUBLE_BET', 2, 'GAME_STARTED'),
+        ('SEVEN_BET', 20, 'GAME_STARTED'),
+    ])
+    def test_bet_creator_raises_invalid_bet_turn_exception(self, type_bet, amount, turn_state):
+        self.game.turn.state = turn_state
+        with self.assertRaises(InvalidBetTurnException):
+            BetCreator.create(type_bet, amount, self.game.turn)
 
     @parameterized.expand(BET_SCENARIO)
     def test_bet_check_true(self, bet, state, dice,
@@ -88,6 +99,7 @@ class TestBets(unittest.TestCase):
 
     def test_bet_states_in_progress_initial_state(self):
         turn = Turn()
+        turn.state = GAME_IN_PROGRESS
         bet = BetCreator.create(PASS_BET, 20, turn)
         self.assertEqual(bet.state, BET_IN_PROGRESS)
 

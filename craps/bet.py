@@ -195,8 +195,8 @@ class BetCreator:
 
     @staticmethod
     def validate_bet_turn(bet_type, turn):
-        if turn.state != GAME_STARTED:
-            if type(bet_type) in ONLY_START_BETS:
+        if turn.state == GAME_STARTED:
+            if bet_type not in ONLY_START_BETS.keys():
                 raise InvalidBetTurnException()
 
     @staticmethod
