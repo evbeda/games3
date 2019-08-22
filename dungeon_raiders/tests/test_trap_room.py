@@ -3,9 +3,12 @@ from ..model import GOLDS, WOUNDS
 from . import RoomHelper
 from ..model.rooms.gold_room import GoldRoom
 from ..model.rooms.wound_room import WoundRoom
+from ..model.rooms.trap import Trap
 
 
 class TestTrapRoom(RoomHelper):
+    def setUp(self):
+        self.trap = Trap('', '')
     """ -------------------- GoldRoom card --------------------"""
 
     @parameterized.expand([
@@ -40,3 +43,11 @@ class TestTrapRoom(RoomHelper):
         self.assertEqual(wound_values, [
             handA.player.wounds, handB.player.wounds, handC.player.wounds,
             handD.player.wounds])
+
+    def test_not_possible_to_resolve_room_in_trap(self):
+        with self.assertRaises(NotImplementedError):
+            self.trap.resolve_room([])
+
+    def test_not_possible_to_determine_affected_players_in_trap(self):
+        with self.assertRaises(NotImplementedError):
+            self.trap.determine_affected_players()

@@ -11,5 +11,3 @@ class Player:
     def add_gold(self, gold):
         self.gold += gold
 
-    def select_card(self, cards):
-        raise NotImplementedError("Can't be called")

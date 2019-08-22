@@ -8,6 +8,7 @@ from ..model.rooms.wound_room import WoundRoom
 from ..model.rooms.treasure import Treasure
 from ..model.rooms.gold_room import GoldRoom
 from ..model.rooms.monster_room import MonsterRoom
+from ..model.rooms.room import Room
 # Messages
 from ..model import BYE_MESSAGE, EXIT, ROOM_MESSAGE, GAME_OVER
 from . import BOARD_EXAMPLE
@@ -140,3 +141,9 @@ class TestDungeon(unittest.TestCase):
         self.assertTrue(game.is_playing)
         game.play(EXIT)
         self.assertFalse(game.is_playing)
+
+    # Test for Room
+    def test_not_possible_to_resolve_room_in_room(self):
+        room = Room()
+        with self.assertRaises(NotImplementedError):
+            room.resolve_room([])
