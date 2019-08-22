@@ -43,7 +43,6 @@ class Level:
         return self.index_actual_room == 4
 
     def execute_level(self, human_power_cards_played):
-        self.hands[0].chosen_card = human_power_cards_played
-        [hand.play()
+        [hand.play(human_power_cards_played)
             for index, hand in enumerate(self.hands)]
         self.actual_room.resolve_room(self.hands)
