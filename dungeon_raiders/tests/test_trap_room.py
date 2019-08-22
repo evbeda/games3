@@ -6,23 +6,29 @@ from ..model.rooms.wound_room import WoundRoom
 from ..model.rooms.trap import Trap
 
 WOUND_SCENARIOS = [
-        ([5, 3, 1], WoundRoom(WOUNDS[0]), [3, 1, 1]),
-        ([5, 3, 2], WoundRoom(WOUNDS[0]), [4, 1, 2]),
-        ([5, 3, 2], WoundRoom(WOUNDS[0]), [5, 2, 3]),
-        ([5, 3, 1], WoundRoom(WOUNDS[1]), [2, 1, 1]),
-        ([5, 3, 1], WoundRoom(WOUNDS[1]), [3, 1, 2]),
-        ([5, 3, 1], WoundRoom(WOUNDS[1]), [4, 1, 2]),
-        ([5, 3, 2], WoundRoom(WOUNDS[1]), [5, 2, 3])
+    ([5, 3, 0], WoundRoom(WOUNDS[0]), [1, 1, 1]),
+    ([5, 3, 0], WoundRoom(WOUNDS[0]), [2, 1, 1]),
+    ([5, 3, 1], WoundRoom(WOUNDS[0]), [3, 1, 1]),
+    ([5, 3, 2], WoundRoom(WOUNDS[0]), [4, 1, 2]),
+    ([5, 3, 2], WoundRoom(WOUNDS[0]), [5, 2, 3]),
+    ([5, 3, 0], WoundRoom(WOUNDS[1]), [1, 1, 1]),
+    ([5, 3, 1], WoundRoom(WOUNDS[1]), [2, 1, 1]),
+    ([5, 3, 1], WoundRoom(WOUNDS[1]), [3, 1, 2]),
+    ([5, 3, 1], WoundRoom(WOUNDS[1]), [4, 1, 2]),
+    ([5, 3, 2], WoundRoom(WOUNDS[1]), [5, 2, 3]),
 ]
 
 GOLD_SCENARIOS = [
-        ([4, 3, 0], GoldRoom(GOLDS[0]), [3, 1, 2]),
-        ([3, 3, 0], GoldRoom(GOLDS[0]), [4, 1, 2]),
-        ([2, 3, 0], GoldRoom(GOLDS[0]), [5, 2, 3]),
-        ([4, 3, 0], GoldRoom(GOLDS[1]), [2, 1, 2]),
-        ([4, 3, 0], GoldRoom(GOLDS[1]), [3, 2, 1]),
-        ([3, 3, 0], GoldRoom(GOLDS[1]), [4, 1, 3]),
-        ([3, 3, 0], GoldRoom(GOLDS[1]), [5, 5, 4]),
+    ([5, 3, 0], GoldRoom(GOLDS[0]), [1, 1, 1]),
+    ([5, 3, 0], GoldRoom(GOLDS[0]), [2, 1, 1]),
+    ([4, 3, 0], GoldRoom(GOLDS[0]), [3, 1, 2]),
+    ([3, 3, 0], GoldRoom(GOLDS[0]), [4, 1, 2]),
+    ([2, 3, 0], GoldRoom(GOLDS[0]), [5, 2, 3]),
+    ([5, 3, 0], GoldRoom(GOLDS[1]), [1, 1, 1]),
+    ([4, 3, 0], GoldRoom(GOLDS[1]), [2, 1, 2]),
+    ([4, 3, 0], GoldRoom(GOLDS[1]), [3, 2, 1]),
+    ([3, 3, 0], GoldRoom(GOLDS[1]), [4, 1, 3]),
+    ([3, 3, 0], GoldRoom(GOLDS[1]), [5, 5, 4]),
 ]
 
 ALL_SCENARIOS = [

@@ -3,7 +3,7 @@ import random
 # Model
 from .level import Level
 from .player import Player
-from .exceptions.exceptions import UnplayableCardException
+from .exceptions.exceptions import UnplayableCardException, NotANumberException
 # Messages
 from . import (
     CHARACTER,
@@ -12,7 +12,8 @@ from . import (
     BYE_MESSAGE,
     GAME_OVER,
     LEVEL_FINISHED_MESSAGE,
-    LEVEL_CARDS
+    LEVEL_CARDS,
+    INPUT_NUMBER
     )
 
 
@@ -87,14 +88,16 @@ class Game:
             if self.current_level.is_last_room():
                 self.index_current_level += 1
                 self.current_level = self.levels[self.index_current_level]
-                return room_resolved_msg + "\n\n" + LEVEL_FINISHED_MESSAGE
+                return room_resolved_msg + "\n" + LEVEL_FINISHED_MESSAGE
             self.current_level.next_room()
             return room_resolved_msg
         except IndexError:
             self.is_playing = False
-            return GAME_OVER
+            return room_resolved_msg + "\n" + GAME_OVER
         except UnplayableCardException as exception:
             return str(exception)
+        except NotANumberException:
+            return INPUT_NUMBER
 
     @property
     def board(self):

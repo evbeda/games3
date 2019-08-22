@@ -35,6 +35,7 @@ class GoldRoom(Trap):
         # Determine damage
         played_cards = [hand.last_card_played for hand in hands]
         max_card = max(played_cards)
+        trap_effect = 0
         for elem in self.effects:
             if elem[0] == max_card:
                 trap_effect = elem[1]

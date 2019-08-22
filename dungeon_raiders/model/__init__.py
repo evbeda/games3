@@ -7,6 +7,7 @@ EXIT = 'EXIT'
 BYE_MESSAGE = 'Bye'
 GAME_OVER = 'Game over'
 LEVEL_FINISHED_MESSAGE = 'Level finished succesfully'
+INPUT_NUMBER = 'Input EXIT or a number'
 
 MONSTER_ROOM = 0
 TREASURE_ROOM = 1
