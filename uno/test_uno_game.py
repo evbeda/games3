@@ -180,3 +180,19 @@ class TestUnoGame(unittest.TestCase):
         self.assertEqual(len(uno.stack.discard_cards), 3)
         self.assertEqual(last_played_card, uno.stack.top_card)
         self.assertEqual(result, FINISHED_PLAY_MESSAGE)
+
+    @parameterized.expand([
+        ([NumberCard(RED, 7), NumberCard(GREEN, 0)], [NumberCard(RED, 3)], NumberCard(RED, 8)),
+        ([NumberCard(RED, 7), NumberCard(GREEN, 0)], [NumberCard(YELLOW, 7)], NumberCard(RED, 2)),
+    ])
+    def test_both_players_play_computer_wins(self, human_cards, computer_cards, stack_card):
+        uno = Uno()
+        uno.stack.discard_cards = [stack_card]
+        uno.player.cards_player = human_cards
+        uno.computer_player.cards_player = computer_cards
+        last_played_card = uno.computer_player.cards_player[0]
+        result = uno.play('1')
+        self.assertEqual(len(uno.player.cards_player), 1)
+        self.assertEqual(len(uno.computer_player.cards_player), 0)
+        self.assertEqual(len(uno.stack.discard_cards), 3)
+        self.assertEqual(result, 'Computer won!')
