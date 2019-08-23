@@ -17,7 +17,7 @@ from craps.constants import (
     CRAPS_FIRST_BOARD,
     CRAPS_DICE,
     BET_PLACED_SUCCESFULLY,
-    CRAPS_SHOW_BET,
+    CRAPS_SHOW_BET
 )
 from game import Game
 from ruleta import (
@@ -249,14 +249,13 @@ class TestGame(unittest.TestCase):
                     return_value=[3, 4],
                 ):
             self.game.play()
-
         self.assertEqual(
             self.output_collector.output_collector,
             [
                 CRAPS_FIRST_BOARD,
                 BET_PLACED_SUCCESFULLY,
                 CRAPS_SHOW_BET,
-                (3, 4),
+                '\nResult:',
                 CRAPS_DICE,
                 'Game Over',
                 CRAPS_DICE,
