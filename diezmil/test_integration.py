@@ -21,22 +21,22 @@ class IntegrationTest(TestCase):
         self.game = DiezMil()
         self.game.players_qty = 1
         self.who_is_playing = 1
-        # self.game.actual_turn = Turn(1)
+        self.game.actual_turn = Turn(1)
 
     @parameterized.expand([
         (SETUP, 'Please, input comma separated names'),
         (GO, 'Choose dice'),
-        (GO, 'Next player turn'),
+        # (GO, 'Next player turn'),
     ])
     def test_next_turn(self, state, message):
         self.game.state = state
         self.assertEqual(message, self.game.next_turn())
 
-    @parameterized.expand([
-        ('STAY'),
-        ('0,1'),
-        (GO, 'Next player turn'),
-    ])
-    def test_play_stay(self):
-        self.game.next_player()
+    # @parameterized.expand([
+    #     ('STAY'),
+    #     ('0,1'),
+    #     (GO, 'Next player turn'),
+    # ])
+    # def test_play_stay(self):
+    #     self.game.next_player()
 
