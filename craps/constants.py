@@ -40,15 +40,20 @@ CRAPS_BET = 'CRAPS_BET'
 DOUBLE_SEVEN = 'DOUBLE_SEVEN'
 
 # Integration Test
-CRAPS_FIRST_BOARD = "Point: None\nDice: None\nMoney: 1000"
+CRAPS_FIRST_BOARD = "\nPoint: 0\nDice: No dices played\nMoney: 1000\n"
 BET_PLACED_SUCCESFULLY = "Your bet was placed successfully: PASS_BET"
-CRAPS_SHOW_BET = "Point: None\n" \
-    "Dice: None\n" \
-    "Bet:\n" \
-    "Bet type: PassBet\n" \
-    "Amount bet: 200\n" \
-    "Amount payed: 0\n" \
-    "Bet state: Bet in progress\n" \
-    "Money: 800" \
-
-CRAPS_DICE = 'Point: None\nDice: (3, 4)\nBet:\nBet type: PassBet\nAmount bet: 200\nAmount payed: 400\nBet state: Payed\nMoney: 1200'
+CRAPS_SHOW_BET = '''
+Point: 0
+Dice: No dices played
+Bet:
+Bet type: PassBet
+Amount bet: 200
+Amount payed: 0
+Bet state: Bet in progress
+Money: 800
+'''
+CRAPS_DICE = '''
+Point: 0
+Dice: (3, 4)
+Money: 1200
+'''

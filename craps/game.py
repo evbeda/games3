@@ -49,7 +49,7 @@ class CrapsGame:
 
     def play(self, *user_input):
         # In case of the user wants to finish his turn
-        if user_input[0] == NO_COMMAND:
+        if user_input[0].upper() == NO_COMMAND:
             if self.turn.state == PLAYER_LOST or self.turn.state == PLAYER_WON:
                 self.is_playing = False
                 return GAME_OVER
@@ -61,14 +61,14 @@ class CrapsGame:
             self.turn = Turn()
         # The player wants to shoot the dices
         # and determine if he has won or not
-        if user_input[0] == GO_COMMAND:
+        if user_input[0].upper() == GO_COMMAND:
             self.money += self.turn.shoot()
             return self.turn.dice
 
         try:
             # bet_type, amount, bet_values = \
             #     CrapsGame.resolve_command(user_input)
-            bet_type = user_input[0]
+            bet_type = user_input[0].upper()
             amount = int(user_input[1])
             bet_values = user_input[2] if len(user_input) == 3 else None
             # Create the bet, decrease money
@@ -91,7 +91,7 @@ class CrapsGame:
 
     @property
     def board(self):
-        ret = ''
+        ret = '\n'
         ret += self.turn.build_board()
-        ret += 'Money: {}'.format(self.money)
+        ret += 'Money: {}\n'.format(self.money)
         return ret

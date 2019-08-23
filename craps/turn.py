@@ -46,8 +46,8 @@ class Turn:
 
     def build_board(self):
         board = ''
-        board += 'Point: {}\n'.format(self.point)
-        board += 'Dice: {}\n'.format(self.dice)
+        board += 'Point: {}\n'.format(self.point) if self.point else 'Point: 0\n'
+        board += 'Dice: {}\n'.format(self.dice) if self.dice else 'Dice: No dices played\n'
         for bet in self.bets:
             board += 'Bet:\n{}'.format(bet)
         return board
