@@ -51,7 +51,7 @@ class DiezMil(object):
         self.actual_turn = Turn(self.players[self.who_is_playing - 1])
 
     def next_player(self):
-        self.lost_on_create_turn_message = ''
+        self.lost_on_create_turn_message += ''
         self._create_turn()
         while not self.actual_turn.is_playing():
             self.lost_on_create_turn_message += 'Player {} lost, dices: {} \n'.format(
@@ -59,7 +59,7 @@ class DiezMil(object):
                 self.actual_turn.plays[-1].dices,
             )
             self._create_turn()
-        print(self.lost_on_create_turn_message)
+        return self.lost_on_create_turn_message
 
     def check_players_qty(self, players_qty):
         return False if players_qty == 0 else True
@@ -79,15 +79,15 @@ class DiezMil(object):
             names = player_input.split(',')
             self.state = GO
             self.create_players(names)
-            self.next_player()
-            return PLAYERS_SET
-        elif player_input == 'S':
+            ret = self.next_player()
+            return PLAYERS_SET + ret
+        elif player_input in ['STAY','stay']:
             # asignar puntaje
             ret = self.actual_turn.calculate_acumulated_score()
             if self.actual_turn.is_player_win():
                 self.is_playing = False
                 return 'Player win: ' + self.actual_turn.player.name
-            self.next_player()
+            ret += self.next_player()
             return ret
         else:
             selected_dices = DiezMil.parse_input(player_input)
@@ -98,8 +98,8 @@ class DiezMil(object):
                     self.actual_turn.player.name,
                     self.actual_turn.plays[-1].dices,
                     )
-                    print(self.lost_on_create_turn_message)
-                    self.next_player()
+                    # print(self.lost_on_create_turn_message)
+                    return self.next_player()
             except (PlayRemainsWithNoScore):
                 return CANT_SAVE_THOSE_DICES
 
