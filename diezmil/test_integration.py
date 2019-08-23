@@ -32,7 +32,8 @@ class IntegrationTest(TestCase):
     ])
     def test_next_turn(self, state, message):
         self.game.state = state
-        self.assertEqual(message, self.game.next_turn())
+        with patch('random.randint', side_effect=[1, 1, 3, 5, 5]):
+            self.assertEqual(message, self.game.next_turn())
 
     def test_show_board(self):
         test_board = 'Player: Agustin\n'
