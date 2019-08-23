@@ -1,17 +1,13 @@
-# Model
 from .stack import Stack
 from .player import HumanPlayer, ComputerPlayer
-# Exception
-# from .exceptions import ComputerCantPlayException
-# Const
+from .exceptions import ComputerCantPlayException
 from .const import (
-    # Commands
-    DRAW_CARD_INPUT, EXIT,
-    # Messages
+    DRAW_CARD_INPUT,
+    EXIT,
+    EXIT_MESSAGE,
     INVALID_CARD_MESSAGE,
     ASK_FOR_INPUT,
-    COMPUTER_WON_MESSAGE,
-    HUMAN_PLAYER_WON_MESSAGE
+    FINISHED_PLAY_MESSAGE
     )
 
 
@@ -28,6 +24,7 @@ class Uno():
             self.stack.generate_cards_player())
         self.stack.put_card_in_discard()
         self.current_player = self.player
+        self.actions = []
 
     def next_turn(self):
         if self.is_playing:
@@ -37,23 +34,39 @@ class Uno():
     def play(self, command):
         if command == EXIT:
             self.is_playing = False
+            return EXIT_MESSAGE
         elif command == DRAW_CARD_INPUT:
             self.player_passes()
+            return ''
         else:
             card_index, color = self.parse_command(command)
             try:
                 card_played = self.current_player.select_card(
-                    card_index, self.stack
-                    )
-                self.stack.put_card_in_discard(card_played)
-                loses_turn, cards_to_pick = \
-                    card_played.get_action()
-                self.current_player = \
-                    self.decide_whos_next(loses_turn)
+                    card_index, self.stack)
             except Exception:
                 return INVALID_CARD_MESSAGE
-            # except ComputerCantPlayException:
-            #     self.player_passes()
+            # Duplicated
+            self.actions.append('You played {}'.format(card_played))
+            self.stack.put_card_in_discard(card_played)
+            loses_turn, cards_to_pick = card_played.get_action()
+            if self.is_winner():
+                self.is_playing = False
+                return '{} won!'.format(self.current_player)
+            self.current_player = self.decide_whos_next(loses_turn)
+            while self.current_player == self.computer_player:
+                try:
+                    card_played = self.current_player.select_card(self.stack)
+                except ComputerCantPlayException:
+                    self.player_passes()
+                # Duplicated
+                self.actions.append('Computer played {}'.format(card_played))
+                self.stack.put_card_in_discard(card_played)
+                loses_turn, cards_to_pick = card_played.get_action()
+                if self.is_winner():
+                    self.is_playing = False
+                    return '{} won!'.format(self.current_player)
+                self.current_player = self.decide_whos_next(loses_turn)
+            return FINISHED_PLAY_MESSAGE
 
     def player_passes(self):
         if self.current_player.has_drawn_a_card:
@@ -66,13 +79,8 @@ class Uno():
         player.cards_player.append(self.stack.draw_card_from_stack())
         player.has_drawn_a_card = True
 
-    def winner(self):
-        if self.player.cards_player == []:
-            self.is_playing = False
-            return HUMAN_PLAYER_WON_MESSAGE
-        elif self.computer_player.cards_player == []:
-            self.is_playing = False
-            return COMPUTER_WON_MESSAGE
+    def is_winner(self):
+        return self.current_player.cards_player == []
 
     @property
     def board(self):
@@ -108,3 +116,4 @@ class Uno():
                 return self.player
             else:
                 return self.computer_player
+

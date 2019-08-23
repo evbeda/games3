@@ -37,7 +37,7 @@ class TestPlayerUno(unittest.TestCase):
         valid_card = NumberCard(GREEN, 2)
         self.stack.discard_cards = [valid_card]
         self.computer_player.cards_player = [valid_card]
-        card = self.computer_player.select_card(0, self.stack)
+        card = self.computer_player.select_card(self.stack)
         self.assertEqual(card, valid_card)
 
     def test_computer_select_with_no_valid_cards(self):
@@ -46,4 +46,4 @@ class TestPlayerUno(unittest.TestCase):
         self.stack.discard_cards = [top_card]
         self.computer_player.cards_player = [invalid_card]
         with self.assertRaises(ComputerCantPlayException):
-            self.computer_player.select_card(0, self.stack)
+            self.computer_player.select_card(self.stack)

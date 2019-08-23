@@ -2,13 +2,13 @@ import unittest
 from parameterized import parameterized
 from .const import (
     DRAW_CARD_INPUT, EXIT,
-    HUMAN_PLAYER_WON_MESSAGE,
-    COMPUTER_WON_MESSAGE,
     INVALID_CARD_MESSAGE,
     RED,
     YELLOW,
     GREEN,
     BLUE,
+    EXIT_MESSAGE,
+    FINISHED_PLAY_MESSAGE,
     )
 from .uno import Uno
 from .card import NumberCard, ReverseCard, SkipCard
@@ -30,10 +30,11 @@ class TestUnoGame(unittest.TestCase):
                             NumberCard(YELLOW, 4)
                         ]
 
-    def test_is_playing(self):
+    def test_exit(self):
         self.assertEqual(self.game.is_playing, True)
-        self.game.play(EXIT)
+        result = self.game.play(EXIT)
         self.assertEqual(self.game.is_playing, False)
+        self.assertEqual(result, EXIT_MESSAGE)
 
     def test_current_player(self):
         self.assertEqual(self.game.current_player, self.game.player)
@@ -71,7 +72,7 @@ class TestUnoGame(unittest.TestCase):
         (ReverseCard(RED), ),
         (SkipCard(RED), ),
     ])
-    def test_play_invalid_card(self, card):
+    def test_play_last_invalid_card(self, card):
         uno = Uno()
         uno.stack.discard_cards = [NumberCard(GREEN, '5')]
         uno.player.cards_player = [card]
@@ -81,30 +82,30 @@ class TestUnoGame(unittest.TestCase):
         self.assertEqual(len(uno.player.cards_player), 1)
 
     @parameterized.expand([
-        (NumberCard(RED, '7'), ),
-        (NumberCard(BLUE, '7'), ),
-        (NumberCard(YELLOW, '7'), ),
-        (ReverseCard(RED), ),
-        (SkipCard(RED), ),
+        ([NumberCard(RED, '7')], ),
+        ([NumberCard(BLUE, '7')], ),
+        ([NumberCard(YELLOW, '7')], ),
     ])
-    def test_play_a_valid_card(self, card):
+    def test_play_last_valid_card(self, player_cards):
         uno = Uno()
         uno.stack.discard_cards = [NumberCard(RED, '7')]
-        uno.player.cards_player = [card]
+        uno.player.cards_player = player_cards
         last_played_card = uno.player.cards_player[0]
-        uno.play('1')
-        self.assertEqual(len(uno.player.cards_player), 1)
+        result = uno.play('1')
+        self.assertEqual(len(uno.player.cards_player), 0)
         self.assertEqual(last_played_card, uno.stack.top_card)
+        self.assertEqual(result, 'Player won!')
 
     def test_player_winner(self):
         self.game.player.cards_player = []
         self.game.computer_player.cards_player = self.STACK_EXAMPLE
-        self.assertEqual(self.game.winner(), HUMAN_PLAYER_WON_MESSAGE)
+        self.assertTrue(self.game.is_winner())
 
     def test_computer_player_winner(self):
+        self.game.current_player = self.game.computer_player
         self.game.computer_player.cards_player = []
         self.game.player.cards_player = self.STACK_EXAMPLE
-        self.assertEqual(self.game.winner(), COMPUTER_WON_MESSAGE)
+        self.assertTrue(self.game.is_winner())
 
     def test_board(self):
         game = Uno()
@@ -161,3 +162,21 @@ class TestUnoGame(unittest.TestCase):
         self.assertEqual(
             self.game.decide_whos_next(True), self.game.computer_player
             )
+
+    @parameterized.expand([
+        ([NumberCard(RED, 7), NumberCard(GREEN, 0)], NumberCard(RED, 8)),
+        ([NumberCard(BLUE, 7), NumberCard(GREEN, 0)], NumberCard(YELLOW, 7)),
+        ([NumberCard(GREEN, 7), NumberCard(RED, 0)], NumberCard(GREEN, 9)),
+    ])
+    def test_both_players_play_a_valid_card(self, player_cards, stack_card):
+        uno = Uno()
+        uno.stack.discard_cards = [stack_card]
+        uno.player.cards_player = player_cards.copy()
+        uno.computer_player.cards_player = player_cards.copy()
+        last_played_card = uno.computer_player.cards_player[0]
+        result = uno.play('1')
+        self.assertEqual(len(uno.player.cards_player), 1)
+        self.assertEqual(len(uno.computer_player.cards_player), 1)
+        self.assertEqual(len(uno.stack.discard_cards), 3)
+        self.assertEqual(last_played_card, uno.stack.top_card)
+        self.assertEqual(result, FINISHED_PLAY_MESSAGE)

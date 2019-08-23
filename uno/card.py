@@ -117,3 +117,6 @@ class WildCard(PostColoredCard):
 
     def __str__(self):
         return '{}'.format(self.name)
+
+    def get_action(self):
+        return (False, 0)
