@@ -149,8 +149,8 @@ class TestCraps(unittest.TestCase):
         self.assertEqual(is_same_turn, expected)
 
     @parameterized.expand([
-        (GAME_STARTED, None, None, 1000, None, "\nPoint: 0\nDice: No dices played\nMoney: 1000\n"),
-        (GAME_STARTED, None, PassBet(20, None), 980, None, "\nPoint: 0\nDice: No dices played\nBet:\n\tBet type: PassBet\n\tAmount bet: 20\n\tAmount payed: 0\n\tBet state: Bet in progress\nMoney: 980\n"),
+        (GAME_STARTED, None, None, 1000, None, "\nPoint: -\nDice: No dices played\nMoney: 1000\n"),
+        (GAME_STARTED, None, PassBet(20, None), 980, None, "\nPoint: -\nDice: No dices played\nBet:\n\tBet type: PassBet\n\tAmount bet: 20\n\tAmount payed: 0\n\tBet state: Bet in progress\nMoney: 980\n"),
         (GAME_IN_PROGRESS, 9, PassBet(20, (6, 3)), 980, None, "\nPoint: 9\nDice: (6, 3)\nBet:\n\tBet type: PassBet\n\tAmount bet: 20\n\tAmount payed: 0\n\tBet state: Bet in progress\nMoney: 980\n"),
         (PLAYER_LOST, 9, PassBet(200, (5, 2)), 800, None, "\nPoint: 9\nDice: (5, 2)\nBet:\n\tBet type: PassBet\n\tAmount bet: 200\n\tAmount payed: 0\n\tBet state: Bet in progress\nMoney: 800\n"),
         (PLAYER_WON, 6, PassBet(200, (4, 2)), 1200, 400, "\nPoint: 6\nDice: (4, 2)\nBet:\n\tBet type: PassBet\n\tAmount bet: 200\n\tAmount payed: 400\n\tBet state: Payed\nMoney: 1200\n"),
