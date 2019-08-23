@@ -30,6 +30,11 @@ from ruleta import (
        BYE_MESSAGE,
        EXAMPLE_SHOW_BOARD_END_GAME
        )
+from diezmil import (
+        PLAYERS_SET,
+        EXAMPLE_WINNING_BOARD, 
+        EXAMPLE_WINNING_BOARD_STAY
+        )
 
 
 class TestGame(unittest.TestCase):
@@ -262,6 +267,46 @@ class TestGame(unittest.TestCase):
                 'Game Over',
                 CRAPS_DICE,
                    ],
+         )
+
+    def test_play_diezmil(self):
+
+        class ControlInputValues(object):
+            def __init__(self, *args, **kwargs):
+                self.played = False
+                self.play_count = -1
+                self.plays = [
+                    'Player',
+                    'STAY'
+                ]
+
+            def __call__(self, console_output):
+                if 'Select Game' in console_output:
+                    if self.played:
+                        return '9'
+                    self.played = True
+                    return '4'
+                self.play_count += 1
+                return self.plays[self.play_count]
+
+        with \
+                patch(
+                    'game.Game.get_input', side_effect=ControlInputValues()
+                    ), \
+                patch('game.Game.output', side_effect=self.output_collector), \
+                patch(
+                    'random.randint', return_value=1,
+                ):
+            self.game.play()
+        self.assertEqual(
+            self.output_collector.output_collector,
+            [
+                '',
+                PLAYERS_SET,
+                EXAMPLE_WINNING_BOARD,
+                'Player win: Player',
+                EXAMPLE_WINNING_BOARD_STAY
+            ],
          )
 
 
