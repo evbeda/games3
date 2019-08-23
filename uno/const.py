@@ -11,11 +11,18 @@ ASK_FOR_INPUT = \
     "(Type exit to quit) \n"
 UNO_FINAL_LAST_PLAYED_CARD = NumberCard('red', 7)
 UNO_FINAL_PLAYER_CARD = NumberCard('red', 9)
-UNO_ALMOST_FINISHED_BOARD = "Your cards are: \n" +\
-            "1: 9 - red\n" +\
-            "The last card played is: \n" +\
-            "7 - red"
-UNO_FINISHED_BOARD = 'Your cards are: \nThe last card played is: \n9 - red'
+UNO_FINAL_COMPUTER_CARD = [NumberCard('red', 9), NumberCard('green', 8)]
+UNO_ALMOST_FINISHED_BOARD = '''Your cards are:
+1: 9 - red
+Computer remaining cards: 2
+The last card played is:
+7 - red'''
+
+UNO_FINISHED_BOARD = '''Your cards are:
+
+Computer remaining cards: 2
+The last card played is:
+9 - red'''
 
 EXIT_MESSAGE = 'Bye!'
 
