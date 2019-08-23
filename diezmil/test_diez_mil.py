@@ -190,7 +190,8 @@ class TestDiezMil(unittest.TestCase):
     ])
     def test_diezmil_play_with_valid_input_for_names(self, input):
         names = input.split(',')
-        self.assertEqual(self.game.play(input), PLAYERS_SET)
+        with patch('random.randint', side_effect=[1, 1, 3, 4, 5]):
+            self.assertEqual(self.game.play(input), PLAYERS_SET)
         for i in range(2):
             self.assertEqual(self.game.players[i].name, names[i])
 
