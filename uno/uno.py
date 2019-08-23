@@ -88,9 +88,6 @@ class Uno():
         player_cards = self.player.cards_player
         last_card_played = self.stack.discard_cards[-1]
         computer_remaining_cards = len(self.computer_player.cards_player)
-        # for index, card in enumerate(player_cards):
-        #     board += str(index + 1) + ': ' + str(card)
-        #     board += "\n"
         board += '\n'.join(
             [str(index + 1) + ': ' + str(card)
                 for index, card in enumerate(player_cards)]
