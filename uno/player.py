@@ -20,7 +20,7 @@ class HumanPlayer(Player):
         card = self.cards_player[card_index]
         if not card.is_valid(stack.top_card):
             raise Exception()
-        return card
+        return self.cards_player.pop(card_index)
 
 
 class ComputerPlayer(Player):
@@ -30,12 +30,13 @@ class ComputerPlayer(Player):
     def __str__(self):
         return 'Computer'
 
-    def select_card(self, card_index, stack):
+    def select_card(self, stack):
         possible_cards = [
             card for card in self.cards_player
             if card.is_valid(stack.top_card)
         ]
         if possible_cards:
-            return choice(possible_cards)
+            return self.cards_player.pop(
+                self.cards_player.index(choice(possible_cards)))
         else:
             raise ComputerCantPlayException
