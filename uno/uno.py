@@ -42,7 +42,7 @@ class Uno():
             card_index, color = self.parse_command(command)
             try:
                 card_played = self.current_player.select_card(
-                    card_index, self.stack)
+                    self.stack.top_card, card_index)
             except Exception:
                 return INVALID_CARD_MESSAGE
             # Duplicated
@@ -55,7 +55,7 @@ class Uno():
             self.current_player = self.decide_whos_next(loses_turn)
             while self.current_player == self.computer_player:
                 try:
-                    card_played = self.current_player.select_card(self.stack)
+                    card_played = self.current_player.select_card(self.stack.top_card)
                 except ComputerCantPlayException:
                     self.player_passes()
                 # Duplicated
