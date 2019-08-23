@@ -13,6 +13,14 @@ from .const import (
 from .uno import Uno
 from .card import NumberCard, ReverseCard, SkipCard
 
+expected_board = '''Your cards are:
+1: 3 - green
+2: 4 - red
+3: 5 - blue
+Computer remaining cards: 7
+The last card played is:
+6 - blue'''
+
 
 class TestUnoGame(unittest.TestCase):
     def setUp(self):
@@ -98,27 +106,22 @@ class TestUnoGame(unittest.TestCase):
         self.game.player.cards_player = self.STACK_EXAMPLE
         self.assertEqual(self.game.winner(), COMPUTER_WON_MESSAGE)
 
-    # def test_board(self):
-    #     game = Uno()
+    def test_board(self):
+        game = Uno()
 
-    #     # Override cards
-    #     card1 = NumberCard(GREEN, 3)
-    #     card2 = NumberCard(RED, 4)
-    #     card3 = NumberCard(BLUE, 5)
-    #     card4 = NumberCard(BLUE, 6)
-    #     cards = [card1, card2, card3]
-    #     game.player.cards_player = cards
-    #     game.stack.discard_cards.append(card4)
+        # Override cards
+        card1 = NumberCard(GREEN, 3)
+        card2 = NumberCard(RED, 4)
+        card3 = NumberCard(BLUE, 5)
+        card4 = NumberCard(BLUE, 6)
+        cards = [card1, card2, card3]
+        game.player.cards_player = cards
+        game.stack.discard_cards.append(card4)
 
-    #     # Test
-    #     board = game.board
-    #     expected_board = "Your cards are: \n" +\
-    #         "1: 3 - green\n" +\
-    #         "2: 4 - red\n" +\
-    #         "3: 5 - blue\n" +\
-    #         "The last card played is: \n" +\
-    #         "6 - blue"
-    #     self.assertEqual(board, expected_board)
+        # Test
+        board = game.board
+        
+        self.assertEqual(board, expected_board)
 
     def test_validate_draw_card_input(self):
         self.game.current_player = self.game.computer_player
