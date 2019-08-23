@@ -76,13 +76,20 @@ class Uno():
 
     @property
     def board(self):
-        board = "Your cards are: \n"
+        board = "Your cards are:\n"
         player_cards = self.player.cards_player
         last_card_played = self.stack.discard_cards[-1]
-        for index, card in enumerate(player_cards):
-            board += str(index + 1) + ': ' + str(card)
-            board += "\n"
-        board += "The last card played is: \n" + str(last_card_played)
+        computer_remaining_cards = len(self.computer_player.cards_player)
+        # for index, card in enumerate(player_cards):
+        #     board += str(index + 1) + ': ' + str(card)
+        #     board += "\n"
+        board += '\n'.join(
+            [str(index + 1) + ': ' + str(card)
+                for index, card in enumerate(player_cards)]
+            ) + '\n'
+        board += \
+            f'Computer remaining cards: {computer_remaining_cards}\n'
+        board += "The last card played is:\n" + str(last_card_played)
         return board
 
     def parse_command(self, command):
