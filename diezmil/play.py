@@ -14,8 +14,6 @@ class Play(object):
             return False
         for j in range(dice_qty):
             self.dices.append(random.randint(1, 6))
-            #self.dices.append(random.randint(10, 20))
-            # print(self.dices)
         self.play_score = self.check_combination(self.dices)
 
     def choose_dices(self, selected_dices_positions):
