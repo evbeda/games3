@@ -194,6 +194,23 @@ class TestDiezMil(unittest.TestCase):
             self.assertEqual(self.game.play(input), PLAYERS_SET)
         for i in range(2):
             self.assertEqual(self.game.players[i].name, names[i])
+    
+    def test_diezmil_first_play_no_score(self):
+        with patch('random.randint', side_effect=[6, 2, 3, 4, 2, 1, 5, 2, 4, 5]):
+            self.assertEqual(self.game.play(
+                'TEST1, TEST2'), PLAYERS_SET +
+                'Player TEST1 lost, dices: [2, 2, 3, 4, 6] \n'
+            )
+
+    def test_player_win_on_stay(self):
+        with patch('random.randint', side_effect=[1, 1, 1, 1, 1]):
+            self.game.play('TEST1')
+            self.assertEqual(self.game.play('STAY'), 'Player win: TEST1')
+    
+    def test_player_score_on_stay(self):
+        with patch('random.randint', side_effect=[1, 4, 3, 5, 1, 1, 5, 5, 2, 4]):
+            self.game.play('TEST1')
+            self.assertEqual(self.game.play('STAY'), 'New score: 250')
 
     def test_parse_input(self):
         self.assertEqual(DiezMil.parse_input("1,3,4"), [1, 3, 4])
